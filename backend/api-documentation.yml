@@ -5,7 +5,7 @@ info:
   version: '1.0'
 servers:
   - description: Local Backend
-  - url: http://localhost:3000/
+    url: http://localhost:3000/
 paths:
   /user:
     post:
@@ -17,17 +17,15 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                name:
-                  type: string
-                  description: Name of the user to create
-                nationality:
-                  $ref: '#/components/schemas/Nationality'
+              $ref: '#/components/schemas/RequestUser'
       responses:
         '200':
           description: Successfully registered user
-          # server.com/user/{user_id}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+
   '/user/{id}':
     get:
       tags:
@@ -61,7 +59,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UpdateUser'
+              $ref: '#/components/schemas/RequestUser'
       responses:
         '200':
           description: Response
@@ -69,6 +67,150 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/User'
+    delete:
+      tags:
+        - User
+      summary: Delete user
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: 
+            type: string
+      responses:
+        '200':
+          description: Successfully deleted user
+  '/user/{id}/friends/{friend_id}':
+    put:
+      tags:
+       - User
+      summary: Send a friend request
+      parameters:
+        - name: id 
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: friend_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successfully sent friend request
+        '400':
+          description: User does not exist
+    delete:
+      tags:
+       - User
+      summary: Remove a friend
+      parameters:
+        - name: id 
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: friend_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successfully sent friend request
+        '400':
+          description: User does not exist
+  '/user/{id}/friends/requests/{inquirer_id}':
+    put:
+      tags:
+       - User
+      summary: Accept a friend request
+      parameters:
+        - name: id 
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: inquirer_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successfully accepted friend request
+        '400':
+          description: No inquirer with this id
+    delete:
+      tags:
+       - User
+      summary: Decline a friend request
+      parameters:
+        - name: id 
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: inquirer_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Declined friend request
+        '400':
+          description: No inquirer with this id
+  /lobby:
+    post:
+      tags:
+       - Lobby
+      summary: Create Lobby
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RequestLobby'
+      responses:
+        '200':
+          description: Successfully created lobby
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Lobby'
+  '/lobby/{id}':
+    get:
+      tags:
+       - Lobby
+      summary: Get lobby info
+      parameters:
+        - name: id 
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Lobby'
+    delete:
+      tags:
+        - Lobby
+      summary: Delete lobby
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: 
+            type: string
+      responses:
+        '200':
+          description: Successfully deleted lobby
 components:
   schemas:
     User:
@@ -93,7 +235,7 @@ components:
           type: string
         nationality:
           $ref: '#/components/schemas/Nationality'
-    UpdateUser:
+    RequestUser:
       type: object
       properties:
         userName:
@@ -144,6 +286,16 @@ components:
           items:
             type: string
             description: List of player uuids
+        options:
+          $ref: '#/components/schemas/Options'
+    RequestLobby:
+      type: object
+      properties:
+        name:
+          type: string
+        admin:
+          type: string
+          description: uuid of player
         options:
           $ref: '#/components/schemas/Options'
     AnswerOption:
