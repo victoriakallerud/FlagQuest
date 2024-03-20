@@ -1,0 +1,71 @@
+{
+    "logs": [
+        {
+            "outputFile": "no.ntnu.flagquest.android-merged_res-4:/values_values.arsc.flat",
+            "map": [
+                {
+                    "source": "C:\\Users\\ameld\\AndroidStudioProjects\\FlagQuest\\android\\res\\values\\strings.xml",
+                    "from": {
+                        "startLines": "3",
+                        "startColumns": "4",
+                        "startOffsets": "56",
+                        "endColumns": "46",
+                        "endOffsets": "98"
+                    },
+                    "to": {
+                        "startLines": "3",
+                        "startColumns": "4",
+                        "startOffsets": "111",
+                        "endColumns": "46",
+                        "endOffsets": "153"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\ameld\\AndroidStudioProjects\\FlagQuest\\android\\res\\values\\color.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "55",
+                        "endOffsets": "106"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\ameld\\AndroidStudioProjects\\FlagQuest\\android\\res\\values\\styles.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endLines": "4",
+                        "endColumns": "12",
+                        "endOffsets": "228"
+                    },
+                    "to": {
+                        "startLines": "4",
+                        "startColumns": "4",
+                        "startOffsets": "158",
+                        "endLines": "6",
+                        "endColumns": "12",
+                        "endOffsets": "331"
+                    }
+                }
+            ]
+        },
+        {
+            "outputFile": "no.ntnu.flagquest.android-merged_res-4:/values-v21_values-v21.arsc.flat",
+            "map": [
+                {
+                    "source": "C:\\Users\\ameld\\AndroidStudioProjects\\FlagQuest\\android\\res\\values-v21\\styles.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endLines": "4",
+                        "endColumns": "12",
+                        "endOffsets": "231"
+                    }
+                }
+            ]
+        }
+    ]
+}

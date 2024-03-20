@@ -1,0 +1,5 @@
+no.ntnu.flagquest:string/app_name = 0x7f030000
+no.ntnu.flagquest:style/AppTheme = 0x7f040000
+no.ntnu.flagquest:drawable/ic_launcher_foreground = 0x7f020001
+no.ntnu.flagquest:drawable/ic_launcher = 0x7f020000
+no.ntnu.flagquest:color/ic_background_color = 0x7f010000

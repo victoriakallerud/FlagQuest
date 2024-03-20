@@ -1,0 +1,6 @@
+no.ntnu.flagquest
+color ic_background_color
+drawable ic_launcher
+drawable ic_launcher_foreground
+string app_name
+style AppTheme
