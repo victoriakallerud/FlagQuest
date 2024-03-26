@@ -9,8 +9,8 @@ async function bootstrap() {
     .setTitle('FlagQuest Backend')
     .setDescription('The API for the FlagQuest guessing game')
     .setVersion('1.2')
-    .addTag('User')
-    .addTag('Lobby')
+    .addTag('user')
+    .addTag('lobby')
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('docs', app, document);
