@@ -217,11 +217,16 @@ paths:
        - Lobby
       summary: Join lobby
       parameters:
-        - name: id 
-          in: path
-          required: true
-          schema:
-            type: string
+      - name: lobby_id 
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: user_id
+        in: path
+        required: true
+        schema:
+          type: string
       responses:
         '200':
           description: Response
@@ -234,11 +239,16 @@ paths:
         - Lobby
       summary: Leave lobby
       parameters:
-        - name: lobby_id
-          in: path
-          required: true
-          schema: 
-            type: string
+      - name: lobby_id 
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: user_id
+        in: path
+        required: true
+        schema:
+          type: string
       responses:
         '200':
           description: Left lobby
