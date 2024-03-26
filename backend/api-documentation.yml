@@ -198,6 +198,29 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Lobby'
+    put:
+      tags:
+       - Lobby
+      summary: Update lobby info
+      parameters:
+        - name: lobby_id 
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RequestLobby'      
+      responses:
+        '200':
+          description: Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Lobby'            
     delete:
       tags:
         - Lobby
