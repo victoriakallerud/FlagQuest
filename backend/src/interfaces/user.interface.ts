@@ -1,5 +1,5 @@
 import { Score } from './score.interface';
-import { Nationality } from './nationality.interface';
+import { Nationality } from '../enums/nationality.enum';
 
 /**
  * 
