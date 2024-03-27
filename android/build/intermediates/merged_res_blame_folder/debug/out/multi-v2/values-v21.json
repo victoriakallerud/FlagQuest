@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "no.ntnu.flagquest.android-mergeDebugResources-2:/values-v21/values-v21.xml",
+            "outputFile": "com.flagquest.game.android-mergeDebugResources-2:/values-v21/values-v21.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\ameld\\AndroidStudioProjects\\FlagQuest\\android\\res\\values-v21\\styles.xml",
+                    "source": "/home/hannalunne/Documents/ntnu/s4/progark/FlagQuest/android/res/values-v21/styles.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",

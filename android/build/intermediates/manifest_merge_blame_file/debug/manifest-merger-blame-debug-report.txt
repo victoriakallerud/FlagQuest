@@ -1,60 +1,60 @@
 1<?xml version="1.0" encoding="utf-8"?>
 2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-3    package="no.ntnu.flagquest"
+3    package="com.flagquest.game"
 4    android:versionCode="1"
 5    android:versionName="1.0" >
 6
 7    <uses-sdk
-8        android:minSdkVersion="14"
+8        android:minSdkVersion="19"
 9        android:targetSdkVersion="34" />
 10
 11    <uses-feature
-11-->C:\Users\ameld\AndroidStudioProjects\FlagQuest\android\AndroidManifest.xml:5:5-78
+11-->/home/hannalunne/Documents/ntnu/s4/progark/FlagQuest/android/AndroidManifest.xml:5:5-78
 12        android:glEsVersion="0x00020000"
-12-->C:\Users\ameld\AndroidStudioProjects\FlagQuest\android\AndroidManifest.xml:5:19-51
+12-->/home/hannalunne/Documents/ntnu/s4/progark/FlagQuest/android/AndroidManifest.xml:5:19-51
 13        android:required="true" />
-13-->C:\Users\ameld\AndroidStudioProjects\FlagQuest\android\AndroidManifest.xml:5:52-75
+13-->/home/hannalunne/Documents/ntnu/s4/progark/FlagQuest/android/AndroidManifest.xml:5:52-75
 14
 15    <application
-15-->C:\Users\ameld\AndroidStudioProjects\FlagQuest\android\AndroidManifest.xml:7:5-27:19
+15-->/home/hannalunne/Documents/ntnu/s4/progark/FlagQuest/android/AndroidManifest.xml:7:5-27:19
 16        android:allowBackup="true"
-16-->C:\Users\ameld\AndroidStudioProjects\FlagQuest\android\AndroidManifest.xml:8:9-35
+16-->/home/hannalunne/Documents/ntnu/s4/progark/FlagQuest/android/AndroidManifest.xml:8:9-35
 17        android:appCategory="game"
-17-->C:\Users\ameld\AndroidStudioProjects\FlagQuest\android\AndroidManifest.xml:12:9-35
+17-->/home/hannalunne/Documents/ntnu/s4/progark/FlagQuest/android/AndroidManifest.xml:12:9-35
 18        android:debuggable="true"
 19        android:extractNativeLibs="true"
 20        android:fullBackupContent="true"
-20-->C:\Users\ameld\AndroidStudioProjects\FlagQuest\android\AndroidManifest.xml:9:9-41
+20-->/home/hannalunne/Documents/ntnu/s4/progark/FlagQuest/android/AndroidManifest.xml:9:9-41
 21        android:icon="@drawable/ic_launcher"
-21-->C:\Users\ameld\AndroidStudioProjects\FlagQuest\android\AndroidManifest.xml:10:9-45
+21-->/home/hannalunne/Documents/ntnu/s4/progark/FlagQuest/android/AndroidManifest.xml:10:9-45
 22        android:isGame="true"
-22-->C:\Users\ameld\AndroidStudioProjects\FlagQuest\android\AndroidManifest.xml:11:9-30
+22-->/home/hannalunne/Documents/ntnu/s4/progark/FlagQuest/android/AndroidManifest.xml:11:9-30
 23        android:label="@string/app_name"
-23-->C:\Users\ameld\AndroidStudioProjects\FlagQuest\android\AndroidManifest.xml:13:9-41
+23-->/home/hannalunne/Documents/ntnu/s4/progark/FlagQuest/android/AndroidManifest.xml:13:9-41
 24        android:testOnly="true"
 25        android:theme="@style/AppTheme" >
-25-->C:\Users\ameld\AndroidStudioProjects\FlagQuest\android\AndroidManifest.xml:14:9-40
+25-->/home/hannalunne/Documents/ntnu/s4/progark/FlagQuest/android/AndroidManifest.xml:14:9-40
 26        <activity
-26-->C:\Users\ameld\AndroidStudioProjects\FlagQuest\android\AndroidManifest.xml:16:9-26:20
-27            android:name="no.ntnu.flagquest.AndroidLauncher"
-27-->C:\Users\ameld\AndroidStudioProjects\FlagQuest\android\AndroidManifest.xml:17:13-61
+26-->/home/hannalunne/Documents/ntnu/s4/progark/FlagQuest/android/AndroidManifest.xml:16:9-26:20
+27            android:name="com.flagquest.game.AndroidLauncher"
+27-->/home/hannalunne/Documents/ntnu/s4/progark/FlagQuest/android/AndroidManifest.xml:17:13-62
 28            android:configChanges="keyboard|keyboardHidden|navigation|orientation|screenSize|screenLayout"
-28-->C:\Users\ameld\AndroidStudioProjects\FlagQuest\android\AndroidManifest.xml:20:13-107
+28-->/home/hannalunne/Documents/ntnu/s4/progark/FlagQuest/android/AndroidManifest.xml:20:13-107
 29            android:exported="true"
-29-->C:\Users\ameld\AndroidStudioProjects\FlagQuest\android\AndroidManifest.xml:21:13-36
+29-->/home/hannalunne/Documents/ntnu/s4/progark/FlagQuest/android/AndroidManifest.xml:21:13-36
 30            android:label="@string/app_name"
-30-->C:\Users\ameld\AndroidStudioProjects\FlagQuest\android\AndroidManifest.xml:18:13-45
-31            android:screenOrientation="landscape" >
-31-->C:\Users\ameld\AndroidStudioProjects\FlagQuest\android\AndroidManifest.xml:19:13-50
+30-->/home/hannalunne/Documents/ntnu/s4/progark/FlagQuest/android/AndroidManifest.xml:18:13-45
+31            android:screenOrientation="portrait" >
+31-->/home/hannalunne/Documents/ntnu/s4/progark/FlagQuest/android/AndroidManifest.xml:19:13-49
 32            <intent-filter>
-32-->C:\Users\ameld\AndroidStudioProjects\FlagQuest\android\AndroidManifest.xml:22:13-25:29
+32-->/home/hannalunne/Documents/ntnu/s4/progark/FlagQuest/android/AndroidManifest.xml:22:13-25:29
 33                <action android:name="android.intent.action.MAIN" />
-33-->C:\Users\ameld\AndroidStudioProjects\FlagQuest\android\AndroidManifest.xml:23:17-69
-33-->C:\Users\ameld\AndroidStudioProjects\FlagQuest\android\AndroidManifest.xml:23:25-66
+33-->/home/hannalunne/Documents/ntnu/s4/progark/FlagQuest/android/AndroidManifest.xml:23:17-69
+33-->/home/hannalunne/Documents/ntnu/s4/progark/FlagQuest/android/AndroidManifest.xml:23:25-66
 34
 35                <category android:name="android.intent.category.LAUNCHER" />
-35-->C:\Users\ameld\AndroidStudioProjects\FlagQuest\android\AndroidManifest.xml:24:17-77
-35-->C:\Users\ameld\AndroidStudioProjects\FlagQuest\android\AndroidManifest.xml:24:27-74
+35-->/home/hannalunne/Documents/ntnu/s4/progark/FlagQuest/android/AndroidManifest.xml:24:17-77
+35-->/home/hannalunne/Documents/ntnu/s4/progark/FlagQuest/android/AndroidManifest.xml:24:27-74
 36            </intent-filter>
 37        </activity>
 38    </application>

@@ -1,4 +1,4 @@
-no.ntnu.flagquest
+com.flagquest.game
 color ic_background_color
 drawable ic_launcher
 drawable ic_launcher_foreground
