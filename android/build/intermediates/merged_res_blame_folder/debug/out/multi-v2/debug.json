@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.flagquest.game.android-merged_res-4:/values_values.arsc.flat",
+            "outputFile": "/home/hannalunne/.gradle/daemon/8.5/com.flagquest.game.android-merged_res-4:/values_values.arsc.flat",
             "map": [
                 {
                     "source": "/home/hannalunne/Documents/ntnu/s4/progark/FlagQuest/android/res/values/styles.xml",
@@ -52,7 +52,7 @@
             ]
         },
         {
-            "outputFile": "com.flagquest.game.android-merged_res-4:/values-v21_values-v21.arsc.flat",
+            "outputFile": "/home/hannalunne/.gradle/daemon/8.5/com.flagquest.game.android-merged_res-4:/values-v21_values-v21.arsc.flat",
             "map": [
                 {
                     "source": "/home/hannalunne/Documents/ntnu/s4/progark/FlagQuest/android/res/values-v21/styles.xml",

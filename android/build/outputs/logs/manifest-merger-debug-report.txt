@@ -40,7 +40,7 @@ MERGED from [com.badlogicgames.gdx-controllers:gdx-controllers-android:2.2.1] /h
 	tools:ignore
 		ADDED from /home/hannalunne/Documents/ntnu/s4/progark/FlagQuest/android/AndroidManifest.xml:15:9-39
 	android:icon
-		ADDED from /home/hannalunne/Documents/ntnu/s4/progark/FlagQuest/android/AndroidManifest.xml:10:9-45
+		ADDED from /home/hannalunne/Documents/ntnu/s4/progark/FlagQuest/android/AndroidManifest.xml:10:9-43
 	android:allowBackup
 		ADDED from /home/hannalunne/Documents/ntnu/s4/progark/FlagQuest/android/AndroidManifest.xml:8:9-35
 	android:theme

@@ -1,5 +1,6 @@
 package com.flagquest.game.states
 
+import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import java.util.Stack
 class GameStateManager {

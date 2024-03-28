@@ -1,4 +1,8 @@
+com.flagquest.game:mipmap/ic_launcher_round = 0x7f050002
+com.flagquest.game:color/ic_launcher_background = 0x7f010001
+com.flagquest.game:mipmap/ic_launcher_foreground = 0x7f050001
 com.flagquest.game:style/AppTheme = 0x7f040000
+com.flagquest.game:mipmap/ic_launcher = 0x7f050000
 com.flagquest.game:drawable/ic_launcher_foreground = 0x7f020001
 com.flagquest.game:drawable/ic_launcher = 0x7f020000
 com.flagquest.game:string/app_name = 0x7f030000
