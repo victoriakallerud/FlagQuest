@@ -425,7 +425,7 @@
     "default": {
       "font": "title",
       "fontColor": "textColor",
-      "downFontColor": "white",
+      "downFontColor": "textColor",
       "overFontColor": "gray",
       "up": "button-c",
       "down": "button-p",
