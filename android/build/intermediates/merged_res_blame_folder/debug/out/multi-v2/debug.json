@@ -1,8 +1,25 @@
 {
     "logs": [
         {
-            "outputFile": "/home/hannalunne/.gradle/daemon/8.5/com.flagquest.game.android-merged_res-4:/values_values.arsc.flat",
+            "outputFile": "com.flagquest.game.android-merged_res-4:/values_values.arsc.flat",
             "map": [
+                {
+                    "source": "/home/hannalunne/Documents/ntnu/s4/progark/FlagQuest/android/res/values/ic_launcher_background.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "56",
+                        "endOffsets": "107"
+                    },
+                    "to": {
+                        "startLines": "3",
+                        "startColumns": "4",
+                        "startOffsets": "111",
+                        "endColumns": "56",
+                        "endOffsets": "163"
+                    }
+                },
                 {
                     "source": "/home/hannalunne/Documents/ntnu/s4/progark/FlagQuest/android/res/values/styles.xml",
                     "from": {
@@ -14,12 +31,12 @@
                         "endOffsets": "228"
                     },
                     "to": {
-                        "startLines": "4",
+                        "startLines": "5",
                         "startColumns": "4",
-                        "startOffsets": "158",
-                        "endLines": "6",
+                        "startOffsets": "215",
+                        "endLines": "7",
                         "endColumns": "12",
-                        "endOffsets": "331"
+                        "endOffsets": "388"
                     }
                 },
                 {
@@ -42,17 +59,17 @@
                         "endOffsets": "98"
                     },
                     "to": {
-                        "startLines": "3",
+                        "startLines": "4",
                         "startColumns": "4",
-                        "startOffsets": "111",
+                        "startOffsets": "168",
                         "endColumns": "46",
-                        "endOffsets": "153"
+                        "endOffsets": "210"
                     }
                 }
             ]
         },
         {
-            "outputFile": "/home/hannalunne/.gradle/daemon/8.5/com.flagquest.game.android-merged_res-4:/values-v21_values-v21.arsc.flat",
+            "outputFile": "com.flagquest.game.android-merged_res-4:/values-v21_values-v21.arsc.flat",
             "map": [
                 {
                     "source": "/home/hannalunne/Documents/ntnu/s4/progark/FlagQuest/android/res/values-v21/styles.xml",

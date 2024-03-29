@@ -1,126 +1,78 @@
 [
     {
-        "merged": "/home/hannalunne/.gradle/daemon/8.5/com.flagquest.game.android-merged_res-4:/mipmap-xhdpi_ic_launcher_foreground.webp.flat",
-        "source": "/home/hannalunne/.gradle/daemon/8.5/com.flagquest.game.android-android-5:/mipmap-xhdpi/ic_launcher_foreground.webp"
+        "merged": "com.flagquest.game.android-merged_res-4:/mipmap-mdpi_ic_launcher_round.webp.flat",
+        "source": "com.flagquest.game.android-android-5:/mipmap-mdpi/ic_launcher_round.webp"
     },
     {
-        "merged": "/home/hannalunne/.gradle/daemon/8.5/com.flagquest.game.android-merged_res-4:/mipmap-xxxhdpi_ic_launcher_foreground.webp.flat",
-        "source": "/home/hannalunne/.gradle/daemon/8.5/com.flagquest.game.android-android-5:/mipmap-xxxhdpi/ic_launcher_foreground.webp"
+        "merged": "com.flagquest.game.android-merged_res-4:/mipmap-xxxhdpi_ic_launcher.webp.flat",
+        "source": "com.flagquest.game.android-android-5:/mipmap-xxxhdpi/ic_launcher.webp"
     },
     {
-        "merged": "/home/hannalunne/.gradle/daemon/8.5/com.flagquest.game.android-merged_res-4:/mipmap-xxhdpi_ic_launcher.webp.flat",
-        "source": "/home/hannalunne/.gradle/daemon/8.5/com.flagquest.game.android-android-5:/mipmap-xxhdpi/ic_launcher.webp"
+        "merged": "com.flagquest.game.android-merged_res-4:/mipmap-mdpi_ic_launcher.webp.flat",
+        "source": "com.flagquest.game.android-android-5:/mipmap-mdpi/ic_launcher.webp"
     },
     {
-        "merged": "/home/hannalunne/.gradle/daemon/8.5/com.flagquest.game.android-merged_res-4:/mipmap-hdpi_ic_launcher_foreground.webp.flat",
-        "source": "/home/hannalunne/.gradle/daemon/8.5/com.flagquest.game.android-android-5:/mipmap-hdpi/ic_launcher_foreground.webp"
+        "merged": "com.flagquest.game.android-merged_res-4:/mipmap-xxxhdpi_ic_launcher_foreground.webp.flat",
+        "source": "com.flagquest.game.android-android-5:/mipmap-xxxhdpi/ic_launcher_foreground.webp"
     },
     {
-        "merged": "/home/hannalunne/.gradle/daemon/8.5/com.flagquest.game.android-merged_res-4:/drawable-anydpi-v21_ic_launcher_foreground.xml.flat",
-        "source": "/home/hannalunne/.gradle/daemon/8.5/com.flagquest.game.android-pngs-0:/drawable-anydpi-v21/ic_launcher_foreground.xml"
+        "merged": "com.flagquest.game.android-merged_res-4:/mipmap-mdpi_ic_launcher_foreground.webp.flat",
+        "source": "com.flagquest.game.android-android-5:/mipmap-mdpi/ic_launcher_foreground.webp"
     },
     {
-        "merged": "/home/hannalunne/.gradle/daemon/8.5/com.flagquest.game.android-merged_res-4:/drawable-mdpi_ic_launcher_foreground.png.flat",
-        "source": "/home/hannalunne/.gradle/daemon/8.5/com.flagquest.game.android-pngs-0:/drawable-mdpi/ic_launcher_foreground.png"
+        "merged": "com.flagquest.game.android-merged_res-4:/mipmap-xhdpi_ic_launcher_round.webp.flat",
+        "source": "com.flagquest.game.android-android-5:/mipmap-xhdpi/ic_launcher_round.webp"
     },
     {
-        "merged": "/home/hannalunne/.gradle/daemon/8.5/com.flagquest.game.android-merged_res-4:/mipmap-xxhdpi_ic_launcher_round.webp.flat",
-        "source": "/home/hannalunne/.gradle/daemon/8.5/com.flagquest.game.android-android-5:/mipmap-xxhdpi/ic_launcher_round.webp"
+        "merged": "com.flagquest.game.android-merged_res-4:/drawable-anydpi-v26_ic_launcher_foreground.xml.flat",
+        "source": "com.flagquest.game.android-android-5:/drawable-anydpi-v26/ic_launcher_foreground.xml"
     },
     {
-        "merged": "/home/hannalunne/.gradle/daemon/8.5/com.flagquest.game.android-merged_res-4:/mipmap-xxhdpi_ic_launcher_foreground.webp.flat",
-        "source": "/home/hannalunne/.gradle/daemon/8.5/com.flagquest.game.android-android-5:/mipmap-xxhdpi/ic_launcher_foreground.webp"
+        "merged": "com.flagquest.game.android-merged_res-4:/mipmap-hdpi_ic_launcher.webp.flat",
+        "source": "com.flagquest.game.android-android-5:/mipmap-hdpi/ic_launcher.webp"
     },
     {
-        "merged": "/home/hannalunne/.gradle/daemon/8.5/com.flagquest.game.android-merged_res-4:/drawable-hdpi_ic_launcher.png.flat",
-        "source": "/home/hannalunne/.gradle/daemon/8.5/com.flagquest.game.android-android-5:/drawable-hdpi/ic_launcher.png"
+        "merged": "com.flagquest.game.android-merged_res-4:/mipmap-xxxhdpi_ic_launcher_round.webp.flat",
+        "source": "com.flagquest.game.android-android-5:/mipmap-xxxhdpi/ic_launcher_round.webp"
     },
     {
-        "merged": "/home/hannalunne/.gradle/daemon/8.5/com.flagquest.game.android-merged_res-4:/drawable-ldpi_ic_launcher_foreground.png.flat",
-        "source": "/home/hannalunne/.gradle/daemon/8.5/com.flagquest.game.android-pngs-0:/drawable-ldpi/ic_launcher_foreground.png"
+        "merged": "com.flagquest.game.android-merged_res-4:/mipmap-xhdpi_ic_launcher.webp.flat",
+        "source": "com.flagquest.game.android-android-5:/mipmap-xhdpi/ic_launcher.webp"
     },
     {
-        "merged": "/home/hannalunne/.gradle/daemon/8.5/com.flagquest.game.android-merged_res-4:/drawable-xxxhdpi_ic_launcher.png.flat",
-        "source": "/home/hannalunne/.gradle/daemon/8.5/com.flagquest.game.android-android-5:/drawable-xxxhdpi/ic_launcher.png"
+        "merged": "com.flagquest.game.android-merged_res-4:/mipmap-hdpi_ic_launcher_round.webp.flat",
+        "source": "com.flagquest.game.android-android-5:/mipmap-hdpi/ic_launcher_round.webp"
     },
     {
-        "merged": "/home/hannalunne/.gradle/daemon/8.5/com.flagquest.game.android-merged_res-4:/mipmap-anydpi-v26_ic_launcher.xml.flat",
-        "source": "/home/hannalunne/.gradle/daemon/8.5/com.flagquest.game.android-android-5:/mipmap-anydpi-v26/ic_launcher.xml"
+        "merged": "com.flagquest.game.android-merged_res-4:/drawable-anydpi-v26_ic_launcher.xml.flat",
+        "source": "com.flagquest.game.android-android-5:/drawable-anydpi-v26/ic_launcher.xml"
     },
     {
-        "merged": "/home/hannalunne/.gradle/daemon/8.5/com.flagquest.game.android-merged_res-4:/mipmap-xxxhdpi_ic_launcher.webp.flat",
-        "source": "/home/hannalunne/.gradle/daemon/8.5/com.flagquest.game.android-android-5:/mipmap-xxxhdpi/ic_launcher.webp"
+        "merged": "com.flagquest.game.android-merged_res-4:/mipmap-xxhdpi_ic_launcher_foreground.webp.flat",
+        "source": "com.flagquest.game.android-android-5:/mipmap-xxhdpi/ic_launcher_foreground.webp"
     },
     {
-        "merged": "/home/hannalunne/.gradle/daemon/8.5/com.flagquest.game.android-merged_res-4:/drawable-xhdpi_ic_launcher.png.flat",
-        "source": "/home/hannalunne/.gradle/daemon/8.5/com.flagquest.game.android-android-5:/drawable-xhdpi/ic_launcher.png"
+        "merged": "com.flagquest.game.android-merged_res-4:/mipmap-hdpi_ic_launcher_foreground.webp.flat",
+        "source": "com.flagquest.game.android-android-5:/mipmap-hdpi/ic_launcher_foreground.webp"
     },
     {
-        "merged": "/home/hannalunne/.gradle/daemon/8.5/com.flagquest.game.android-merged_res-4:/mipmap-mdpi_ic_launcher.webp.flat",
-        "source": "/home/hannalunne/.gradle/daemon/8.5/com.flagquest.game.android-android-5:/mipmap-mdpi/ic_launcher.webp"
+        "merged": "com.flagquest.game.android-merged_res-4:/mipmap-anydpi-v26_ic_launcher.xml.flat",
+        "source": "com.flagquest.game.android-android-5:/mipmap-anydpi-v26/ic_launcher.xml"
     },
     {
-        "merged": "/home/hannalunne/.gradle/daemon/8.5/com.flagquest.game.android-merged_res-4:/mipmap-xhdpi_ic_launcher.webp.flat",
-        "source": "/home/hannalunne/.gradle/daemon/8.5/com.flagquest.game.android-android-5:/mipmap-xhdpi/ic_launcher.webp"
+        "merged": "com.flagquest.game.android-merged_res-4:/mipmap-anydpi-v26_ic_launcher_round.xml.flat",
+        "source": "com.flagquest.game.android-android-5:/mipmap-anydpi-v26/ic_launcher_round.xml"
     },
     {
-        "merged": "/home/hannalunne/.gradle/daemon/8.5/com.flagquest.game.android-merged_res-4:/drawable-xhdpi_ic_launcher_foreground.png.flat",
-        "source": "/home/hannalunne/.gradle/daemon/8.5/com.flagquest.game.android-pngs-0:/drawable-xhdpi/ic_launcher_foreground.png"
+        "merged": "com.flagquest.game.android-merged_res-4:/mipmap-xxhdpi_ic_launcher_round.webp.flat",
+        "source": "com.flagquest.game.android-android-5:/mipmap-xxhdpi/ic_launcher_round.webp"
     },
     {
-        "merged": "/home/hannalunne/.gradle/daemon/8.5/com.flagquest.game.android-merged_res-4:/mipmap-hdpi_ic_launcher.webp.flat",
-        "source": "/home/hannalunne/.gradle/daemon/8.5/com.flagquest.game.android-android-5:/mipmap-hdpi/ic_launcher.webp"
+        "merged": "com.flagquest.game.android-merged_res-4:/mipmap-xhdpi_ic_launcher_foreground.webp.flat",
+        "source": "com.flagquest.game.android-android-5:/mipmap-xhdpi/ic_launcher_foreground.webp"
     },
     {
-        "merged": "/home/hannalunne/.gradle/daemon/8.5/com.flagquest.game.android-merged_res-4:/mipmap-xhdpi_ic_launcher_round.webp.flat",
-        "source": "/home/hannalunne/.gradle/daemon/8.5/com.flagquest.game.android-android-5:/mipmap-xhdpi/ic_launcher_round.webp"
-    },
-    {
-        "merged": "/home/hannalunne/.gradle/daemon/8.5/com.flagquest.game.android-merged_res-4:/drawable-xxhdpi_ic_launcher_foreground.png.flat",
-        "source": "/home/hannalunne/.gradle/daemon/8.5/com.flagquest.game.android-pngs-0:/drawable-xxhdpi/ic_launcher_foreground.png"
-    },
-    {
-        "merged": "/home/hannalunne/.gradle/daemon/8.5/com.flagquest.game.android-merged_res-4:/mipmap-anydpi-v26_ic_launcher_round.xml.flat",
-        "source": "/home/hannalunne/.gradle/daemon/8.5/com.flagquest.game.android-android-5:/mipmap-anydpi-v26/ic_launcher_round.xml"
-    },
-    {
-        "merged": "/home/hannalunne/.gradle/daemon/8.5/com.flagquest.game.android-merged_res-4:/drawable-xxhdpi_ic_launcher.png.flat",
-        "source": "/home/hannalunne/.gradle/daemon/8.5/com.flagquest.game.android-android-5:/drawable-xxhdpi/ic_launcher.png"
-    },
-    {
-        "merged": "/home/hannalunne/.gradle/daemon/8.5/com.flagquest.game.android-merged_res-4:/mipmap-xxxhdpi_ic_launcher_round.webp.flat",
-        "source": "/home/hannalunne/.gradle/daemon/8.5/com.flagquest.game.android-android-5:/mipmap-xxxhdpi/ic_launcher_round.webp"
-    },
-    {
-        "merged": "/home/hannalunne/.gradle/daemon/8.5/com.flagquest.game.android-merged_res-4:/drawable-anydpi-v26_ic_launcher_foreground.xml.flat",
-        "source": "/home/hannalunne/.gradle/daemon/8.5/com.flagquest.game.android-android-5:/drawable-anydpi-v26/ic_launcher_foreground.xml"
-    },
-    {
-        "merged": "/home/hannalunne/.gradle/daemon/8.5/com.flagquest.game.android-merged_res-4:/mipmap-mdpi_ic_launcher_foreground.webp.flat",
-        "source": "/home/hannalunne/.gradle/daemon/8.5/com.flagquest.game.android-android-5:/mipmap-mdpi/ic_launcher_foreground.webp"
-    },
-    {
-        "merged": "/home/hannalunne/.gradle/daemon/8.5/com.flagquest.game.android-merged_res-4:/mipmap-mdpi_ic_launcher_round.webp.flat",
-        "source": "/home/hannalunne/.gradle/daemon/8.5/com.flagquest.game.android-android-5:/mipmap-mdpi/ic_launcher_round.webp"
-    },
-    {
-        "merged": "/home/hannalunne/.gradle/daemon/8.5/com.flagquest.game.android-merged_res-4:/drawable-hdpi_ic_launcher_foreground.png.flat",
-        "source": "/home/hannalunne/.gradle/daemon/8.5/com.flagquest.game.android-pngs-0:/drawable-hdpi/ic_launcher_foreground.png"
-    },
-    {
-        "merged": "/home/hannalunne/.gradle/daemon/8.5/com.flagquest.game.android-merged_res-4:/drawable-anydpi-v26_ic_launcher.xml.flat",
-        "source": "/home/hannalunne/.gradle/daemon/8.5/com.flagquest.game.android-android-5:/drawable-anydpi-v26/ic_launcher.xml"
-    },
-    {
-        "merged": "/home/hannalunne/.gradle/daemon/8.5/com.flagquest.game.android-merged_res-4:/drawable-xxxhdpi_ic_launcher_foreground.png.flat",
-        "source": "/home/hannalunne/.gradle/daemon/8.5/com.flagquest.game.android-pngs-0:/drawable-xxxhdpi/ic_launcher_foreground.png"
-    },
-    {
-        "merged": "/home/hannalunne/.gradle/daemon/8.5/com.flagquest.game.android-merged_res-4:/mipmap-hdpi_ic_launcher_round.webp.flat",
-        "source": "/home/hannalunne/.gradle/daemon/8.5/com.flagquest.game.android-android-5:/mipmap-hdpi/ic_launcher_round.webp"
-    },
-    {
-        "merged": "/home/hannalunne/.gradle/daemon/8.5/com.flagquest.game.android-merged_res-4:/drawable-mdpi_ic_launcher.png.flat",
-        "source": "/home/hannalunne/.gradle/daemon/8.5/com.flagquest.game.android-android-5:/drawable-mdpi/ic_launcher.png"
+        "merged": "com.flagquest.game.android-merged_res-4:/mipmap-xxhdpi_ic_launcher.webp.flat",
+        "source": "com.flagquest.game.android-android-5:/mipmap-xxhdpi/ic_launcher.webp"
     }
 ]

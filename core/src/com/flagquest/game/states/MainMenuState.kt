@@ -1,11 +1,8 @@
 package com.flagquest.game.states
 
 import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.GL20
-import com.badlogic.gdx.graphics.Texture
-import com.badlogic.gdx.graphics.g2d.SpriteBatch
-import com.badlogic.gdx.graphics.g2d.TextureAtlas
+import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
@@ -13,21 +10,21 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.utils.viewport.ScreenViewport
 
 class MainMenuState(gsm: GameStateManager) : State(gsm) {
-    val skin: Skin = Skin(Gdx.files.internal("skins/skin/flat-earth-ui.json"))
-    val titleFont = skin.getFont("title")
-    var screenWidth = Gdx.graphics.width
-    val screenHeight = Gdx.graphics.height
-    val buttonHeight = screenHeight / 11
-    var pos: Float = ((screenHeight / 2) + 50).toFloat()
-    val stage = Stage(ScreenViewport())
+    private val skin: Skin = Skin(Gdx.files.internal("skins/skin/flat-earth-ui.json"))
+    private val titleFont: BitmapFont = skin.getFont("title")
+    private var screenWidth = Gdx.graphics.width
+    private val screenHeight = Gdx.graphics.height
+    private val buttonHeight = screenHeight / 11
+    private var pos: Float = ((screenHeight / 2) + 50).toFloat()
+    private val stage = Stage(ScreenViewport())
 
-    val heading = Label("FLAGQUEST", skin)
-    val createBtn = TextButton("CREATE GAME", skin)
-    val joinBtn = TextButton("JOIN GAME", skin)
-    val trainingBtn = TextButton("TRAINING MODE", skin)
-    val highscoreBtn = TextButton("HIGHSCORE BOARD", skin)
-    val friendsBtn = TextButton("MANAGE FRIENDS", skin)
-    val buttons = arrayOf(createBtn, joinBtn, trainingBtn, highscoreBtn, friendsBtn)
+    private val heading = Label("FLAGQUEST", skin)
+    private val createBtn = TextButton("CREATE GAME", skin)
+    private val joinBtn = TextButton("JOIN GAME", skin)
+    private val trainingBtn = TextButton("TRAINING MODE", skin)
+    private val highscoreBtn = TextButton("HIGHSCORE BOARD", skin)
+    private val friendsBtn = TextButton("MANAGE FRIENDS", skin)
+    private val buttons = arrayOf(createBtn, joinBtn, trainingBtn, highscoreBtn, friendsBtn)
 
     init {
         Gdx.input.inputProcessor = stage
