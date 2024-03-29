@@ -9,6 +9,7 @@ import com.flagquest.game.states.GameStateManager
 import com.flagquest.game.states.LoginMenuState
 import com.flagquest.game.states.LoginState
 import com.flagquest.game.states.MainMenuState
+import com.flagquest.game.states.RegistrationState
 
 class FlagQuest : ApplicationAdapter() {
     var gsm: GameStateManager = GameStateManager()
@@ -20,6 +21,7 @@ class FlagQuest : ApplicationAdapter() {
         gsm.push(MainMenuState(gsm))
         gsm.push(LoginMenuState(gsm))
         gsm.push(LoginState(gsm))
+        gsm.push(RegistrationState(gsm))
     }
 
     override fun render() {

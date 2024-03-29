@@ -12,17 +12,17 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport
 
 class LoginState(gsm: GameStateManager) : State(gsm) {
     private val skin: Skin = Skin(Gdx.files.internal("skins/skin/flat-earth-ui.json"))
-    val textFieldStyle = skin.get(TextField.TextFieldStyle::class.java)
-    val titleFont: BitmapFont = skin.getFont("title")
-    var screenWidth = Gdx.graphics.width
-    val screenHeight = Gdx.graphics.height
-    val buttonHeight = screenHeight / 11
-    var pos: Float = ((screenHeight / 2) + 50).toFloat()
-    val stage = Stage(ScreenViewport())
+    private val textFieldStyle: TextField.TextFieldStyle = skin.get(TextField.TextFieldStyle::class.java)
+    private val titleFont: BitmapFont = skin.getFont("title")
+    private var screenWidth = Gdx.graphics.width
+    private val screenHeight = Gdx.graphics.height
+    private val buttonHeight = screenHeight / 11
+    private var pos: Float = ((screenHeight / 2) + 50).toFloat()
+    private val stage = Stage(ScreenViewport())
 
-    val heading = Label("LOGIN", skin)
-    val usernameField = TextField("", skin).apply{ messageText="  Username"}
-    val passwordField = TextField("", skin).apply{
+    private val heading = Label("LOGIN", skin)
+    private val usernameField = TextField("", skin).apply{ messageText="  Username"}
+    private val passwordField = TextField("", skin).apply{
         messageText="  Password";
         isPasswordMode=true;
         setPasswordCharacter('*')
@@ -34,7 +34,7 @@ class LoginState(gsm: GameStateManager) : State(gsm) {
         textFieldStyle.font.data.setScale(5f)
 
         heading.setStyle(Label.LabelStyle(titleFont, heading.style.fontColor))
-        heading.setFontScale(3.5f)
+        heading.setFontScale(2.8f)
         heading.pack()
         heading.setPosition((screenWidth - heading.prefWidth) / 2, screenHeight - 500f)
         stage.addActor(heading)
