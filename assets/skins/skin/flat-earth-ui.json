@@ -434,9 +434,9 @@
   },
   "com.badlogic.gdx.scenes.scene2d.ui.TextField$TextFieldStyle": {
     "default": {
-      "font": "font",
-      "fontColor": "white",
-      "background": "textfield-c",
+      "font": "title",
+      "fontColor": "textColor",
+      "background": "white",
       "cursor": "white",
       "selection": "selection"
     }

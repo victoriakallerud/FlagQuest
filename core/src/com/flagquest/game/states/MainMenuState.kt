@@ -30,7 +30,8 @@ class MainMenuState(gsm: GameStateManager) : State(gsm) {
         Gdx.input.inputProcessor = stage
         heading.setStyle(Label.LabelStyle(titleFont, heading.style.fontColor))
         heading.setFontScale(3.5f)
-        heading.setPosition(100f, screenHeight - 500f)
+        heading.pack()
+        heading.setPosition((screenWidth - heading.prefWidth) / 2, screenHeight - 500f)
         stage.addActor(heading)
         titleFont.data.setScale(1.5f)
         for (button in buttons) {

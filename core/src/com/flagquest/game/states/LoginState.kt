@@ -7,10 +7,12 @@ import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
+import com.badlogic.gdx.scenes.scene2d.ui.TextField
 import com.badlogic.gdx.utils.viewport.ScreenViewport
 
-class LoginMenuState(gsm: GameStateManager) : State(gsm) {
+class LoginState(gsm: GameStateManager) : State(gsm) {
     private val skin: Skin = Skin(Gdx.files.internal("skins/skin/flat-earth-ui.json"))
+    val textFieldStyle = skin.get(TextField.TextFieldStyle::class.java)
     val titleFont: BitmapFont = skin.getFont("title")
     var screenWidth = Gdx.graphics.width
     val screenHeight = Gdx.graphics.height
@@ -18,25 +20,40 @@ class LoginMenuState(gsm: GameStateManager) : State(gsm) {
     var pos: Float = ((screenHeight / 2) + 50).toFloat()
     val stage = Stage(ScreenViewport())
 
-    val heading = Label("FLAGQUEST", skin)
+    val heading = Label("LOGIN", skin)
+    val usernameField = TextField("", skin).apply{ messageText="  Username"}
+    val passwordField = TextField("", skin).apply{
+        messageText="  Password";
+        isPasswordMode=true;
+        setPasswordCharacter('*')
+    }
     val loginBtn = TextButton("LOGIN", skin)
-    val registerBtn = TextButton("REGISTER", skin)
-    val buttons = arrayOf(loginBtn, registerBtn)
 
     init {
         Gdx.input.inputProcessor = stage
+        textFieldStyle.font.data.setScale(5f)
+
         heading.setStyle(Label.LabelStyle(titleFont, heading.style.fontColor))
         heading.setFontScale(3.5f)
         heading.pack()
         heading.setPosition((screenWidth - heading.prefWidth) / 2, screenHeight - 500f)
         stage.addActor(heading)
+
+        usernameField.width = (screenWidth*80/100).toFloat()
+        usernameField.height = buttonHeight.toFloat()
+        usernameField.setPosition(screenWidth / 2 - usernameField.width / 2, pos)
+        stage.addActor(usernameField)
+
+        passwordField.width = (screenWidth*80/100).toFloat()
+        passwordField.height = buttonHeight.toFloat()
+        passwordField.setPosition(screenWidth / 2 - passwordField.width / 2, pos - buttonHeight - 30)
+        stage.addActor(passwordField)
+
+        loginBtn.setSize((screenWidth*80/100).toFloat(), buttonHeight.toFloat())
+        loginBtn.setPosition(screenWidth / 2 - loginBtn.width / 2, pos - (buttonHeight + 30) * 2)
+        stage.addActor(loginBtn)
+
         titleFont.data.setScale(1.5f)
-        for (button in buttons) {
-            button.setSize((screenWidth*80/100).toFloat(), buttonHeight.toFloat())
-            button.setPosition(screenWidth / 2 - button.width / 2, pos)
-            stage.addActor(button)
-            pos -= button.height + 30
-        }
     }
 
     override fun handleInput() {

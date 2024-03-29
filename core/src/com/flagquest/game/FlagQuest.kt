@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.utils.ScreenUtils
 import com.flagquest.game.states.GameStateManager
 import com.flagquest.game.states.LoginMenuState
+import com.flagquest.game.states.LoginState
 import com.flagquest.game.states.MainMenuState
 
 class FlagQuest : ApplicationAdapter() {
@@ -18,6 +19,7 @@ class FlagQuest : ApplicationAdapter() {
         img = Texture("badlogic.jpg")
         gsm.push(MainMenuState(gsm))
         gsm.push(LoginMenuState(gsm))
+        gsm.push(LoginState(gsm))
     }
 
     override fun render() {
