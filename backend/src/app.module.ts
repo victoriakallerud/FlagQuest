@@ -3,9 +3,18 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UserModule } from './user/user.module';
 import { LobbyModule } from './lobby/lobby.module';
+import { ConfigModule } from '@nestjs/config';
+import { DatabaseModule } from './database/database.module';
 
 @Module({
-  imports: [UserModule, LobbyModule],
+  imports: [
+    UserModule, 
+    LobbyModule, 
+    ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath: 'development.env',
+    }), 
+    DatabaseModule],
   controllers: [AppController],
   providers: [AppService],
 })

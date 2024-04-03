@@ -3,11 +3,15 @@ import { User } from '../interfaces/user.interface';
 import { v4 as uuidv4 } from 'uuid';
 import { RequestUserDTO } from './dto/requestUser.dto';
 import { IUserService } from './userService.interface';
+import { DatabaseService } from '../database/database.service';
 
 @Injectable()
 export class UserService implements IUserService {
 
     private readonly logger = new Logger(UserService.name);
+
+    constructor(private readonly databaseService: DatabaseService) {
+    }
 
     createUser(userDto: RequestUserDTO): User {
         let user: User = {
@@ -24,19 +28,19 @@ export class UserService implements IUserService {
         return user;
     }
 
-    getUser(userId: string): User {
-        //TODO: Implement database query
-        let mockUser: User = {
-            id: userId,
-            userName: 'mockUser',
-            friendUuidList: [],
-            pendingFriendRequests: [],
-            highScores: [],
-            lastOnline: new Date().toISOString(),
-            creationTime: new Date().toISOString(),
+    async getUser(userId: string): Promise<User> {
+        // find user with id in database
+        try{
+            let user = await this.databaseService.getUserById(userId);
+            if(!user){
+                throw new HttpException('User not found', 404);
+            }
+            this.logger.log('User with id ' + userId + ' found');
+            return user;
+        } catch (error) {
+            this.logger.error('Error getting user', error);
+            throw error;
         }
-        this.logger.log('User with id ' + userId + ' requested');
-        return mockUser;
     }
     
     updateUser(userId: string, userDto: RequestUserDTO): User {
