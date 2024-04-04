@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "277128029608",
+    "project_id": "flagquest-d4502",
+    "storage_bucket": "flagquest-d4502.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:277128029608:android:6db0871feb51c12dc1e99d",
+        "android_client_info": {
+          "package_name": "com.flagquest.game"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBbeIGKDSDYWhwc1-7e0I1mXkK6mSOxALQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
