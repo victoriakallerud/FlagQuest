@@ -22,6 +22,7 @@ android {
     }
     packagingOptions {
         exclude 'META-INF/robovm/ios/robovm.xml'
+        pickFirst 'androidsupportmultidexversion.txt'
     }
     defaultConfig {
         applicationId "com.flagquest.game"
@@ -38,8 +39,8 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-    packagingOptions {
-        pickFirst 'androidsupportmultidexversion.txt'
+    kotlinOptions {
+        jvmTarget = "1.8"
     }
 }
 
