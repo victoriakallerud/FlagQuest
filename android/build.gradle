@@ -1,3 +1,9 @@
+plugins {
+    id 'com.android.application'
+    id 'com.google.gms.google-services'
+}
+
+
 android {
     namespace "com.flagquest.game"
     buildToolsVersion "34.0.0"
@@ -16,6 +22,7 @@ android {
     }
     packagingOptions {
         exclude 'META-INF/robovm/ios/robovm.xml'
+        pickFirst 'androidsupportmultidexversion.txt'
     }
     defaultConfig {
         applicationId "com.flagquest.game"
@@ -23,11 +30,13 @@ android {
         targetSdkVersion 34
         versionCode 1
         versionName "1.0"
+        multiDexEnabled true
     }
     buildTypes {
         release {
             minifyEnabled true
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
     kotlinOptions {
@@ -90,3 +99,14 @@ tasks.register('run', Exec) {
 }
 
 eclipse.project.name = appName + "-android"
+
+
+
+
+
+// Firebase and Google Services dependencies (plugin at the top of the file)
+dependencies {
+    implementation platform('com.google.firebase:firebase-bom:32.8.0')
+    implementation 'com.google.firebase:firebase-analytics'
+    implementation 'com.android.support:multidex:1.0.3'
+}
