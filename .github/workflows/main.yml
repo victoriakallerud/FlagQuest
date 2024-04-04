@@ -28,7 +28,7 @@ jobs:
           username: ${{ secrets.VPS_USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            cd /path/to/your/app
+            cd /home/debian/FlagQuest/
             git pull origin main
+            cd backend
             npm install
-            pm2 restart app.js  # Example: Restart your Node.js application using PM2
