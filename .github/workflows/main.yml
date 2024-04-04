@@ -13,6 +13,9 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
+      - name: Debug SSH connection
+        run: ssh -vvv -i ${{ secrets.VPS_PRIVATE_KEY }} ${{ secrets.VPS_USER_NAME }}@${{ secrets.VPS_HOST }}
+
       - name: Deploy to VPS
         uses: appleboy/ssh-action@master
         with:
