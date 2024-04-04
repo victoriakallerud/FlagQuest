@@ -13,8 +13,8 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      # - name: Debug SSH connection
-      #  run: ssh -vvv -i "${{ secrets.VPS_PRIVATE_KEY }}" debian@${{ secrets.VPS_HOST }}
+      - name: Debug SSH connection
+        run: ssh -vvv -o StrictHostKeyChecking=no -i "${{ secrets.VPS_PRIVATE_KEY }}" debian@${{ secrets.VPS_HOST }}
 
       - name: Deploy to VPS
         uses: appleboy/ssh-action@master
