@@ -12,7 +12,7 @@ import { DatabaseModule } from './database/database.module';
     LobbyModule, 
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: 'development.env',
+      envFilePath: process.env.NODE_ENV === 'production' ? '/home/debian/FlagQuest/backend/development.env' : 'development.env',
     }), 
     DatabaseModule],
   controllers: [AppController],
