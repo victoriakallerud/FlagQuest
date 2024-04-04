@@ -1,0 +1,391 @@
+openapi: '3.0.2'
+info:
+  title: FlagQuest Backend
+  description: The API for the FlagQuest guessing game
+  version: '1.0'
+servers:
+  - description: Local Backend
+    url: http://localhost:3000/
+paths:
+  /user:
+    post:
+      tags:
+       - User
+      summary: Create User
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RequestUser'
+      responses:
+        '200':
+          description: Successfully registered user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+
+  '/user/{user_id}':
+    get:
+      tags:
+       - User
+      summary: Get user info
+      parameters:
+        - name: user_id 
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+    put:
+      tags:
+       - User
+      summary: Update user info
+      parameters:
+        - name: user_id 
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RequestUser'
+      responses:
+        '200':
+          description: Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+    delete:
+      tags:
+        - User
+      summary: Delete user
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          schema: 
+            type: string
+      responses:
+        '200':
+          description: Successfully deleted user
+  '/user/{user_id}/friends/{friend_id}':
+    put:
+      tags:
+       - User
+      summary: Send a friend request
+      parameters:
+        - name: user_id 
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: friend_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successfully sent friend request
+        '400':
+          description: User does not exist
+    delete:
+      tags:
+       - User
+      summary: Remove a friend
+      parameters:
+        - name: user_id 
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: friend_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successfully sent friend request
+        '400':
+          description: User does not exist
+  '/user/{user_id}/friends/requests/{inquirer_id}':
+    put:
+      tags:
+       - User
+      summary: Accept a friend request
+      parameters:
+        - name: user_id 
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: inquirer_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successfully accepted friend request
+        '400':
+          description: No inquirer with this id
+    delete:
+      tags:
+       - User
+      summary: Decline a friend request
+      parameters:
+        - name: user_id 
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: inquirer_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Declined friend request
+        '400':
+          description: No inquirer with this id
+  /lobby:
+    post:
+      tags:
+       - Lobby
+      summary: Create Lobby
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RequestLobby'
+      responses:
+        '200':
+          description: Successfully created lobby
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Lobby'
+  '/lobby/{lobby_id}':
+    get:
+      tags:
+       - Lobby
+      summary: Get lobby info
+      parameters:
+        - name: lobby_id 
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Lobby'
+    put:
+      tags:
+       - Lobby
+      summary: Update lobby info
+      parameters:
+        - name: lobby_id 
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RequestLobby'      
+      responses:
+        '200':
+          description: Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Lobby'            
+    delete:
+      tags:
+        - Lobby
+      summary: Delete lobby
+      parameters:
+        - name: lobby_id
+          in: path
+          required: true
+          schema: 
+            type: string
+      responses:
+        '200':
+          description: Successfully deleted lobby
+  '/lobby/{lobby_id}/{user_id}':
+    put:
+      tags:
+       - Lobby
+      summary: Join lobby
+      parameters:
+      - name: lobby_id 
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: user_id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Lobby'
+    delete:
+      tags:
+        - Lobby
+      summary: Leave lobby
+      parameters:
+      - name: lobby_id 
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: user_id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Left lobby
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+        userName:
+          type: string
+        friendUuidList:
+          type: array
+          items: 
+            type: string
+            description: List of users
+        highScores:
+          type: array
+          items:
+            $ref: '#/components/schemas/Score'
+        lastOnline:
+          type: string
+        creationTime:
+          type: string
+        nationality:
+          $ref: '#/components/schemas/Nationality'
+    RequestUser:
+      type: object
+      properties:
+        userName:
+          type: string
+        nationality:
+          $ref: '#/components/schemas/Nationality'
+    Score:
+      type: object
+      properties:
+        title:
+          type: string
+        value:
+          type: integer
+    Options:
+      type: object
+      properties:
+        maxNumOfPlayers:
+          type: integer
+        numberOfQuestions:
+          type: integer
+        showAnswers:
+          type: boolean
+        gameMode:
+          type: string
+          enum: [GuessingFlags, GuessingCaptials, GuessingCountries]
+        level:
+          type: string
+          enum: [Europe, Asia, Africa, NorthAmerica, SouthAmerica, Oceania]
+        isPrivate:
+          type: boolean
+    Lobby:
+      type: object
+      properties:
+        id: 
+          type: string
+        name:
+          type: string
+        state:
+          type: string
+          enum: [waitingForPlayers, pending, inGame]
+        creationTime:
+          type: string
+        admin:
+          type: string
+          description: uuid of player
+        players:
+          type: array
+          items:
+            type: string
+            description: List of player uuids
+        options:
+          $ref: '#/components/schemas/Options'
+    RequestLobby:
+      type: object
+      properties:
+        name:
+          type: string
+        admin:
+          type: string
+          description: uuid of player
+        options:
+          $ref: '#/components/schemas/Options'
+    AnswerOption:
+      type: object
+      properties:
+        description:
+          type: string
+        isCorrect:
+          type: boolean
+    Question:
+      type: object
+      properties:
+        description:
+          type: string
+        answerOptions:
+          type: array
+          items:
+            $ref: '#/components/schemas/AnswerOption'
+    Quiz:
+      type: object
+      properties:
+        questions:
+          type: array
+          items:
+            $ref: '#/components/schemas/Question'
+    Nationality:
+      type: string
+      enum: [German, Norsk, English, Nederlands]
+    
