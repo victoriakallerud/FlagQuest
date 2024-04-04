@@ -16,6 +16,9 @@ async function bootstrap() {
 
   const logger = new Logger('bootstrap');
 
+  // Print current NODE_ENV:
+  logger.log(`Current NODE_ENV: ${process.env.NODE_ENV}`);
+  logger.log(`Process.env: ` + JSON.stringify(process.env, null, 2));
   const configService = app.get(ConfigService);
   const currentKeyPath = configService.get<string>('GOOGLE_APPLICATION_CREDENTIALS');
   if(!currentKeyPath) {
