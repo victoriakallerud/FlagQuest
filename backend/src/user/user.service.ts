@@ -4,6 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { RequestUserDTO } from './dto/requestUser.dto';
 import { IUserService } from './userService.interface';
 import { DatabaseService } from '../database/database.service';
+import* as moment from 'moment-timezone';
 
 @Injectable()
 export class UserService implements IUserService {
@@ -13,23 +14,33 @@ export class UserService implements IUserService {
     constructor(private readonly databaseService: DatabaseService) {
     }
 
-    createUser(userDto: RequestUserDTO): User {
+    async createUser(userDto: RequestUserDTO): Promise<User> {
+        let uuid = uuidv4();
         let user: User = {
-        id: uuidv4(),
-        userName: userDto.userName,
-        creationTime: new Date().toISOString(),
-        friendUuidList: [],
-        highScores: [],
-        lastOnline: new Date().toISOString(),
-        nationality: userDto.nationality,
-        pendingFriendRequests: [],
+            id: uuid,
+            userName: userDto.userName,
+            creationTime: moment().tz('Europe/Berlin').format(),
+            friendUuidList: [],
+            highScores: [],
+            lastOnline: moment().tz('Europe/Berlin').format(),
+            nationality: userDto.nationality,
         }
-        this.logger.log('User created with id ' + user.id);
-        return user;
+        try{
+            let createdUser = await this.databaseService.createUser(user);
+            if(!user){
+                throw new HttpException('User not found', 404);
+            }
+            this.logger.log('User created with id ' + user.id);
+            return createdUser;
+        } catch (error) {
+            this.logger.error('Error creating user', error);
+            throw new HttpException('Error creating user', 500);
+        }
     }
 
     async getUser(userId: string): Promise<User> {
         // find user with id in database
+        
         try{
             let user = await this.databaseService.getUserById(userId);
             if(!user){
@@ -39,41 +50,57 @@ export class UserService implements IUserService {
             return user;
         } catch (error) {
             this.logger.error('Error getting user', error);
-            throw error;
+            throw new HttpException('Error getting user', 500);
         }
     }
     
-    updateUser(userId: string, userDto: RequestUserDTO): User {
-      // find user with id in database and update lastonline and user body params   
-      // user.lastOnline = new Date().toISOString();
-        // TODO: Implement database update
-        let mockUser: User = {
-            id: userId,
-            userName: userDto.userName,
-            nationality: userDto.nationality,
-            friendUuidList: [],
-            pendingFriendRequests: [],
-            highScores: [],
-            lastOnline: new Date().toISOString(),
-            creationTime: new Date().toISOString(),
-        }
-        this.logger.log('User with id ' + userId + ' updated');
-        return mockUser;
-    }
-
-    deleteUser(userId: string): void {
-        //TODO implement database update
-        throw new HttpException('Not implemented', 501);
-        this.logger.log('User with id ' + userId + ' deleted');
-    }
-
-    removeFriend(userId: string, friendId: string): void {
-      //TODO Check if friend is in friend list
+    async updateUser(userId: string, userDto: RequestUserDTO): Promise<User> {
         // Find user in database and update it
-        throw new HttpException('Not implemented', 501);
-        this.logger.log('Friend with id ' + friendId + ' removed from user with id ' + userId);
-        return;
+        try {
+            let user = await this.databaseService.getUserById(userId);
+            if(!user){
+                throw new HttpException('User not found', 404);
+            }
+            user.lastOnline = moment().tz('Europe/Berlin').format();
+            user.userName = userDto.userName;
+            user.nationality = userDto.nationality;
+            return await this.databaseService.updateUser(userId, user);
+        } catch (error) {
+            this.logger.error('Error updating user', error);
+            throw new HttpException('Error updating user', 500);
+        }
     }
+
+    async deleteUser(userId: string): Promise<void> {
+        //TODO implement database update
+        // Find user in database and delete it
+        try {
+            let user = await this.databaseService.getUserById(userId);
+            if(!user){
+                throw new HttpException('User not found', 404);
+            }
+             await this.databaseService.deleteUser(userId);
+        } catch (error) {
+            this.logger.error('Error deleting user', error);
+            throw new HttpException('Error deleting user', 500);
+            }
+    }
+
+
+    async removeFriend(userId: string, friendId: string): Promise<void> {
+    
+        try{
+            let user = await this.databaseService.getUserById(userId);
+            if(!user){
+                throw new HttpException('User not found', 404);
+            }
+            await this.databaseService.removeFriend(user,friendId);
+        } catch (error) {
+            this.logger.error('Error removing friend', error);
+            throw new HttpException('Error removing friend', 500);
+        }
+    }
+    
     sendFriendRequest(userId: string, friendId: string): void {
       //TODO Check if friend is in friend list, if not add friendrequest in pending friendrequests
         throw new HttpException('Not implemented', 501);
