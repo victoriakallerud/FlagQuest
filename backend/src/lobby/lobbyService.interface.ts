@@ -1,9 +1,9 @@
 import { Lobby } from "src/interfaces/lobby.interface";
 
 export interface ILobbyService {
-    createLobby(lobby: Lobby): Lobby;
-    getLobby(lobbyId: string): Lobby;
-    deleteLobby(lobbyId: string): void;
-    joinLobby(lobbyId: string, userId: string): Lobby;
-    leaveLobby(lobbyId: string, userId: string): Lobby;  
+    createLobby(lobby: Lobby): Promise<Lobby>;
+    getLobby(lobbyId: string): Promise<Lobby>;
+    deleteLobby(lobbyId: string): Promise<void>;
+    joinLobby(lobbyId: string, userId: string): Promise<Lobby>;
+    leaveLobby(lobbyId: string, userId: string): Promise<void>;  
 }

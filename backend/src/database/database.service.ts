@@ -2,6 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { Logger } from '@nestjs/common';
 import * as admin from 'firebase-admin';
 import { User } from '../interfaces/user.interface';
+import { Lobby } from 'src/interfaces/lobby.interface';
+import { LobbyService } from 'src/lobby/lobby.service';
 
 @Injectable()
 export class DatabaseService {
@@ -12,7 +14,7 @@ export class DatabaseService {
         this.db = admin.firestore();
     }
 
-    // User Functions
+    // --------------------- User Functions ---------------------
 
     async getUserById(userId: string): Promise<User> {
         try{
@@ -91,4 +93,102 @@ export class DatabaseService {
             throw error;
         }
     }  
+
+    // --------------------- Lobby Functions ---------------------
+
+    async createLobby(lobby: Lobby): Promise<Lobby> {
+        try {
+            await this.db.collection('lobbies').doc(lobby.id).set(lobby);
+            return this.getLobbyById(lobby.id);
+        } catch (error) {
+            this.logger.error('Error creating lobby', error);
+            throw error;
+        }
+    }
+
+    async getLobbyById(lobbyId: string): Promise<Lobby> {
+        try {
+            let lobbyDoc = await this.db.collection('lobbies').doc(lobbyId).get();
+            if (!lobbyDoc.exists) {
+                this.logger.error('Lobby does not exist');
+                throw new Error(`Lobby does not exist`);
+            } else {
+                let lobby = lobbyDoc.data();
+                lobby.id = lobbyDoc.id; 
+                return lobby;
+            }
+        } catch (error) {   
+            this.logger.error('Error getting lobby', error);
+            throw error;
+        }
+    }
+
+    async getLobbyByAdmin(adminId: string): Promise<Lobby> {
+        //todo Since a user can only be in one lobby at a time, this should return a single lobby
+        try {
+            let lobbyDoc = await this.db.collection('lobbies').where('admin', '==', adminId).get();
+            if (lobbyDoc.empty) {
+                this.logger.error('Lobby does not exist');
+                return null;
+            } else {
+                let lobby = lobbyDoc.docs[0].data();
+                lobby.id = lobbyDoc.docs[0].id;
+                return lobby;
+            }
+        } catch (error) {
+            this.logger.error('Error getting lobby', error);
+            throw error;
+        }
+    }
+
+    async getLobbyByPlayer(playerId: string): Promise<Lobby> {
+        try {
+            let lobbyDoc = await this.db.collection('lobbies').where('players', 'array-contains', playerId).get();
+            if (lobbyDoc.empty) {
+                this.logger.error('Lobby does not exist');
+                return null;
+            } else {
+                let lobby = lobbyDoc.docs[0].data();
+                lobby.id = lobbyDoc.docs[0].id; 
+                return lobby;
+            }
+        } catch (error) {
+            this.logger.error('Error getting lobby', error);
+            throw error;
+        }
+    }
+
+    async updateLobby(lobbyId: string, lobby: Lobby): Promise<Lobby> {
+        try {
+            let lobbyDoc = await this.db.collection('lobbies').doc(lobbyId).get();
+            if (!lobbyDoc.exists) {
+                this.logger.error('Lobby does not exist');
+                throw new Error(`Lobby does not exist`);
+            }
+            await this.db.collection('lobbies').doc(lobbyId).update({
+                name: lobby.name,
+                admin: lobby.admin,
+                state: lobby.state,
+                players: lobby.players,
+                options: lobby.options
+            });
+            return this.getLobbyById(lobbyId);
+        } catch (error) {
+            this.logger.error('Error updating lobby', error);
+            throw error;
+        }
+    }
+    async deleteLobby(lobbyId: string): Promise<void> {
+        try {
+            let lobbyDoc = this.db.collection('lobbies').doc(lobbyId);
+            let lobbySnapshot = await lobbyDoc.get();
+            if (!lobbySnapshot.exists) {
+                throw new Error(`Lobby does not exist`);
+            }
+            await lobbyDoc.delete();
+        } catch (error) {
+            this.logger.error('Error deleting lobby', error);
+            throw error;
+        }
+    }
 }

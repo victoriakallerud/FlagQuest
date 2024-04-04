@@ -5,7 +5,6 @@ import { RequestUserDTO } from './dto/requestUser.dto';
 import { IUserService } from './userService.interface';
 import { DatabaseService } from '../database/database.service';
 import* as moment from 'moment-timezone';
-import { error } from 'console';
 
 @Injectable()
 export class UserService implements IUserService {
