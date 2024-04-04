@@ -16,12 +16,12 @@ export class DatabaseService {
 
     async getUserById(userId: string): Promise<User> {
         try{
-            const userDoc = await this.db.collection('backend-test').doc(userId).get();
+            let userDoc = await this.db.collection('backend-test').doc(userId).get();
             if (!userDoc.exists) {
-                this.logger.error('User not found');
-                return null;
+                this.logger.error('User does not exist');
+                throw new Error(`User does not exist`);
             } else {
-                const user = userDoc.data() as User;
+                let user = userDoc.data() as User;
                 user.id = userDoc.id;
                 return user;
             }
@@ -30,6 +30,7 @@ export class DatabaseService {
             throw error;
         }
     }
+
     async createUser(user: User): Promise<User> {
         try {
            await this.db.collection('backend-test').doc(user.id).set(user);
@@ -43,12 +44,18 @@ export class DatabaseService {
 
     async updateUser(userId: string, user: User): Promise<User> {
         try {
+            let userDoc = await this.db.collection('backend-test').doc(userId).get();
+            if (!userDoc.exists) {
+                this.logger.error('User does not exist');
+                throw new Error(`User does not exist`);
+            }
            await this.db.collection('backend-test').doc(userId).update({
                 userName: user.userName,
                 nationality: user.nationality,
                 lastOnline: user.lastOnline,
                 highScores: user.highScores,
-                friendUuidList: user.friendUuidList
+                friendUuidList: user.friendUuidList,
+                pendingFriendRequests: user.pendingFriendRequests
            });
               return this.getUserById(userId);
         } catch (error) {
@@ -59,26 +66,21 @@ export class DatabaseService {
 
     async deleteUser(userId: string): Promise<void> {
         try {
-            // Check if the document exists before attempting deletion
-            const userDoc = this.db.collection('backend-test').doc(userId);
-            const userSnapshot = await userDoc.get();
-    
+            let userDoc = this.db.collection('backend-test').doc(userId);
+            let userSnapshot = await userDoc.get();
             if (!userSnapshot.exists) {
-                // If the document doesn't exist, respond with 404 Not Found
-                throw new Error(`User with ID ${userId} does not exist`);
+                throw new Error(`User does not exist`);
             }
-    
-            // Attempt to delete the document
             await userDoc.delete();
         } catch (error) {
-            // Log and rethrow the error
             this.logger.error('Error deleting user', error);
             throw error;
         }
     }
+
     async removeFriend(user: User, friendId: string): Promise<void> {
         try {
-            const friendIndex = user.friendUuidList.indexOf(friendId);
+            let friendIndex = user.friendUuidList.indexOf(friendId);
             if (friendIndex === -1) {
                 throw new Error(`User with ID ${friendId} is not a friend of the user`);
             }
@@ -88,18 +90,5 @@ export class DatabaseService {
             this.logger.error('Error removing friend', error);
             throw error;
         }
-    }
-
-    async sendFriendRequest(userId: string, friendId: string): Promise<void> {
-        throw new Error('Not implemented');
-    }
-    async acceptFriendRequest(userId: string, inquirerId: string): Promise<void> {
-        throw new Error('Not implemented');
-    }
-    async rejectFriendRequest(userId: string, inquirerId: string): Promise<void> {
-        throw new Error('Not implemented');
-    }
-
-        
-
+    }  
 }
