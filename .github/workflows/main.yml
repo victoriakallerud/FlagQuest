@@ -17,7 +17,7 @@ jobs:
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.VPS_HOST }}
-          username: ${{ secrets.VPS_USERNAME }}
+          username: ${{ secrets.VPS_USER_NAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             cd /home/debian/FlagQuest/
