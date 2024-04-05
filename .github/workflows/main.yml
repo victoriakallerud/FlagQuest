@@ -13,12 +13,18 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
+      - name: Debug Secret Value
+        run: echo "${{ secrets.VPS_PRIVATE_KEY }}"
+        
+      - name: Debug SSH connection
+        run: ssh -vvv -o StrictHostKeyChecking=no -i "${{ secrets.VPS_PRIVATE_KEY }}" debian@${{ secrets.VPS_HOST }}
+
       - name: Deploy to VPS
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.VPS_HOST }}
-          username: ${{ secrets.VPS_USERNAME }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          username: "debian"
+          key: "${{ secrets.VPS_PRIVATE_KEY }}"
           script: |
             cd /home/debian/FlagQuest/
             git pull origin main
