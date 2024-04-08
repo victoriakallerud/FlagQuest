@@ -23,6 +23,8 @@ jobs:
           username: "debian"
           key: ${{ secrets.VPS_PRIVATE_KEY }}
           script: |
+            eval "$(ssh-agent -s)"
+            ssh-add ~/.ssh/github_deployment_key
             cd /home/debian/FlagQuest/
             git pull origin main
             cd backend
