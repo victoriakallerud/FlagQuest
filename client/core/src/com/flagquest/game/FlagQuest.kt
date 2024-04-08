@@ -6,10 +6,7 @@ import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.utils.ScreenUtils
 import com.flagquest.game.states.GameStateManager
-import com.flagquest.game.states.LoginMenuState
-import com.flagquest.game.states.LoginState
 import com.flagquest.game.states.MainMenuState
-import com.flagquest.game.states.RegistrationState
 
 class FlagQuest : ApplicationAdapter() {
     var gsm: GameStateManager = GameStateManager()
@@ -19,9 +16,6 @@ class FlagQuest : ApplicationAdapter() {
         batch = SpriteBatch()
         img = Texture("badlogic.jpg")
         gsm.push(MainMenuState(gsm))
-        gsm.push(LoginMenuState(gsm))
-        gsm.push(LoginState(gsm))
-        gsm.push(RegistrationState(gsm))
     }
 
     override fun render() {

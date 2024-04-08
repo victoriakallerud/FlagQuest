@@ -3,10 +3,12 @@ package com.flagquest.game.states
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.g2d.BitmapFont
+import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.badlogic.gdx.utils.viewport.ScreenViewport
 
 class MainMenuState(gsm: GameStateManager) : State(gsm) {
@@ -40,6 +42,7 @@ class MainMenuState(gsm: GameStateManager) : State(gsm) {
             stage.addActor(button)
             pos -= button.height + 30
         }
+        mainMenuButtonListener()
     }
 
     override fun handleInput() {
@@ -53,5 +56,32 @@ class MainMenuState(gsm: GameStateManager) : State(gsm) {
         Gdx.gl.glClearColor(0.92f, 0.88f, 0.84f, 1f)
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
         stage.draw()
+    }
+    private fun mainMenuButtonListener(){
+        createBtn.addListener(object : ClickListener() {
+            override fun clicked(event: InputEvent, x: Float, y: Float) {
+                gsm.push(LoginState(gsm)) // Change to right state.
+            }
+        })
+        joinBtn.addListener(object : ClickListener() {
+            override fun clicked(event: InputEvent, x: Float, y: Float) {
+                println("PLACEHOLDER")
+            }
+        })
+        trainingBtn.addListener(object : ClickListener() {
+            override fun clicked(event: InputEvent, x: Float, y: Float) {
+                println("PLACEHOLDER")
+            }
+        })
+        highscoreBtn.addListener(object : ClickListener() {
+            override fun clicked(event: InputEvent, x: Float, y: Float) {
+                println("PLACEHOLDER")
+            }
+        })
+        friendsBtn.addListener(object : ClickListener() {
+            override fun clicked(event: InputEvent, x: Float, y: Float) {
+                println("PLACEHOLDER")
+            }
+        })
     }
 }
