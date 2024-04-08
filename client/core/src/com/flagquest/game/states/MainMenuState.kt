@@ -3,13 +3,12 @@ package com.flagquest.game.states
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.g2d.BitmapFont
-import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.badlogic.gdx.utils.viewport.ScreenViewport
+import com.flagquest.game.utils.ButtonClickListener
 
 class MainMenuState(gsm: GameStateManager) : State(gsm) {
     private val skin: Skin = Skin(Gdx.files.internal("skins/skin/flat-earth-ui.json"))
@@ -39,10 +38,11 @@ class MainMenuState(gsm: GameStateManager) : State(gsm) {
         for (button in buttons) {
             button.setSize((screenWidth*80/100).toFloat(), buttonHeight.toFloat())
             button.setPosition(screenWidth / 2 - button.width / 2, pos)
+            button.addListener(ButtonClickListener(gsm,button.text.toString()))
             stage.addActor(button)
             pos -= button.height + 30
         }
-        mainMenuButtonListener()
+        //mainMenuButtonListener()
     }
 
     override fun handleInput() {
@@ -57,31 +57,31 @@ class MainMenuState(gsm: GameStateManager) : State(gsm) {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
         stage.draw()
     }
-    private fun mainMenuButtonListener(){
-        createBtn.addListener(object : ClickListener() {
-            override fun clicked(event: InputEvent, x: Float, y: Float) {
-                gsm.push(LoginState(gsm)) // Change to right state.
-            }
-        })
-        joinBtn.addListener(object : ClickListener() {
-            override fun clicked(event: InputEvent, x: Float, y: Float) {
-                println("PLACEHOLDER")
-            }
-        })
-        trainingBtn.addListener(object : ClickListener() {
-            override fun clicked(event: InputEvent, x: Float, y: Float) {
-                println("PLACEHOLDER")
-            }
-        })
-        highscoreBtn.addListener(object : ClickListener() {
-            override fun clicked(event: InputEvent, x: Float, y: Float) {
-                println("PLACEHOLDER")
-            }
-        })
-        friendsBtn.addListener(object : ClickListener() {
-            override fun clicked(event: InputEvent, x: Float, y: Float) {
-                println("PLACEHOLDER")
-            }
-        })
-    }
+//    private fun mainMenuButtonListener(){
+//        createBtn.addListener(object : ClickListener() {
+//            override fun clicked(event: InputEvent, x: Float, y: Float) {
+//                gsm.push(LobbyInitiationState(gsm))
+//            }
+//        })
+//        joinBtn.addListener(object : ClickListener() {
+//            override fun clicked(event: InputEvent, x: Float, y: Float) {
+//                println("PLACEHOLDER") //Update when state added!
+//            }
+//        })
+//        trainingBtn.addListener(object : ClickListener() {
+//            override fun clicked(event: InputEvent, x: Float, y: Float) {
+//                println("PLACEHOLDER")
+//            }
+//        })
+//        highscoreBtn.addListener(object : ClickListener() {
+//            override fun clicked(event: InputEvent, x: Float, y: Float) {
+//                println("PLACEHOLDER")
+//            }
+//        })
+//        friendsBtn.addListener(object : ClickListener() {
+//            override fun clicked(event: InputEvent, x: Float, y: Float) {
+//                println("PLACEHOLDER")
+//            }
+//        })
+//    }
 }
