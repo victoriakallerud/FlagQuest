@@ -19,21 +19,19 @@ jobs:
 
       - name: Deploy to VPS
         uses: appleboy/ssh-action@master
-        env:
-         NPM_PATH: "/home/debian/.nvm/versions/node/v20.12.0/bin/npm"
-         PM2_PATH: "/home/debian/.nvm/versions/node/v20.12.0/bin/pm2"
         with:
           host: ${{ secrets.VPS_HOST }}
           username: "debian"
           key: ${{ secrets.VPS_PRIVATE_KEY }}
-          envs: NPM_PATH, PM2_PATH
           script: |
+            export NVM_DIR=~/.nvm
+            source ~/.nvm/nvm.sh
             eval "$(ssh-agent -s)"
             ssh-add ~/.ssh/github_deployment_key
             cd /home/debian/FlagQuest/
             git pull
             cd backend
-            $NPM_PATH install
-            $NPM_PATH run build
+            npm install
+            npm run build
             cd dist
-            $PM2_PATH restart main
+            pm2 restart main
