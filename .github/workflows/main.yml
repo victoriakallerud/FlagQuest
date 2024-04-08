@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - main
-
+      
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -12,19 +12,16 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-
-      - name: Debug Secret Value
-        run: echo "${{ secrets.VPS_PRIVATE_KEY }}"
         
-      - name: Debug SSH connection
-        run: ssh -vvv -o StrictHostKeyChecking=no -i "${{ secrets.VPS_PRIVATE_KEY }}" debian@${{ secrets.VPS_HOST }}
+#      - name: Debug SSH connection
+ #       run: ssh -vvv -o StrictHostKeyChecking=no -i "${{ secrets.VPS_PRIVATE_KEY }}" debian@${{ secrets.VPS_HOST }}
 
       - name: Deploy to VPS
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.VPS_HOST }}
           username: "debian"
-          key: "${{ secrets.VPS_PRIVATE_KEY }}"
+          key: ${{ secrets.VPS_PRIVATE_KEY }}
           script: |
             cd /home/debian/FlagQuest/
             git pull origin main
