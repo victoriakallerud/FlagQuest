@@ -1,10 +1,13 @@
 name: Deploy to VPS
 
+# Only run, when a push on main or 3-fix-ci-cd have occurred and the ingredients of the backend directory have changed:
 on:
   push:
     branches:
       - main
       - 3-fix-ci-cd
+    paths:
+    - 'backend/**'
       
 jobs:
   deploy:
@@ -13,9 +16,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-        
-#      - name: Debug SSH connection
- #       run: ssh -vvv -o StrictHostKeyChecking=no -i "${{ secrets.VPS_PRIVATE_KEY }}" debian@${{ secrets.VPS_HOST }}
 
       - name: Deploy to VPS
         uses: appleboy/ssh-action@master
@@ -23,6 +23,7 @@ jobs:
           host: ${{ secrets.VPS_HOST }}
           username: "debian"
           key: ${{ secrets.VPS_PRIVATE_KEY }}
+          # Run the commands in the SSH session.
           script: |
             export NVM_DIR=~/.nvm
             source ~/.nvm/nvm.sh
