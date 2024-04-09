@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.utils.ScreenUtils
+import com.flagquest.game.states.GameLobbyState
 import com.flagquest.game.states.GameStateManager
 import com.flagquest.game.states.JoinGameState
 import com.flagquest.game.states.LobbyInitiationState
@@ -25,6 +26,7 @@ class FlagQuest : ApplicationAdapter() {
         gsm.push(LoginState(gsm))
         gsm.push(RegistrationState(gsm))
         gsm.push(LobbyInitiationState(gsm))
+        gsm.push(GameLobbyState(gsm, true))
         gsm.push(JoinGameState(gsm))
     }
 
