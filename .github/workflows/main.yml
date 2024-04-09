@@ -1,10 +1,14 @@
 name: Deploy to VPS
 
+# Only run, when a push on main or 3-fix-ci-cd have occurred and the ingredients of the backend directory have changed:
 on:
   push:
     branches:
       - main
-
+      - 3-fix-ci-cd
+    paths:
+    - 'backend/**'
+      
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -13,21 +17,20 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Debug Secret Value
-        run: echo "${{ secrets.VPS_PRIVATE_KEY }}"
-        
-      - name: Debug SSH connection
-        run: ssh -vvv -o StrictHostKeyChecking=no -i "${{ secrets.VPS_PRIVATE_KEY }}" debian@${{ secrets.VPS_HOST }}
-
       - name: Deploy to VPS
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.VPS_HOST }}
           username: "debian"
-          key: "${{ secrets.VPS_PRIVATE_KEY }}"
+          key: ${{ secrets.VPS_PRIVATE_KEY }}
+          # Run the commands in the SSH session.
           script: |
+            export NVM_DIR=~/.nvm
+            source ~/.nvm/nvm.sh
+            eval "$(ssh-agent -s)"
+            ssh-add ~/.ssh/github_deployment_key
             cd /home/debian/FlagQuest/
-            git pull origin main
+            git pull
             cd backend
             npm install
             npm run build
