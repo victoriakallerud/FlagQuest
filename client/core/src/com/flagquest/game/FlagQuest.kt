@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.utils.ScreenUtils
 import com.flagquest.game.states.GameStateManager
+import com.flagquest.game.states.JoinGameState
 import com.flagquest.game.states.LobbyInitiationState
 import com.flagquest.game.states.LoginMenuState
 import com.flagquest.game.states.LoginState
@@ -24,6 +25,7 @@ class FlagQuest : ApplicationAdapter() {
         gsm.push(LoginState(gsm))
         gsm.push(RegistrationState(gsm))
         gsm.push(LobbyInitiationState(gsm))
+        gsm.push(JoinGameState(gsm))
     }
 
     override fun render() {
