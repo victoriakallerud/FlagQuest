@@ -21,8 +21,6 @@ class HighscoreState(gsm: GameStateManager) : State(gsm) {
     private val titleFont: BitmapFont = skin.getFont("title")
     private var screenWidth = Gdx.graphics.width
     private val screenHeight = Gdx.graphics.height
-    private val buttonHeight = screenHeight / 11
-    private var pos: Float = ((screenHeight / 2) + 50).toFloat()
     private val stage = Stage(ScreenViewport())
     private val heading = Label("HIGHSCORE", skin)
     private var players = arrayOf( // TODO: Implement way of getting the 10 players with the highest ranking
@@ -44,10 +42,12 @@ class HighscoreState(gsm: GameStateManager) : State(gsm) {
         Pair("Victoria Kallerud", 8984)
     )
     private var globalScores: Boolean = true
-
     private val globalBtn = TextButton("GLOBAL", skin)
     private val friendsBtn = TextButton("FRIENDS", skin)
-    val scoreTable = Table()
+    private val scoreTable = Table()
+    private val btnTable = Table()
+    private val standardColor = Color(globalBtn.color)
+    private val highlightColor = Color(0.3882353f, 0.70980394f, 0.7764706f, 1f)
 
     init {
         Gdx.input.inputProcessor = stage
@@ -63,30 +63,23 @@ class HighscoreState(gsm: GameStateManager) : State(gsm) {
         heading.setPosition((screenWidth - heading.prefWidth) / 2, screenHeight - 500f)
         stage.addActor(heading)
 
-        scoreTable.setFillParent(true)
-
-        val btnTable = Table()
+        globalBtn.color = highlightColor
         btnTable.setFillParent(true)
         btnTable.center()
         btnTable.padBottom(850f)
-
         btnTable.add(globalBtn).width(400f).height(100f).pad(10f)
         btnTable.add(friendsBtn).width(400f).height(100f).pad(10f)
         btnTable.row()
         stage.addActor(btnTable)
 
-
-        val displayList = if (globalScores) players else friends
-
-        for (user in displayList) {
-            val nameLabel = Label(user.first, skin)
-            nameLabel.setStyle(Label.LabelStyle(titleFont, heading.style.fontColor))
-            nameLabel.setFontScale(1f)
-            scoreTable.add(nameLabel).align(Align.left).pad(10f).padRight(35f)
-            val scoreLabel = Label(user.second.toString(), skin)
-            scoreLabel.setStyle(Label.LabelStyle(titleFont, heading.style.fontColor))
-            scoreLabel.setFontScale(1f)
-            scoreTable.add(scoreLabel).align(Align.left).pad(10f).padLeft(35f)
+        scoreTable.setFillParent(true)
+        for (player in players) {
+            val labels = listOf(Label(player.first, skin), Label(player.second.toString(), skin))
+            for (label in labels) {
+                label.setStyle(Label.LabelStyle(titleFont, heading.style.fontColor))
+                label.setFontScale(1f)
+                scoreTable.add(label).align(Align.left).pad(10f).padLeft(35f)
+            }
             scoreTable.row()
         }
 
@@ -94,9 +87,6 @@ class HighscoreState(gsm: GameStateManager) : State(gsm) {
         stage.addActor(scoreTable)
 
         titleFont.data.setScale(1.2f)
-
-        val standardColor: Color = Color(globalBtn.color)
-        val highlightColor: Color = Color(0.3882353f, 0.70980394f, 0.7764706f, 1f)
 
         globalBtn.addListener(object : ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
@@ -124,14 +114,12 @@ class HighscoreState(gsm: GameStateManager) : State(gsm) {
         val displayList = if (globalScores) players else friends
 
         for (user in displayList) {
-            val nameLabel = Label(user.first, skin)
-            nameLabel.setStyle(Label.LabelStyle(titleFont, heading.style.fontColor))
-            nameLabel.setFontScale(1f)
-            scoreTable.add(nameLabel).align(Align.left).pad(10f).padRight(35f)
-            val scoreLabel = Label(user.second.toString(), skin)
-            scoreLabel.setStyle(Label.LabelStyle(titleFont, heading.style.fontColor))
-            scoreLabel.setFontScale(1f)
-            scoreTable.add(scoreLabel).align(Align.left).pad(10f).padLeft(35f)
+            val labels = listOf(Label(user.first, skin), Label(user.second.toString(), skin))
+            for (label in labels) {
+                label.setStyle(Label.LabelStyle(titleFont, heading.style.fontColor))
+                label.setFontScale(1f)
+                scoreTable.add(label).align(Align.left).pad(10f).padLeft(35f)
+            }
             scoreTable.row()
         }
     }
