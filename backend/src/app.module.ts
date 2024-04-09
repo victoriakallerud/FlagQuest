@@ -5,6 +5,7 @@ import { UserModule } from './user/user.module';
 import { LobbyModule } from './lobby/lobby.module';
 import { ConfigModule } from '@nestjs/config';
 import { DatabaseModule } from './database/database.module';
+import { WebsocketModule } from './websocket/websocket.module';
 
 @Module({
   imports: [
@@ -14,7 +15,7 @@ import { DatabaseModule } from './database/database.module';
       isGlobal: true,
       envFilePath: process.env.NODE_ENV === 'production' ? '/home/debian/FlagQuest/backend/development.env' : 'development.env',
     }), 
-    DatabaseModule],
+    DatabaseModule, WebsocketModule],
   controllers: [AppController],
   providers: [AppService],
 })

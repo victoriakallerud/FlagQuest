@@ -18,9 +18,21 @@ export class LobbyService implements ILobbyService{
         // check if a lobby with the same admin exists
         let lobbyOfAdmin = await this.databaseService.getLobbyByAdmin(lobbyDto.admin);
         if (lobbyOfAdmin !== null) {
-            this.logger.error('User is already admin of a lobby');
-            throw new HttpException('User is already admin of a lobby', 403);
+            this.logger.error(`User with id ${lobbyDto.admin} is already admin of a lobby.`);
+            throw new HttpException('User is already admin of another lobby.', 403);
         }
+
+        
+    try{
+        let admin = await this.databaseService.getUserById(lobbyDto.admin);
+        if (!admin){
+            this.logger.error(`User with id ${lobbyDto.admin} does not exist`);
+            throw new HttpException(`User with id ${lobbyDto.admin} tried to create lobby but does not exist`, 404);
+        }
+    } catch (error) {
+        throw new HttpException('Internal server error', 500);
+    }
+
         // if no lobby with the same admin exists, create a new lobby
         let uuid = uuidv4();
         let lobby: Lobby = {
@@ -62,6 +74,14 @@ export class LobbyService implements ILobbyService{
                 this.logger.error('Error getting lobby', error);
                 throw new HttpException('Error getting lobby', 500);
             }
+        }
+    }
+
+    async getAllLobbies(): Promise<Lobby[]> {
+        try {
+            return await this.databaseService.getAllLobbies();
+        } catch (error){
+            throw new HttpException('Lobbycollection does not exist', 404);
         }
     }
 
@@ -132,7 +152,10 @@ export class LobbyService implements ILobbyService{
     async joinLobby(lobbyId: string, userId: string): Promise<Lobby> {
         try {
             //checks if user exists
-            await this.databaseService.getUserById(userId);
+            if(!this.databaseService.userExists){
+                throw new HttpException(`User with ${userId} does not exist`, 403);
+            }
+            let user = await this.databaseService.getUserById(userId);
 
             //checks if user already is in an other lobby
             let lobbyOfPlayer = await this.databaseService.getLobbyByPlayer(userId);
@@ -141,38 +164,37 @@ export class LobbyService implements ILobbyService{
                 throw new HttpException('User is already in a lobby', 403);
             }
             //checks if lobby exists
+            if (!this.databaseService.lobbyExists){
+                throw new HttpException(`Lobby with ${lobbyId} does not exist`, 404);
+            }
             let lobby = await this.databaseService.getLobbyById(lobbyId);
             // checks if Number of players isn't exceeded
             if (lobby.players.length >= lobby.options.maxNumOfPlayers) {
                 this.logger.error('Lobby is full');
-                throw new Error('Lobby is full');
+                throw new HttpException('Lobby is full', 403);
             }
             //checks if lobby is in the right state
             if (lobby.state !== LobbyStateEnum.WaitingForPlayers) {
                 this.logger.error('Lobby is not in the right state');
-                throw new Error('Lobby is not in the right state');
+                throw new HttpException('Lobby is not in the right state', 403);
             }
+            if(lobby.options.isPrivate && user.friendUuidList.includes(lobby.admin)){
+                this.logger.error('User is not a friend of the admin');
+                throw new HttpException('User is not a friend of the admin', 403);
+            }
+
             //adds user to the lobby
             lobby.players.push(userId);
             let updatedLobby = await this.databaseService.updateLobby(lobbyId, lobby);
             this.logger.log('User ' + userId + ' joined lobby with id ' + updatedLobby.id);
             return updatedLobby;
         } catch (error) {
-            if (error.message === 'Lobby does not exist') {
-                this.logger.error('Lobby does not exist');
-                throw new HttpException('Lobby does not exist', 404);
-            } else if (error.message === 'User does not exist'){
-                this.logger.error('User does not exist');
-                throw new HttpException('User does not exist', 404);
-            } else if (error.message === 'User is already in a  lobby'){
-                this.logger.error('User is already in a lobby');
-                throw new HttpException('User is already in a lobby', 403);
-            } else if (error.message === 'Lobby is full') {
-                this.logger.error('Lobby is full');
-                throw new HttpException('Lobby is full', 403);
-            } else if (error.message === 'Lobby is not in the right state') {
-                this.logger.error('Lobby is not in the right state');
-                throw new HttpException('Lobby is not in the right state', 403);
+            if(error instanceof HttpException){
+                throw error;
+            }
+            else if (error.message === 'Lobby does not exist' || error.message === 'User does not exist') {
+                this.logger.error(error.message);
+                throw new HttpException(error.message, 404);
             } else {
                 this.logger.error('Error joining lobby', error);
                 throw new HttpException('Error joining lobby', 500);
@@ -195,6 +217,12 @@ export class LobbyService implements ILobbyService{
             lobby.players = lobby.players.filter(player => player !== userId);
             await this.databaseService.updateLobby(lobbyId, lobby);
             this.logger.log('User ' + userId + ' left the lobby with id ' + lobbyId);
+
+            // checks if lobby is empty after player left
+            if (lobby.players.length <= 0){
+                this.deleteLobby(lobbyId)
+            }
+this.logger.log('Lob')
         } catch (error) {
             if (error.message === 'Lobby does not exist') {
                 this.logger.error('Lobby does not exist');

@@ -18,9 +18,8 @@ export class DatabaseService {
 
     async getUserById(userId: string): Promise<User> {
         try{
-            let userDoc = await this.db.collection('backend-test').doc(userId).get();
+            let userDoc = await this.db.collection('user').doc(userId).get();
             if (!userDoc.exists) {
-                this.logger.error('User does not exist');
                 throw new Error(`User does not exist`);
             } else {
                 let user = userDoc.data() as User;
@@ -35,7 +34,7 @@ export class DatabaseService {
 
     async createUser(user: User): Promise<User> {
         try {
-           await this.db.collection('backend-test').doc(user.id).set(user);
+           await this.db.collection('user').doc(user.id).set(user);
            return this.getUserById(user.id);
         }
         catch (error) {
@@ -46,12 +45,11 @@ export class DatabaseService {
 
     async updateUser(userId: string, user: User): Promise<User> {
         try {
-            let userDoc = await this.db.collection('backend-test').doc(userId).get();
+            let userDoc = await this.db.collection('user').doc(userId).get();
             if (!userDoc.exists) {
-                this.logger.error('User does not exist');
                 throw new Error(`User does not exist`);
             }
-           await this.db.collection('backend-test').doc(userId).update({
+           await this.db.collection('user').doc(userId).update({
                 userName: user.userName,
                 nationality: user.nationality,
                 lastOnline: user.lastOnline,
@@ -68,7 +66,7 @@ export class DatabaseService {
 
     async deleteUser(userId: string): Promise<void> {
         try {
-            let userDoc = this.db.collection('backend-test').doc(userId);
+            let userDoc = this.db.collection('user').doc(userId);
             let userSnapshot = await userDoc.get();
             if (!userSnapshot.exists) {
                 throw new Error(`User does not exist`);
@@ -94,6 +92,16 @@ export class DatabaseService {
         }
     }  
 
+    async userExists(userId: string): Promise<boolean> {
+        try {
+            let userDoc = await this.db.collection('user').doc(userId).get();
+            return userDoc.exists;
+        } catch (error) {
+            this.logger.error('Error checking if user exists', error);
+            throw error;
+        }
+    }
+
     // --------------------- Lobby Functions ---------------------
 
     async createLobby(lobby: Lobby): Promise<Lobby> {
@@ -111,7 +119,6 @@ export class DatabaseService {
             let lobbyDoc = await this.db.collection('lobbies').doc(lobbyId).get();
             if (!lobbyDoc.exists) {
                 this.logger.error('Lobby does not exist');
-                throw new Error(`Lobby does not exist`);
             } else {
                 let lobby = lobbyDoc.data();
                 lobby.id = lobbyDoc.id; 
@@ -123,12 +130,27 @@ export class DatabaseService {
         }
     }
 
+    async getAllLobbies(): Promise<Lobby[]> {
+        try {
+            let lobbyDocs = await this.db.collection('lobbies').get();
+            let lobbies: Object[] = lobbyDocs.docs.map(doc => { 
+                let lobby = doc.data();
+                lobby.id = doc.id;
+                return lobby;
+            });
+            return lobbies;
+        } catch (error){
+            this.logger.error("Collection doesnt exist")
+            throw error;
+        }
+    }
+
     async getLobbyByAdmin(adminId: string): Promise<Lobby> {
         //todo Since a user can only be in one lobby at a time, this should return a single lobby
         try {
             let lobbyDoc = await this.db.collection('lobbies').where('admin', '==', adminId).get();
             if (lobbyDoc.empty) {
-                this.logger.error('Lobby does not exist');
+                this.logger.log(`Lobby with the user ${adminId} as an admin does not exist`);
                 return null;
             } else {
                 let lobby = lobbyDoc.docs[0].data();
@@ -145,7 +167,7 @@ export class DatabaseService {
         try {
             let lobbyDoc = await this.db.collection('lobbies').where('players', 'array-contains', playerId).get();
             if (lobbyDoc.empty) {
-                this.logger.error('Lobby does not exist');
+                this.logger.log(`Lobby with the player with id ${playerId} does not exist`);
                 return null;
             } else {
                 let lobby = lobbyDoc.docs[0].data();
@@ -162,7 +184,6 @@ export class DatabaseService {
         try {
             let lobbyDoc = await this.db.collection('lobbies').doc(lobbyId).get();
             if (!lobbyDoc.exists) {
-                this.logger.error('Lobby does not exist');
                 throw new Error(`Lobby does not exist`);
             }
             await this.db.collection('lobbies').doc(lobbyId).update({
@@ -191,4 +212,34 @@ export class DatabaseService {
             throw error;
         }
     }
+
+    async lobbyExists(lobbyId: string): Promise<boolean> {
+        try {
+            let lobbyDoc = await this.db.collection('lobbies').doc(lobbyId).get();
+            return lobbyDoc.exists;
+        } catch (error) {
+            this.logger.error('Error checking if lobby exists', error);
+            throw error;
+        }
+    }
+
+    async userInLobby(userId: string, lobbyId: string): Promise<boolean> {
+        try {
+            let lobbyDoc = await this.db.collection('lobbies').doc(lobbyId).get();
+            if (!lobbyDoc.exists) {
+                this.logger.error(`Lobby with ID ${lobbyId} does not exist`);
+                return false;
+            }
+            let lobby = lobbyDoc.data();
+            return lobby.players.includes(userId);
+        } catch (error) {
+            this.logger.error('Error checking if user is in lobby', error);
+            throw error;
+        }
+    }
+
+
+
+    // --------------------- Helper Methods ---------------------
+
 }

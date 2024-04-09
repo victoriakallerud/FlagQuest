@@ -96,8 +96,10 @@ export class UserService implements IUserService {
     
         try{
             let user = await this.databaseService.getUserById(userId);
+            let friend = await this.databaseService.getUserById(friendId);
             await this.databaseService.removeFriend(user,friendId);
-            this.logger.log('Friend removed');
+            await this.databaseService.removeFriend(friend, userId);
+            this.logger.log(`Friend with the id ${friendId} removed`);
         } catch (error) {
             if (error.message === 'User does not exist') {  
                 this.logger.error('User does not exist', error);

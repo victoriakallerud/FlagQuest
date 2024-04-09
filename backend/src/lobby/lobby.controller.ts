@@ -26,6 +26,12 @@ constructor(private readonly lobbyService: LobbyService) {}
       return this.lobbyService.getLobby(lobbyId);
     }
 
+    @ApiOperation({ summary: 'Get all Lobbies' })
+    @Get()
+    async getAllLobbies() {
+      return this.lobbyService.getAllLobbies();
+    }
+
     @ApiOperation({ summary: 'Delete a lobby by id' })
     @Delete(':lobbyId')
     async deleteLobby(@Param('lobbyId') lobbyId: string){
