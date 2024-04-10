@@ -10,6 +10,7 @@ import com.flagquest.game.states.LobbyInitiationState
 import com.flagquest.game.states.LoginState
 import com.flagquest.game.states.MainMenuState
 import com.flagquest.game.states.ManageFriendsState
+import com.flagquest.game.states.OnlineGameState
 import com.flagquest.game.states.RegistrationState
 
 class ButtonClickListener(private val gsm: GameStateManager, private val buttonText: String) : ClickListener() {
@@ -41,7 +42,7 @@ class ButtonClickListener(private val gsm: GameStateManager, private val buttonT
             "JOIN WITH CODE" -> gsm.push(GameLobbyState(gsm, isAdmin = false)) //TODO: Implement joining mechanism
 
             //Lobby
-            "START NOW" -> println("HANDLE START LOBBY button click here") //TODO: Link when implemented
+            "START NOW" -> gsm.push(OnlineGameState(gsm)) // TODO: Communicate with backend to start game
 
             else -> println("Unknown button clicked")
         }
