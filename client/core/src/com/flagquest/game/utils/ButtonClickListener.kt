@@ -30,7 +30,7 @@ class ButtonClickListener(private val gsm: GameStateManager, private val buttonT
             //Main Menu
             "CREATE GAME" -> gsm.push(LobbyInitiationState(gsm))
             "JOIN GAME" -> gsm.push(JoinGameState(gsm))
-            "TRAINING MODE" -> println("Handle TRAINING MODE button click here") // TODO: Link when implemented
+            "TRAINING MODE" -> gsm.push(OnlineGameState(gsm)) // TODO: Change to Offline once available.
             "HIGHSCORE BOARD" -> gsm.push(HighscoreState(gsm))
             "MANAGE FRIENDS" -> gsm.push(ManageFriendsState(gsm))
 
