@@ -1,15 +1,26 @@
-import { SubscribeMessage, WebSocketGateway, OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect, ConnectedSocket, MessageBody } from '@nestjs/websockets';
+import { SubscribeMessage, WebSocketGateway, OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect, ConnectedSocket, MessageBody, WebSocketServer } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
 import { Logger } from '@nestjs/common';
 import { JoinLobbyDTO } from './dto/joinLobby.dto';
 import { WebsocketService } from './websocket.service';
+import { Lobby } from 'src/interfaces/lobby.interface';
+import { QuizService } from 'src/quiz/quiz.service';
+import { Quiz } from 'src/interfaces/quiz.interface';
+import { GameService } from 'src/game/game.service';
 
 @WebSocketGateway()
 export class WebsocketGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect {
 
   private logger: Logger = new Logger('WebsocketGateway');
 
-  constructor(private readonly websocketService: WebsocketService) {}
+  constructor(
+    private readonly websocketService: WebsocketService,
+    private readonly quizService: QuizService,
+    private readonly gameService: GameService
+  ) {}
+
+  @WebSocketServer()
+  server: Server;
 
   async afterInit(server: any) {
     this.logger.log('Initialized websocket server.');
@@ -25,35 +36,41 @@ export class WebsocketGateway implements OnGatewayInit, OnGatewayConnection, OnG
       this.logger.log(`Client disconnected: ${client.id}`);
   }
 
-  joinLobby(client: Socket, lobbyId: string) {
-    client.join(lobbyId);
-    this.logger.log(`Client ${client.id} joined lobby ${lobbyId}`);
-    client.emit('joinedLobby', `Successfully joined lobby ${lobbyId}`);
-  }
-
-  leaveLobby(client: Socket, lobbyId: string) {
-    client.leave(lobbyId);
-    this.logger.log(`Client ${client.id} left lobby ${lobbyId}`);
-    client.emit('leftLobby', `Successfully left lobby ${lobbyId}`);
-  }
-
   @SubscribeMessage('joinLobby')
   async handleJoinLobby(@ConnectedSocket() client: Socket, @MessageBody() joinLobbyDto: JoinLobbyDTO) {
     const res = await this.websocketService.handleJoinLobby(client, joinLobbyDto);
     client.emit('joinLobby', JSON.stringify(res));
+    // Log all rooms the client is in:
+    this.logger.log(`Client ${client.id} is in ${client.rooms.size} rooms`);
+    client.rooms.forEach((room) => {
+      this.logger.log(`Client ${client.id} is in room ${room}`);
+    });
     return res;
   }
 
   @SubscribeMessage('leaveLobby')
-  handleLeaveLobby(@ConnectedSocket() client: Socket, @MessageBody() joinLobbyDto: JoinLobbyDTO) {
-    return this.websocketService.handleLeaveLobby(client, joinLobbyDto);
+  async handleLeaveLobby(@ConnectedSocket() client: Socket, @MessageBody() joinLobbyDto: JoinLobbyDTO) {
+    const res = await this.websocketService.handleLeaveLobby(client, joinLobbyDto);
+    client.emit('leaveLobby', JSON.stringify(res));
+    return res;
   }
 
-  @SubscribeMessage('message')
-  handleMessage(client: any, payload: any): string {
-    this.logger.log(`Received message on topic MESSAGE: ${payload}`);
-    // Send the message back to the client
-    return "Hello from the server!"
+  @SubscribeMessage('startGame')
+  async handleStartGame(@ConnectedSocket() client: Socket, @MessageBody() joinLobbyDto: JoinLobbyDTO) {
+    const res: Lobby = await this.websocketService.handleStartGame(client, joinLobbyDto.userId, joinLobbyDto.lobbyId);
+    this.pushUpdatedLobby(joinLobbyDto.lobbyId, res);
+    const quiz: Quiz = await this.quizService.generateQuiz(res.options.numberOfQuestions);
+    this.pushQuiz(res.id, quiz);
+    this.gameService.createGame(res);
+  }
+
+  pushUpdatedLobby(lobbyId: string, updatedLobby: Lobby){
+    this.logger.log(`Pushing updated lobby ${lobbyId} to all clients in room ${lobbyId}`);
+    this.server.to(lobbyId).emit('updateLobby', updatedLobby);
+  }
+
+  pushQuiz(lobbyId: string, quiz: any){
+    this.server.to(lobbyId).emit('quiz', quiz);
   }
 
 

@@ -4,6 +4,8 @@ import { Socket } from 'socket.io';
 import { JoinLobbyDTO } from './dto/joinLobby.dto';
 import { DatabaseService } from 'src/database/database.service';
 import { StatusMsgDto } from './dto/statusMsg.dto';
+import { Lobby } from 'src/interfaces/lobby.interface';
+import { LobbyStateEnum } from 'src/enums/lobbyState.enum';
 
 @Injectable()
 export class WebsocketService {
@@ -45,6 +47,19 @@ export class WebsocketService {
 
     async handleLeaveLobby(client: Socket, joinLobbyDto: JoinLobbyDTO) {
         this.logger.log(`Client ${client.id} leaving lobby ${joinLobbyDto.lobbyId}`);
+        client.leave(joinLobbyDto.lobbyId);
+        this.logger.log(`Client ${client.id} left lobby ${joinLobbyDto.lobbyId}`);
+        return {status: 'SUCCESS', message: `Client ${client.id} left lobby ${joinLobbyDto.lobbyId}`};
+    }
 
+    async handleStartGame(client: Socket, userId: string, lobbyId: string): Promise<Lobby> {
+        this.logger.log(`Client ${client.id} starting game`);
+        const lobbyToBeStarted: Lobby = await this.databaseService.getLobbyById(lobbyId);
+        if(lobbyToBeStarted.admin === userId){
+            lobbyToBeStarted.state = LobbyStateEnum.InGame;
+            await this.databaseService.updateLobby(lobbyId, lobbyToBeStarted);
+        }
+
+        return lobbyToBeStarted;
     }
 }
