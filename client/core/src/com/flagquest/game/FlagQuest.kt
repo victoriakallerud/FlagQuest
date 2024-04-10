@@ -7,7 +7,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.utils.ScreenUtils
 import com.flagquest.game.states.GameStateManager
 import com.flagquest.game.states.LoginMenuState
-import com.flagquest.game.states.MainMenuState
 
 class FlagQuest : ApplicationAdapter() {
     var gsm: GameStateManager = GameStateManager()
