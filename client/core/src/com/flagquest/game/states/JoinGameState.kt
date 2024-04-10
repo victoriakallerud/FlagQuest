@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.ui.TextField
 import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.viewport.ScreenViewport
+import com.flagquest.game.utils.ButtonClickListener
 
 class JoinGameState(gsm: GameStateManager) : State(gsm) {
     private val skin: Skin = Skin(Gdx.files.internal("skins/skin/flat-earth-ui.json"))
@@ -47,6 +48,7 @@ class JoinGameState(gsm: GameStateManager) : State(gsm) {
             btn.width = (screenWidth*80/100).toFloat()
             btn.height = buttonHeight.toFloat()
             btn.setPosition(screenWidth / 2 - btn.width / 2, pos - (buttonHeight + 30) * counter)
+            btn.addListener(ButtonClickListener(gsm, btn.text.toString()))
             stage.addActor(btn)
             counter++
         }

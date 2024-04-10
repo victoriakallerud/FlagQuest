@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.ui.TextField
 import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.viewport.ScreenViewport
+import com.flagquest.game.utils.ButtonClickListener
 
 class LobbyInitiationState(gsm: GameStateManager) : State(gsm) {
     private val skin: Skin = Skin(Gdx.files.internal("skins/skin/flat-earth-ui.json"))
@@ -27,7 +28,7 @@ class LobbyInitiationState(gsm: GameStateManager) : State(gsm) {
     private val sizeInput = TextField("", skin).apply{ messageText="  How many players?"}
     private val inviteLinkBtn = TextButton("GET INVITE LINK", skin)
     private val inviteBtn = TextButton("INVITE FRIENDS", skin)
-    private val createBtn = TextButton("CREATE GAME", skin)
+    private val createBtn = TextButton("CREATE LOBBY", skin)
     private val btns = arrayOf(inviteLinkBtn, inviteBtn, createBtn)
     private var counter: Int = 1
 
@@ -59,6 +60,7 @@ class LobbyInitiationState(gsm: GameStateManager) : State(gsm) {
             btn.width = (screenWidth*80/100).toFloat()
             btn.height = buttonHeight.toFloat()
             btn.setPosition(screenWidth / 2 - btn.width / 2, pos - (buttonHeight + 30) * counter)
+            btn.addListener(ButtonClickListener(gsm, btn.text.toString()))
             stage.addActor(btn)
             counter++
         }
