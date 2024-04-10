@@ -42,7 +42,6 @@ class MainMenuState(gsm: GameStateManager) : State(gsm) {
             stage.addActor(button)
             pos -= button.height + 30
         }
-        //mainMenuButtonListener()
     }
 
     override fun handleInput() {
@@ -57,31 +56,4 @@ class MainMenuState(gsm: GameStateManager) : State(gsm) {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
         stage.draw()
     }
-//    private fun mainMenuButtonListener(){
-//        createBtn.addListener(object : ClickListener() {
-//            override fun clicked(event: InputEvent, x: Float, y: Float) {
-//                gsm.push(LobbyInitiationState(gsm))
-//            }
-//        })
-//        joinBtn.addListener(object : ClickListener() {
-//            override fun clicked(event: InputEvent, x: Float, y: Float) {
-//                println("PLACEHOLDER") //Update when state added!
-//            }
-//        })
-//        trainingBtn.addListener(object : ClickListener() {
-//            override fun clicked(event: InputEvent, x: Float, y: Float) {
-//                println("PLACEHOLDER")
-//            }
-//        })
-//        highscoreBtn.addListener(object : ClickListener() {
-//            override fun clicked(event: InputEvent, x: Float, y: Float) {
-//                println("PLACEHOLDER")
-//            }
-//        })
-//        friendsBtn.addListener(object : ClickListener() {
-//            override fun clicked(event: InputEvent, x: Float, y: Float) {
-//                println("PLACEHOLDER")
-//            }
-//        })
-//    }
 }
