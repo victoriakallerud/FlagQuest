@@ -6,7 +6,7 @@ export interface IUserService {
     updateUser(userId: string, user: User): Promise<User>;
     deleteUser(userId: string): Promise<void>;
     removeFriend(userId: string, friendId: string): Promise<void>;
-    sendFriendRequest(userId: string, friendId: string): void;
-    acceptFriendRequest(userId: string, inquirerId: string): void;
-    rejectFriendRequest(userId: string, inquirerId: string): void;
+    sendFriendRequest(userId: string, friendId: string): Promise<void>;
+    acceptFriendRequest(userId: string, inquirerId: string): Promise<void>;
+    rejectFriendRequest(userId: string, inquirerId: string): Promise<void>;
 }
