@@ -40,20 +40,20 @@ export class UserController {
     }
 
     @ApiOperation({ summary: 'Send a Friendrequest to a user by id' })
-    @Put(':userId/friends/:friendId')
-    sendFriendRequest(@Param('userId') userId: string, @Param('friendId') friendId : string): void {
-      return this.userService.sendFriendRequest(userId, friendId);
+    @Put(':userId/friends/:receiverId')
+    async sendFriendRequest(@Param('userId') userId: string, @Param('receiverId') receiverId : string) {
+      return await this.userService.sendFriendRequest(userId, receiverId);
     }
 
     @ApiOperation({ summary: 'Accept a Friendrequest from a inquirer by id' })
     @Put(':userId/friends/requests/:inquirerId')
-    acceptFriendRequest(@Param('userId') userId: string, @Param('inquirerId') inquirerId : string): void {
-      return this.userService.acceptFriendRequest(userId, inquirerId);
+    async acceptFriendRequest(@Param('userId') userId: string, @Param('inquirerId') inquirerId : string) {
+      return await this.userService.acceptFriendRequest(userId, inquirerId);
     }
 
     @ApiOperation({ summary: 'Reject a Friendrequest from a inquirer by id' })
     @Delete(':userId/friends/requests/:inquirerId')
-    rejectFriendRequest(@Param('userId') userId: string, @Param('inquirerId') inquirerId : string): void {
-      return this.userService.rejectFriendRequest(userId, inquirerId);
+    async rejectFriendRequest(@Param('userId') userId: string, @Param('inquirerId') inquirerId : string) {
+      return await this.userService.rejectFriendRequest(userId, inquirerId);
     }
 }

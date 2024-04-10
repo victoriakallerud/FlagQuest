@@ -21,7 +21,7 @@ $ npm install
 
 Duplicate the included `default_env.md` file and rename it to `development.env`.
 
-Change the path for 
+Change the path for
 
 ```env
 GOOGLE_APPLICATION_CREDENTIALS="yourpathhere"
@@ -58,6 +58,38 @@ $ npm run test:cov
 
 - Twitter - [@nestframework](https://twitter.com/nestframework)
 
-## License
+## Advanced
 
-Nest is [MIT licensed](LICENSE).
+### Running the backend on Debian VPS
+
+#### Requirements
+
+- `node` and `git` installed
+
+#### Steps
+
+1. Generate deployment SSH key on the VPS
+2. Add key to GitHub repo
+3. `git clone` the repo on the VPS
+4. `cd FlagQuest` and `cd backend`
+5. Run `npm install` to install dependencies
+6. Create your `development.env` file according to the tutorial above
+7. Install `pm2` globally using `npm install pm2 -g`
+8. Run `npm run build` to build the backend to the `dist` folder
+9. Run `export NODE_ENV=production && pm2 start dist/main.js` to set the node environment to `production` and start the backend service with `pm2`
+
+#### Additional commands
+
+```bash
+# Show all running pm2 processes
+pm2 list
+
+# Stop backend process
+pm2 stop main
+
+# Show logs of backend process
+pm2 logs main
+
+# Start backend with live output enabled
+export NODE_ENV=production && pm2 start dist/main.js --no-daemon
+```

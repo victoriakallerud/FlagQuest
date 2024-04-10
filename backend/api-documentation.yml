@@ -80,7 +80,7 @@ paths:
       responses:
         '200':
           description: Successfully deleted user
-  '/user/{user_id}/friends/{friend_id}':
+  '/user/{user_id}/friends/{inquirer_id}':
     put:
       tags:
        - User
@@ -91,7 +91,7 @@ paths:
           required: true
           schema:
             type: string
-        - name: friend_id
+        - name: receiver_id
           in: path
           required: true
           schema:
@@ -299,6 +299,11 @@ components:
           type: string
         nationality:
           $ref: '#/components/schemas/Nationality'
+        pendingFriendRequests:
+          type: array
+          items:
+            type: string
+            description: List of ids of users which are the pending friend requests
     RequestUser:
       type: object
       properties:
