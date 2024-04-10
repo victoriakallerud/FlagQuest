@@ -5,13 +5,17 @@ import { v4 as uuidv4 } from 'uuid';
 import { RequestLobbyDto } from './dto/requestLobby.dto';
 import { DatabaseService } from '../database/database.service';
 import { LobbyStateEnum } from 'src/enums/lobbyState.enum';
+import { WebsocketGateway } from 'src/websocket/websocket.gateway';
 
 @Injectable()
 export class LobbyService implements ILobbyService{
 
     private readonly logger = new Logger(LobbyService.name);
 
-    constructor(private readonly databaseService: DatabaseService) {
+    constructor(
+        private readonly databaseService: DatabaseService,
+        private readonly webSocketGateway: WebsocketGateway
+    ) {
     }
 
     async createLobby(lobbyDto: RequestLobbyDto): Promise<Lobby> {
@@ -100,6 +104,7 @@ export class LobbyService implements ILobbyService{
             lobby.admin = lobbyDto.admin;
             let updatedLobby = await this.databaseService.updateLobby(lobbyId, lobby);
             this.logger.log('Lobby with id ' + updatedLobby.id + ' updated by user ' + updatedLobby.admin);
+            this.webSocketGateway.pushUpdatedLobby(lobbyId, updatedLobby);
             return updatedLobby;
         } catch (error) {
             if (error.message === 'Lobby does not exist') {
