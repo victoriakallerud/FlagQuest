@@ -54,10 +54,10 @@
       "a": 1
     },
     "window": {
-      "r": 0.76862746,
-      "g": 0.4509804,
-      "b": 0,
-      "a": 1
+      "r":  0.8784313725,
+      "g":  0.9254901961,
+      "b":  0.9568627451,
+      "a":  1
     },
     "buttonColor": {
       "r": 0.57647058,
@@ -113,11 +113,11 @@
     },
     "scrollbar-c": {
       "name": "scrollbar",
-      "color": "color"
+      "color": "textColor"
     },
     "scrollbar-android-c": {
       "name": "scrollbar-android",
-      "color": "color"
+      "color": "textColor"
     },
     "select-box-c": {
       "name": "select-box",

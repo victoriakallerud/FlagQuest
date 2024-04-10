@@ -12,6 +12,7 @@ import com.flagquest.game.states.LobbyInitiationState
 import com.flagquest.game.states.LoginMenuState
 import com.flagquest.game.states.LoginState
 import com.flagquest.game.states.MainMenuState
+import com.flagquest.game.states.ManageFriendsState
 import com.flagquest.game.states.RegistrationState
 
 class FlagQuest : ApplicationAdapter() {
@@ -28,6 +29,7 @@ class FlagQuest : ApplicationAdapter() {
         gsm.push(LobbyInitiationState(gsm))
         gsm.push(GameLobbyState(gsm, true))
         gsm.push(JoinGameState(gsm))
+        gsm.push(ManageFriendsState(gsm))
     }
 
     override fun render() {
