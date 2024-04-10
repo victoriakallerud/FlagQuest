@@ -4,10 +4,12 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.flagquest.game.states.GameLobbyState
 import com.flagquest.game.states.GameStateManager
+import com.flagquest.game.states.HighscoreState
 import com.flagquest.game.states.JoinGameState
 import com.flagquest.game.states.LobbyInitiationState
 import com.flagquest.game.states.LoginState
 import com.flagquest.game.states.MainMenuState
+import com.flagquest.game.states.ManageFriendsState
 import com.flagquest.game.states.RegistrationState
 
 class ButtonClickListener(private val gsm: GameStateManager, private val buttonText: String) : ClickListener() {
@@ -28,8 +30,8 @@ class ButtonClickListener(private val gsm: GameStateManager, private val buttonT
             "CREATE GAME" -> gsm.push(LobbyInitiationState(gsm))
             "JOIN GAME" -> gsm.push(JoinGameState(gsm))
             "TRAINING MODE" -> println("Handle TRAINING MODE button click here") // TODO: Link when implemented
-            "HIGHSCORE BOARD" -> println("Handle HIGHSCORE BOARD button click here") // TODO: Link when implemented
-            "MANAGE FRIENDS" -> println("Handle MANAGE FRIENDS button click here") // TODO: Link when implemented
+            "HIGHSCORE BOARD" -> gsm.push(HighscoreState(gsm))
+            "MANAGE FRIENDS" -> gsm.push(ManageFriendsState(gsm))
 
             //Create Lobby
             "CREATE LOBBY" -> gsm.push(GameLobbyState(gsm, isAdmin = true)) //TODO: Lobby Creation Mechanism
