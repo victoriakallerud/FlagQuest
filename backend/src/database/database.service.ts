@@ -4,6 +4,7 @@ import * as admin from 'firebase-admin';
 import { User } from '../interfaces/user.interface';
 import { Lobby } from 'src/interfaces/lobby.interface';
 import { LobbyService } from 'src/lobby/lobby.service';
+import { Question } from 'src/interfaces/question.interface';
 
 @Injectable()
 export class DatabaseService {
@@ -238,7 +239,37 @@ export class DatabaseService {
         }
     }
 
+    // --------------------- Quizz Functions ---------------------
 
+    async uploadQuestions(countrySet: string[]) {
+        try {
+            countrySet.forEach(async (country, index) => {
+                await this.db.collection('countries').doc(`${country}`).set({"name": country});
+            })
+        } catch (error) {
+            this.logger.error('Error uploading countries', error);
+            throw error;
+        }
+    }
+
+    async getAnwserOptions(): Promise<string[]> {
+        let answerOptions: string[] = [];
+        try{
+            // Get only 4 random unique countries from the database
+            let countries = await this.db.collection('countries').get();
+            let countrySet: Set<string> = new Set();
+            while (countrySet.size < 4) {
+                let randomIndex = Math.floor(Math.random() * countries.size);
+                countrySet.add(countries.docs[randomIndex].data().name);
+            }
+            answerOptions = Array.from(countrySet);
+
+            return answerOptions;
+        } catch (error) {
+            this.logger.error('Error getting answer options', error);
+            throw error;
+        }
+    }
 
     // --------------------- Helper Methods ---------------------
 
