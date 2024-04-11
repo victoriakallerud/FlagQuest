@@ -60,9 +60,9 @@ class OnlineGameState(gsm: GameStateManager, chosen: String? = null, correct: St
             }
 
             if (country == chosen && country != correct)
-                button.setColor(0.286F, 0.612F, 0.384F,1.0f)
+                button.setColor(.892f,.393f,.37f,1f)
             if (country == correct)
-                button.color = Color.LIME
+                button.setColor(0.286F, 0.612F, 0.384F,1f)
 
             stage.addActor(button)
             pos -= button.height + 30
