@@ -28,7 +28,7 @@ class LoginState(gsm: GameStateManager) : State(gsm) {
         isPasswordMode=true
         setPasswordCharacter('*')
     }
-    val loginBtn = TextButton("ENTER", skin)
+    val loginBtn = TextButton("LOGIN", skin)
 
     init {
         Gdx.input.inputProcessor = stage

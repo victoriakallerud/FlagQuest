@@ -21,7 +21,7 @@ class LoginMenuState(gsm: GameStateManager) : State(gsm) {
 
     val heading = Label("FLAGQUEST", skin)
     val loginBtn = TextButton("LOGIN", skin)
-    val registerBtn = TextButton("NEW USER", skin)
+    val registerBtn = TextButton("REGISTER", skin)
     val buttons = arrayOf(Pair(loginBtn, lazy { LoginState(gsm) }),Pair(registerBtn, lazy { RegistrationState(gsm) }))
 
     init {
