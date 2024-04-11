@@ -9,6 +9,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.utils.viewport.ScreenViewport
 import com.flagquest.game.utils.ButtonClickListener
+import okhttp3.OkHttpClient
+import okhttp3.Request
 
 class MainMenuState(gsm: GameStateManager) : State(gsm) {
     private val skin: Skin = Skin(Gdx.files.internal("skins/skin/flat-earth-ui.json"))
@@ -50,6 +52,14 @@ class MainMenuState(gsm: GameStateManager) : State(gsm) {
             pos -= button.first.height + 30
         }
 
+        // Test get request, get Lunitik user with id 398315ed-3e05-47dd-ac50-37d1fbe441d9
+        val client = OkHttpClient()
+        val request = Request.Builder()
+            .url("http://10.0.2.2:3000/user/398315ed-3e05-47dd-ac50-37d1fbe441d9")
+            .addHeader("X-API-Key", "{{token}}")
+            .build()
+        val response = client.newCall(request).execute()
+        println(response.body?.string())
     }
 
     override fun handleInput() {
