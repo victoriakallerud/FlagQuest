@@ -7,6 +7,10 @@ import { Lobby } from 'src/interfaces/lobby.interface';
 import { QuizService } from 'src/quiz/quiz.service';
 import { Quiz } from 'src/interfaces/quiz.interface';
 import { GameService } from 'src/game/game.service';
+import { Game } from 'src/interfaces/game.interface';
+import { submittedAnswerDto } from './dto/submittedAnswer.dto';
+import { Player } from 'src/interfaces/player.interface';
+import { PlayerDto } from './dto/player.dto';
 
 @WebSocketGateway()
 export class WebsocketGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect {
@@ -69,8 +73,38 @@ export class WebsocketGateway implements OnGatewayInit, OnGatewayConnection, OnG
     this.server.to(lobbyId).emit('updateLobby', updatedLobby);
   }
 
-  pushQuiz(lobbyId: string, quiz: any){
+  pushQuiz(lobbyId: string, quiz: Quiz){
     this.server.to(lobbyId).emit('quiz', quiz);
+  }
+
+  pushNotificationToPlayer(lobbyId: string, notification: string){
+    this.server.to(lobbyId).emit('notification', notification);
+  }
+
+  pushEndScoreToPlayer(lobbyId: string, listOfAllPlayer: PlayerDto[]){
+  this.server.to(lobbyId).emit('endScore', listOfAllPlayer);
+  }
+
+  @SubscribeMessage('submittedAnswer')
+  async handleSubmittedAnswer(@ConnectedSocket() client: Socket, @MessageBody() submittedAnswer: submittedAnswerDto) {
+    // get player name and push notification to all players
+    const playerName: string = await this.gameService.getPlayerName(submittedAnswer.playerId); 
+    this.pushNotificationToPlayer(submittedAnswer.lobbyId, `Player ${playerName} submitted an answer`);
+
+    // update player score and increase number of submitted answers
+    this.gameService.updatePlayerScore(client, submittedAnswer.playerId, submittedAnswer.lobbyId, submittedAnswer.isAnswerRight, submittedAnswer.answerTime);
+    this.gameService.increaseNumberOfSubmittedAnswers(submittedAnswer.lobbyId);
+
+    // check if all players have submitted answers and change round if so
+    if (this.gameService.checkIfAllPlayersSubmittedAnswers(submittedAnswer.lobbyId)){
+      this.pushNotificationToPlayer(submittedAnswer.lobbyId, 'All players have submitted their answers');
+      this.gameService.changeCurrentRound(submittedAnswer.lobbyId);
+    }
+    // check if game is over and push end score to all players
+    if (this.gameService.gameOver(submittedAnswer.lobbyId)){
+      this.pushNotificationToPlayer(submittedAnswer.lobbyId, 'Game Over');
+      this.pushEndScoreToPlayer(submittedAnswer.lobbyId, this.gameService.getListOfAllPlayers(submittedAnswer.lobbyId));
+    }
   }
 
 
