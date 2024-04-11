@@ -29,7 +29,7 @@ class MainMenuState(gsm: GameStateManager) : State(gsm) {
     private val buttons = arrayOf(
         createBtn to lazy { LobbyInitiationState(gsm) },
         joinBtn to lazy { JoinGameState(gsm) },
-        trainingBtn to null, //TODO: Link state upon implementation
+        trainingBtn to lazy { OnlineGameState(gsm) }, //TODO: Link to OFFLINE state upon implementation
         highscoreBtn to lazy { HighscoreState(gsm) },
         friendsBtn to lazy { ManageFriendsState(gsm) }
     )
