@@ -25,7 +25,14 @@ class MainMenuState(gsm: GameStateManager) : State(gsm) {
     private val trainingBtn = TextButton("TRAINING MODE", skin)
     private val highscoreBtn = TextButton("HIGHSCORE BOARD", skin)
     private val friendsBtn = TextButton("MANAGE FRIENDS", skin)
-    private val buttons = arrayOf(Pair(createBtn, "LobbyInitiationState"), Pair(joinBtn, "JoinGameState"), Pair(trainingBtn, "NOT IMPLEMENTED"), Pair(highscoreBtn, "HighscoreState"), Pair(friendsBtn, "ManageFriendsState"))
+
+    private val buttons = arrayOf(
+        createBtn to lazy { LobbyInitiationState(gsm) },
+        joinBtn to lazy { JoinGameState(gsm) },
+        trainingBtn to null, //TODO: Link state upon implementation
+        highscoreBtn to lazy { HighscoreState(gsm) },
+        friendsBtn to lazy { ManageFriendsState(gsm) }
+    )
 
     init {
         Gdx.input.inputProcessor = stage

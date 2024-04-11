@@ -29,7 +29,11 @@ class LobbyInitiationState(gsm: GameStateManager) : State(gsm) {
     private val inviteLinkBtn = TextButton("GET INVITE LINK", skin)
     private val inviteBtn = TextButton("INVITE FRIENDS", skin)
     private val createBtn = TextButton("CREATE LOBBY", skin)
-    private val btns = arrayOf(inviteLinkBtn, inviteBtn, createBtn)
+
+    private val btns = arrayOf(
+        inviteLinkBtn to null, //TODO: Link screen
+        inviteBtn to null, //TODO: Invite screen
+        createBtn to lazy { GameLobbyState(gsm,isAdmin = true) })
     private var counter: Int = 1
 
     init {
@@ -57,11 +61,11 @@ class LobbyInitiationState(gsm: GameStateManager) : State(gsm) {
         createBtn.setColor(0.349f, 0.631f, 0.541f, 1f)
 
         for (btn in btns) {
-            btn.width = (screenWidth*80/100).toFloat()
-            btn.height = buttonHeight.toFloat()
-            btn.setPosition(screenWidth / 2 - btn.width / 2, pos - (buttonHeight + 30) * counter)
-            btn.addListener(ButtonClickListener(gsm, btn.text.toString()))
-            stage.addActor(btn)
+            btn.first.width = (screenWidth*80/100).toFloat()
+            btn.first.height = buttonHeight.toFloat()
+            btn.first.setPosition(screenWidth / 2 - btn.first.width / 2, pos - (buttonHeight + 30) * counter)
+            btn.first.addListener(ButtonClickListener(gsm,btn.second))
+            stage.addActor(btn.first)
             counter++
         }
 

@@ -24,8 +24,8 @@ class LoginState(gsm: GameStateManager) : State(gsm) {
     private val heading = Label("LOGIN", skin)
     private val usernameField = TextField("", skin).apply{ messageText="  Username"}
     private val passwordField = TextField("", skin).apply{
-        messageText="  Password";
-        isPasswordMode=true;
+        messageText="  Password"
+        isPasswordMode=true
         setPasswordCharacter('*')
     }
     val loginBtn = TextButton("ENTER", skin)
@@ -52,7 +52,7 @@ class LoginState(gsm: GameStateManager) : State(gsm) {
 
         loginBtn.setSize((screenWidth*80/100).toFloat(), buttonHeight.toFloat())
         loginBtn.setPosition(screenWidth / 2 - loginBtn.width / 2, pos - (buttonHeight + 30) * 2)
-        loginBtn.addListener(ButtonClickListener(gsm, loginBtn.text.toString()))
+        loginBtn.addListener(ButtonClickListener(gsm, lazy {MainMenuState(gsm)}))
         stage.addActor(loginBtn)
 
         titleFont.data.setScale(1.5f)
