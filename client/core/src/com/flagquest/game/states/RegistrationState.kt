@@ -25,8 +25,8 @@ class RegistrationState(gsm: GameStateManager) : State(gsm) {
     private val nameField = TextField("", skin).apply{ messageText="  Name"}
     private val usernameField = TextField("", skin).apply{ messageText="  Username"}
     private val passwordField = TextField("", skin).apply{
-        messageText="  Password";
-        isPasswordMode=true;
+        messageText="  Password"
+        isPasswordMode=true
         setPasswordCharacter('*')
     }
     private val regBtn = TextButton("REGISTER", skin)
@@ -53,7 +53,7 @@ class RegistrationState(gsm: GameStateManager) : State(gsm) {
 
         regBtn.setSize((screenWidth*80/100).toFloat(), buttonHeight.toFloat())
         regBtn.setPosition(screenWidth / 2 - regBtn.width / 2, pos - (buttonHeight + 30) * 3)
-        regBtn.addListener(ButtonClickListener(gsm,regBtn.text.toString()))
+        regBtn.addListener(ButtonClickListener(gsm, lazy { MainMenuState(gsm) }))
         stage.addActor(regBtn)
 
         titleFont.data.setScale(1.5f)

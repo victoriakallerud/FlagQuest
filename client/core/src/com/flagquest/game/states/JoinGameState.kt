@@ -25,7 +25,10 @@ class JoinGameState(gsm: GameStateManager) : State(gsm) {
     private val codeInput = TextField("", skin).apply{ messageText="  GAME CODE"}
     private val codeBtn = TextButton("JOIN WITH CODE", skin)
     private val randomBtn = TextButton("JOIN RANDOM GAME", skin)
-    private val btns = arrayOf(codeBtn, randomBtn)
+
+    private val btns = arrayOf(
+        codeBtn to lazy { GameLobbyState(gsm, isAdmin = false) }, //TODO: Add backend logic
+        randomBtn to lazy { GameLobbyState(gsm, isAdmin = false) } ) //TODO: Add backend logic
     private var counter: Int = 1
 
     init {
@@ -45,11 +48,11 @@ class JoinGameState(gsm: GameStateManager) : State(gsm) {
 
         titleFont.data.setScale(1.5f)
         for (btn in btns) {
-            btn.width = (screenWidth*80/100).toFloat()
-            btn.height = buttonHeight.toFloat()
-            btn.setPosition(screenWidth / 2 - btn.width / 2, pos - (buttonHeight + 30) * counter)
-            btn.addListener(ButtonClickListener(gsm, btn.text.toString()))
-            stage.addActor(btn)
+            btn.first.width = (screenWidth*80/100).toFloat()
+            btn.first.height = buttonHeight.toFloat()
+            btn.first.setPosition(screenWidth / 2 - btn.first.width / 2, pos - (buttonHeight + 30) * counter)
+            btn.first.addListener(ButtonClickListener(gsm, btn.second))
+            stage.addActor(btn.first)
             counter++
         }
     }
