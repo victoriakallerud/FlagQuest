@@ -1,4 +1,4 @@
-package com.flagquest.game.socket
+package com.flagquest.game.communication
 
 import io.socket.client.IO
 import io.socket.client.Socket

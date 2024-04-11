@@ -60,7 +60,7 @@ class OnlineGameState(gsm: GameStateManager, chosen: String? = null, correct: St
             }
 
             if (country == chosen && country != correct)
-                button.color = Color.RED
+                button.setColor(0.286F, 0.612F, 0.384F,1.0f)
             if (country == correct)
                 button.color = Color.LIME
 
