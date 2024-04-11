@@ -25,8 +25,8 @@ class RegistrationState(gsm: GameStateManager) : State(gsm) {
     private val nameField = TextField("", skin).apply{ messageText="  Name"}
     private val usernameField = TextField("", skin).apply{ messageText="  Username"}
     private val passwordField = TextField("", skin).apply{
-        messageText="  Password";
-        isPasswordMode=true;
+        messageText="  Password"
+        isPasswordMode=true
         setPasswordCharacter('*')
     }
     private val regBtn = TextButton("REGISTER", skin)
