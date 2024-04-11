@@ -8,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.utils.viewport.ScreenViewport
+import com.flagquest.game.utils.ButtonClickListener
 
 class LoginMenuState(gsm: GameStateManager) : State(gsm) {
     private val skin: Skin = Skin(Gdx.files.internal("skins/skin/flat-earth-ui.json"))
@@ -21,7 +22,7 @@ class LoginMenuState(gsm: GameStateManager) : State(gsm) {
     val heading = Label("FLAGQUEST", skin)
     val loginBtn = TextButton("LOGIN", skin)
     val registerBtn = TextButton("REGISTER", skin)
-    val buttons = arrayOf(loginBtn, registerBtn)
+    val buttons = arrayOf(Pair(loginBtn, lazy { LoginState(gsm) }),Pair(registerBtn, lazy { RegistrationState(gsm) }))
 
     init {
         Gdx.input.inputProcessor = stage
@@ -32,10 +33,11 @@ class LoginMenuState(gsm: GameStateManager) : State(gsm) {
         stage.addActor(heading)
         titleFont.data.setScale(1.5f)
         for (button in buttons) {
-            button.setSize((screenWidth*80/100).toFloat(), buttonHeight.toFloat())
-            button.setPosition(screenWidth / 2 - button.width / 2, pos)
-            stage.addActor(button)
-            pos -= button.height + 30
+            button.first.setSize((screenWidth*80/100).toFloat(), buttonHeight.toFloat())
+            button.first.setPosition(screenWidth / 2 - button.first.width / 2, pos)
+           button.first.addListener(ButtonClickListener(gsm,button.second))
+            stage.addActor(button.first)
+            pos -= button.first.height + 30
         }
     }
 

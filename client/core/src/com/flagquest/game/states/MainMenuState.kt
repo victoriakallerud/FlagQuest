@@ -8,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.utils.viewport.ScreenViewport
+import com.flagquest.game.utils.ButtonClickListener
 
 class MainMenuState(gsm: GameStateManager) : State(gsm) {
     private val skin: Skin = Skin(Gdx.files.internal("skins/skin/flat-earth-ui.json"))
@@ -24,7 +25,14 @@ class MainMenuState(gsm: GameStateManager) : State(gsm) {
     private val trainingBtn = TextButton("TRAINING MODE", skin)
     private val highscoreBtn = TextButton("HIGHSCORE BOARD", skin)
     private val friendsBtn = TextButton("MANAGE FRIENDS", skin)
-    private val buttons = arrayOf(createBtn, joinBtn, trainingBtn, highscoreBtn, friendsBtn)
+
+    private val buttons = arrayOf(
+        createBtn to lazy { LobbyInitiationState(gsm) },
+        joinBtn to lazy { JoinGameState(gsm) },
+        trainingBtn to null, //TODO: Link state upon implementation
+        highscoreBtn to lazy { HighscoreState(gsm) },
+        friendsBtn to lazy { ManageFriendsState(gsm) }
+    )
 
     init {
         Gdx.input.inputProcessor = stage
@@ -35,10 +43,11 @@ class MainMenuState(gsm: GameStateManager) : State(gsm) {
         stage.addActor(heading)
         titleFont.data.setScale(1.5f)
         for (button in buttons) {
-            button.setSize((screenWidth*80/100).toFloat(), buttonHeight.toFloat())
-            button.setPosition(screenWidth / 2 - button.width / 2, pos)
-            stage.addActor(button)
-            pos -= button.height + 30
+            button.first.setSize((screenWidth*80/100).toFloat(), buttonHeight.toFloat())
+            button.first.setPosition(screenWidth / 2 - button.first.width / 2, pos)
+            button.first.addListener(ButtonClickListener(gsm,button.second))
+            stage.addActor(button.first)
+            pos -= button.first.height + 30
         }
     }
 

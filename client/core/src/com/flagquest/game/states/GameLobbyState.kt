@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField
 import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.viewport.ScreenViewport
 import com.flagquest.game.socket.SocketHandler
+import com.flagquest.game.utils.ButtonClickListener
 
 class GameLobbyState(gsm: GameStateManager, isAdmin: Boolean) : State(gsm) {
     private val skin: Skin = Skin(Gdx.files.internal("skins/skin/flat-earth-ui.json"))
@@ -61,6 +62,7 @@ class GameLobbyState(gsm: GameStateManager, isAdmin: Boolean) : State(gsm) {
             val startButton = TextButton("START NOW", skin)
             startButton.height = buttonHeight.toFloat()
             startButton.setPosition(screenWidth / 2 - startButton.width / 2, 300f)
+            startButton.addListener(ButtonClickListener(gsm, null)) //TODO: Link to Online Game once implemented.
             table.add(startButton).width(screenWidth * 0.8f).padTop(100f)
         }
 

@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.ui.TextField
 import com.badlogic.gdx.utils.viewport.ScreenViewport
+import com.flagquest.game.utils.ButtonClickListener
 
 class RegistrationState(gsm: GameStateManager) : State(gsm) {
     private val skin: Skin = Skin(Gdx.files.internal("skins/skin/flat-earth-ui.json"))
@@ -24,11 +25,11 @@ class RegistrationState(gsm: GameStateManager) : State(gsm) {
     private val nameField = TextField("", skin).apply{ messageText="  Name"}
     private val usernameField = TextField("", skin).apply{ messageText="  Username"}
     private val passwordField = TextField("", skin).apply{
-        messageText="  Password";
-        isPasswordMode=true;
+        messageText="  Password"
+        isPasswordMode=true
         setPasswordCharacter('*')
     }
-    private val regBtn = TextButton("REGISTRATION", skin)
+    private val regBtn = TextButton("REGISTER", skin)
     private val inputFields = arrayOf(nameField, usernameField, passwordField)
     private var counter: Int = 0
 
@@ -52,6 +53,7 @@ class RegistrationState(gsm: GameStateManager) : State(gsm) {
 
         regBtn.setSize((screenWidth*80/100).toFloat(), buttonHeight.toFloat())
         regBtn.setPosition(screenWidth / 2 - regBtn.width / 2, pos - (buttonHeight + 30) * 3)
+        regBtn.addListener(ButtonClickListener(gsm, lazy { MainMenuState(gsm) }))
         stage.addActor(regBtn)
 
         titleFont.data.setScale(1.5f)
