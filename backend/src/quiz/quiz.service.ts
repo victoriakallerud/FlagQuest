@@ -37,6 +37,77 @@ export class QuizService {
         return question;
     }
 
+    async generateNumberOfQuestion(numberOfQuestions: number): Promise<Question[]> {
+        const questions: Question[] = [];
+        for (let i = 0; i < numberOfQuestions; i++) {
+            questions.push(await this.generateQuestion());
+        }
+        return questions;
+    }
+
+    async generateNumberOfEuropeQuestion(numberOfQuestions: number): Promise<Question[]> {
+        const questions: Question[] = [];
+        // TODO add logic to only generate questions about Europe
+        for (let i = 0; i < numberOfQuestions; i++) {
+            questions.push(await this.generateQuestion());
+        }
+        return questions;
+    }
+
+    async generateNumberOfAsiaQuestion(numberOfQuestions: number): Promise<Question[]> {
+        const questions: Question[] = [];
+        // TODO add logic to only generate questions about Asia
+        for (let i = 0; i < numberOfQuestions; i++) {
+            questions.push(await this.generateQuestion());
+        }
+        return questions;
+    }
+
+    async generateNumberOfSouthAmericaQuestion(numberOfQuestions: number): Promise<Question[]> {
+        const questions: Question[] = [];
+        // TODO add logic to only generate questions about South America
+        for (let i = 0; i < numberOfQuestions; i++) {
+            questions.push(await this.generateQuestion());
+        }
+        return questions;
+    }
+
+    async generateNumberOfAfricaQuestion(numberOfQuestions: number): Promise<Question[]> {
+        const questions: Question[] = [];
+        // TODO add logic to only generate questions about Africa
+        for (let i = 0; i < numberOfQuestions; i++) {
+            questions.push(await this.generateQuestion());
+        }
+        return questions;
+    }
+
+    async generateNumberOfNorthamericaQuestion(numberOfQuestions: number): Promise<Question[]> {
+        const questions: Question[] = [];
+        // TODO add logic to only generate questions about North America
+        for (let i = 0; i < numberOfQuestions; i++) {
+            questions.push(await this.generateQuestion());
+        }
+        return questions;
+    }
+
+    async generateNumberOfOceaniaQuestion(numberOfQuestions: number): Promise<Question[]> {
+        const questions: Question[] = [];
+        // TODO add logic to only generate questions about Oceania
+        for (let i = 0; i < numberOfQuestions; i++) {
+            questions.push(await this.generateQuestion());
+        }
+        return questions;
+    }
+
+    async generateNumberOfCentralAmericaQuestion(numberOfQuestions: number): Promise<Question[]> {
+        const questions: Question[] = [];
+        // TODO add logic to only generate questions about Central America
+        for (let i = 0; i < numberOfQuestions; i++) {
+            questions.push(await this.generateQuestion());
+        }
+        return questions;
+    }
+
     async generateQuiz(numberOfQuestions: number): Promise<Quiz> {
         const questions: Question[] = [];
         for (let i = 0; i < numberOfQuestions; i++) {
