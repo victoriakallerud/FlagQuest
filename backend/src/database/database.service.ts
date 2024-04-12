@@ -5,6 +5,7 @@ import { User } from '../interfaces/user.interface';
 import { Lobby } from 'src/interfaces/lobby.interface';
 import { LobbyService } from 'src/lobby/lobby.service';
 import { Question } from 'src/interfaces/question.interface';
+import { Country } from 'src/interfaces/country.interface';
 
 @Injectable()
 export class DatabaseService {
@@ -241,10 +242,10 @@ export class DatabaseService {
 
     // --------------------- Quizz Functions ---------------------
 
-    async uploadQuestions(countrySet: string[]) {
+    async uploadQuestions(countries: Country[]) {
         try {
-            countrySet.forEach(async (country, index) => {
-                await this.db.collection('countries').doc(`${country}`).set({"name": country});
+            countries.forEach(async (country, index) => {
+                await this.db.collection('countries').doc(`${country.name}`).set(country);
             })
         } catch (error) {
             this.logger.error('Error uploading countries', error);

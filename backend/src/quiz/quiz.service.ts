@@ -1,6 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { DatabaseService } from 'src/database/database.service';
 import { AnswerOption } from 'src/interfaces/answerOption.interface';
+import { Country } from 'src/interfaces/country.interface';
 import { Question } from 'src/interfaces/question.interface';
 import { Quiz } from 'src/interfaces/quiz.interface';
 
@@ -12,7 +13,7 @@ export class QuizService {
     private readonly logger = new Logger(QuizService.name);
 
 
-    async createCountries(countries: string[]) {
+    async createCountries(countries: Country[]) {
         this.databaseService.uploadQuestions(countries);
     }
 

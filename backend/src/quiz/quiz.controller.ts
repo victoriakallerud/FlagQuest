@@ -1,6 +1,8 @@
 import { Body, Controller, Get, Logger, Post } from '@nestjs/common';
 import { QuizService } from './quiz.service';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { CountryDTO } from './dto/country.dto';
+import { count } from 'console';
 
 @ApiTags('quiz')
 @Controller('quiz')
@@ -13,8 +15,8 @@ export class QuizController {
 
     @ApiOperation({summary: 'insertCountries'})
     @Post('questions')
-    async createCountries(@Body('countries') countryNames: string[]){
-      return this.quizService.createCountries(countryNames);
+    async createCountries(@Body('countries') countries: CountryDTO[]){
+      return this.quizService.createCountries(countries);
     }
 
     @ApiOperation({summary: 'get a random generated Question'})
