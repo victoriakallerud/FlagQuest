@@ -17,6 +17,7 @@ class FlagQuest : ApplicationAdapter() {
     override fun create() {
         batch = SpriteBatch()
         img = Texture("badlogic.jpg")
+        Gdx.input.setCatchBackKey(true);
         if (isLoggedIn) gsm.push(MainMenuState(gsm)) else gsm.push(LoginMenuState(gsm))
     }
 

@@ -22,4 +22,7 @@ class GameStateManager {
     fun render() {
         states.peek().render()
     }
+    fun isEmpty(): Boolean {
+        return states.isEmpty()
+    }
 }
