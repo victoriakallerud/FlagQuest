@@ -21,7 +21,7 @@ class OnlineGameState(gsm: GameStateManager, chosen: String? = null, correct: St
     private val screenHeight = Gdx.graphics.height
     private val buttonHeight = screenHeight / 11
     private var pos: Float = ((screenHeight / 2) - 150).toFloat()
-    private val stage = Stage(ScreenViewport())
+    override val stage = Stage(ScreenViewport())
 
     private val countries = arrayOf("SLOVAKIA", "RUSSIA", "SLOVENIA", "CROATIA") //TODO: Retrieve from backend
     private val correctCountry = "SLOVENIA" //TODO: Retrieve from backend

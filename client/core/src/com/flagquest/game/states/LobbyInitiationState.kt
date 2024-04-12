@@ -26,7 +26,7 @@ class LobbyInitiationState(gsm: GameStateManager) : State(gsm) {
     private val backButtonHeight = screenHeight / 11
     private val backButtonWidth = backButtonHeight
 
-    private val stage = Stage(ScreenViewport())
+    override val stage = Stage(ScreenViewport())
     private val code = "12345" // TODO: write function to get code
 
     private val heading = Label("CREATE GAME\nLOBBY", skin)
@@ -55,7 +55,6 @@ class LobbyInitiationState(gsm: GameStateManager) : State(gsm) {
         backBtn.addListener(object: ClickListener(){
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
                 gsm.pop()
-                gsm.render()
             }
         })
         stage.addActor(backBtn)

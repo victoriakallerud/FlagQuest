@@ -25,7 +25,7 @@ class ManageFriendsState(gsm: GameStateManager) : State(gsm) {
     private var screenWidth = Gdx.graphics.width
     private val screenHeight = Gdx.graphics.height
     private val buttonHeight = screenHeight / 11
-    private val stage = Stage(ScreenViewport())
+    override val stage = Stage(ScreenViewport())
 
     // Heading
     private val heading = Label("MANAGE\nFRIENDS", skin)

@@ -17,7 +17,7 @@ class MainMenuState(gsm: GameStateManager) : State(gsm) {
     private val screenHeight = Gdx.graphics.height
     private val buttonHeight = screenHeight / 11
     private var pos: Float = ((screenHeight / 2) + 50).toFloat()
-    private val stage = Stage(ScreenViewport())
+    override val stage = Stage(ScreenViewport())
 
     private val heading = Label("FLAGQUEST", skin)
     private val createBtn = TextButton("CREATE GAME", skin)

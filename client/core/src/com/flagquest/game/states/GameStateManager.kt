@@ -1,16 +1,16 @@
 package com.flagquest.game.states
 
-import com.badlogic.gdx.assets.AssetManager
-import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import java.util.Stack
 class GameStateManager {
     var states: Stack<State> = Stack()
 
     fun push(state: State) {
         states.push(state)
+        state.switchInputProcessor()
     }
     fun pop() {
         states.pop()
+        states.peek()?.switchInputProcessor()
     }
     fun set(state: State) {
         states.pop()

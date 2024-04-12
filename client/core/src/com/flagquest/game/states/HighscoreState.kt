@@ -21,7 +21,7 @@ class HighscoreState(gsm: GameStateManager) : State(gsm) {
     private val titleFont: BitmapFont = skin.getFont("title")
     private var screenWidth = Gdx.graphics.width
     private val screenHeight = Gdx.graphics.height
-    private val stage = Stage(ScreenViewport())
+    override val stage = Stage(ScreenViewport())
     private val heading = Label("HIGHSCORE", skin)
     private var players = arrayOf( // TODO: Implement way of getting the 10 players with the highest ranking
         Pair("Amel De Kok", 10369),

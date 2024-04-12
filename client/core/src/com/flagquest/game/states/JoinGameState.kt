@@ -19,7 +19,7 @@ class JoinGameState(gsm: GameStateManager) : State(gsm) {
     private val screenHeight = Gdx.graphics.height
     private val buttonHeight = screenHeight / 11
     private var pos: Float = ((screenHeight / 2) + 50).toFloat()
-    private val stage = Stage(ScreenViewport())
+    override val stage = Stage(ScreenViewport())
 
     private val heading = Label("JOIN GAME\nLOBBY", skin)
     private val codeInput = TextField("", skin).apply{ messageText="  GAME CODE"}

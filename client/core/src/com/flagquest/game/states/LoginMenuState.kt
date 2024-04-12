@@ -17,7 +17,7 @@ class LoginMenuState(gsm: GameStateManager) : State(gsm) {
     val screenHeight = Gdx.graphics.height
     val buttonHeight = screenHeight / 11
     var pos: Float = ((screenHeight / 2) + 50).toFloat()
-    val stage = Stage(ScreenViewport())
+    override val stage = Stage(ScreenViewport())
 
     val heading = Label("FLAGQUEST", skin)
     val loginBtn = TextButton("LOGIN", skin)
