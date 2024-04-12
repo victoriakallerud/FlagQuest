@@ -41,6 +41,7 @@ export class LobbyService implements ILobbyService{
         let uuid = uuidv4();
         let lobby: Lobby = {
             id: uuid,
+            inviteCode: Math.floor(100000 + Math.random() * 900000),
             name: lobbyDto.name,
             admin: lobbyDto.admin,
             options: lobbyDto.options,
@@ -157,7 +158,7 @@ export class LobbyService implements ILobbyService{
     async joinLobby(lobbyId: string, userId: string): Promise<Lobby> {
         try {
             //checks if user exists
-            if(!this.databaseService.userExists){
+            if(!this.databaseService.userExistsById(userId)){
                 throw new HttpException(`User with ${userId} does not exist`, 403);
             }
             let user = await this.databaseService.getUserById(userId);
@@ -192,6 +193,7 @@ export class LobbyService implements ILobbyService{
             lobby.players.push(userId);
             let updatedLobby = await this.databaseService.updateLobby(lobbyId, lobby);
             this.logger.log('User ' + userId + ' joined lobby with id ' + updatedLobby.id);
+            this.webSocketGateway.pushUpdatedLobby(lobbyId, updatedLobby);
             return updatedLobby;
         } catch (error) {
             if(error instanceof HttpException){
@@ -204,6 +206,23 @@ export class LobbyService implements ILobbyService{
                 this.logger.error('Error joining lobby', error);
                 throw new HttpException('Error joining lobby', 500);
             }
+        }
+    }
+
+    async joinLobbyByInviteCode(inviteCode: number, userId: string): Promise<Lobby> {
+        // Find lobby by invite code
+        this.logger.log(`User ${userId} tries to join lobby with invite code ${inviteCode}`);
+        try{
+            const lobby = await this.databaseService.getLobbyByInviteCode(inviteCode);
+            if(!lobby) {
+                this.logger.error(`Lobby with invite code ${inviteCode} does not exist`);
+                throw new HttpException(`Lobby with invite code ${inviteCode} does not exist`, 404);
+            } else {
+                return this.joinLobby(lobby.id, userId);
+            }
+        } catch (error) {
+            this.logger.error('Error joining lobby', error);
+            throw new HttpException(`Error joining lobby: ${error}`, 500);
         }
     }
     

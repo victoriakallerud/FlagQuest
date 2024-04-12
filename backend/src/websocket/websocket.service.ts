@@ -30,7 +30,7 @@ export class WebsocketService {
             this.logger.error(`Lobby ${joinLobbyDto.lobbyId} does not exist`);
             return {status: 'ERROR', message: `Lobby ${joinLobbyDto.lobbyId} does not exist`};
         }
-        else if(!await this.databaseService.userExists(joinLobbyDto.userId)) {
+        else if(!await this.databaseService.userExistsById(joinLobbyDto.userId)) {
             this.logger.error(`User ${joinLobbyDto.userId} does not exist`);
             return {status: 'ERROR', message: `User ${joinLobbyDto.userId} does not exist`};
         }
@@ -62,4 +62,9 @@ export class WebsocketService {
 
         return lobbyToBeStarted;
     }
+
+    async isClientInRoomOfLobby(client: Socket, lobbyId: string): Promise<boolean> {
+        return client.rooms.has(lobbyId);
+    }
+    
 }

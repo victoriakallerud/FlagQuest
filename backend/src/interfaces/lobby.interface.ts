@@ -10,6 +10,12 @@ export interface Lobby {
     id?: string;
     /**
      * 
+     * @type {number}
+     * @memberof Lobby
+     */
+    inviteCode?: number;
+    /**
+     * 
      * @type {string}
      * @memberof Lobby
      */

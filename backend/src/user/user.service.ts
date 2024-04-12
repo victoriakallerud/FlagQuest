@@ -15,33 +15,61 @@ export class UserService implements IUserService {
     }
 
     async createUser(userDto: RequestUserDTO): Promise<User> {
-        let uuid = uuidv4();
-        let user: User = {
-            id: uuid,
-            userName: userDto.userName,
-            creationTime: moment().tz('Europe/Berlin').format(),
-            friendUuidList: [],
-            highScores: [],
-            lastOnline: moment().tz('Europe/Berlin').format(),
-            nationality: userDto.nationality,
-            pendingFriendRequests: [],
-        }
+        let userAlreadyExists: boolean = true;
         try{
-            let createdUser = await this.databaseService.createUser(user);
-            this.logger.log('User created with id ' + user.id);
-            return createdUser;
+            userAlreadyExists = await this.databaseService.userExistsByUserName(userDto.userName);
         } catch (error) {
-            this.logger.error('Error creating user', error);
-            throw new HttpException('Error creating user', 500);
+            this.logger.error('Error checking if user exists', error);
+            throw new HttpException('Error checking if user exists', 500);
         }
+        if (userAlreadyExists){
+            this.logger.error(`User with username ${userDto.userName} already exists`);
+            throw new HttpException(`User with username ${userDto.userName} already exists`, 409);
+        } else {
+            let uuid = uuidv4();
+            let user: User = {
+                id: uuid,
+                userName: userDto.userName,
+                creationTime: moment().tz('Europe/Berlin').format(),
+                friendUuidList: [],
+                highScores: [],
+                lastOnline: moment().tz('Europe/Berlin').format(),
+                nationality: userDto.nationality,
+                pendingFriendRequests: [],
+            }
+            try{
+                let createdUser = await this.databaseService.createUser(user);
+                this.logger.log('User created with id ' + user.id);
+                return createdUser;
+            } catch (error) {
+                this.logger.error('Error creating user', error);
+                throw new HttpException('Error creating user', 500);
+            }
+        }
+
     }
 
-    async getUser(userId: string): Promise<User> {
+    async getUserById(userId: string): Promise<User> {
         // find user with id in database
         try{
             let user  = await this.databaseService.getUserById(userId);
             this.logger.log('User with id ' + userId + ' found');
             return user;
+        } catch (error) {
+            if(error.message === 'User does not exist'){
+                this.logger.error('User does not exist', error);
+                throw new HttpException('User does not exist', 404);
+            } else {
+                this.logger.error('Error getting user', error);
+                throw new HttpException('Error getting user', 500);
+            }
+        }
+    }
+    async getUserIdByName(userName: string): Promise<string> {
+        try{
+            let userId  = await this.databaseService.getUserIdByUserName(userName);
+            this.logger.log('User with id ' + userId + ' found');
+            return userId;
         } catch (error) {
             if(error.message === 'User does not exist'){
                 this.logger.error('User does not exist', error);

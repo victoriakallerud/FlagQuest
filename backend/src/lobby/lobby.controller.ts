@@ -49,4 +49,10 @@ constructor(private readonly lobbyService: LobbyService) {}
     async leaveLobby(@Param('lobbyId') lobbyId: string, @Param('userId') userId: string) {
       return this.lobbyService.leaveLobby(lobbyId, userId);
     }
+
+    @ApiOperation({ summary: 'Start a game in a lobby matching the lobby_id' })
+    @Put('/invite/:inviteCode/:userId')
+    async joinLobbyByInviteCode(@Param('inviteCode') inviteCode: number, @Param('userId') userId: string){
+      return this.lobbyService.joinLobbyByInviteCode(Number(inviteCode), userId);
+    }
 }

@@ -30,12 +30,6 @@ export interface Game {
      * @type {number}
      * @memberof Game
      */
-    submittedAnswersForCurrentRound: number;
-    /**
-     * 
-     * @type {number}
-     * @memberof Game
-     */
     currentRound: number;
 
 }
