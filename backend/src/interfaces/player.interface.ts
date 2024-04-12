@@ -24,4 +24,11 @@ export interface Player {
      * @memberof Player
      */
     currentScore: number;
+
+     /**
+     * 
+     * @type {boolean}
+     * @memberof Player
+     */
+     hasAnsweredCurrentRound: boolean;
 }

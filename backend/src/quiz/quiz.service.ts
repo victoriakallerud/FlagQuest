@@ -1,6 +1,8 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { DatabaseService } from 'src/database/database.service';
+import { LevelEnum } from 'src/enums/level.enum';
 import { AnswerOption } from 'src/interfaces/answerOption.interface';
+import { Country } from 'src/interfaces/country.interface';
 import { Question } from 'src/interfaces/question.interface';
 import { Quiz } from 'src/interfaces/quiz.interface';
 
@@ -12,13 +14,17 @@ export class QuizService {
     private readonly logger = new Logger(QuizService.name);
 
 
-    async createCountries(countries: string[]) {
+    async createCountries(countries: Country[]) {
         this.databaseService.uploadQuestions(countries);
     }
 
-    async generateQuestion(): Promise<Question> {
-        this.logger.log('Generating question');
-        const generatedAnswers = await this.databaseService.getAnwserOptions();
+    async generateQuestion(region?: LevelEnum): Promise<Question> {
+        let generatedAnswers: string[] = [];
+        if (region) {
+            generatedAnswers = await this.databaseService.getAnwserOptionsByRegion(region);
+        } else {
+        generatedAnswers = await this.databaseService.getAnwserOptions();
+        }
 
         const desc: string = generatedAnswers[0];
         const answerOptions: AnswerOption[] = generatedAnswers.map((answer, index) => {
@@ -37,7 +43,17 @@ export class QuizService {
         return question;
     }
 
+    async generateNumberOfQuestion(numberOfQuestions: number, region?: LevelEnum): Promise<Question[]> {
+        this.logger.log(`Generated Quiz of ${region} region with ${numberOfQuestions} of questions`);
+        const questions: Question[] = [];
+        for (let i = 0; i < numberOfQuestions; i++) {
+            questions.push(await this.generateQuestion(region));
+        }
+        return questions;
+    }
+
     async generateQuiz(numberOfQuestions: number): Promise<Quiz> {
+        this.logger.log('Generated Quiz');
         const questions: Question[] = [];
         for (let i = 0; i < numberOfQuestions; i++) {
             questions.push(await this.generateQuestion());

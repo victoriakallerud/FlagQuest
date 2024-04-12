@@ -157,7 +157,7 @@ export class LobbyService implements ILobbyService{
     async joinLobby(lobbyId: string, userId: string): Promise<Lobby> {
         try {
             //checks if user exists
-            if(!this.databaseService.userExists){
+            if(!this.databaseService.userExistsById(userId)){
                 throw new HttpException(`User with ${userId} does not exist`, 403);
             }
             let user = await this.databaseService.getUserById(userId);
@@ -192,6 +192,7 @@ export class LobbyService implements ILobbyService{
             lobby.players.push(userId);
             let updatedLobby = await this.databaseService.updateLobby(lobbyId, lobby);
             this.logger.log('User ' + userId + ' joined lobby with id ' + updatedLobby.id);
+            this.webSocketGateway.pushUpdatedLobby(lobbyId, updatedLobby);
             return updatedLobby;
         } catch (error) {
             if(error instanceof HttpException){

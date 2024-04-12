@@ -17,8 +17,14 @@ export class UserController {
 
     @ApiOperation({ summary: 'Get a user by id' })
     @Get(':userId')
-    async getUser(@Param('userId') userId: string) {
-      return await this.userService.getUser(userId);
+    async getUserById(@Param('userId') userId: string) {
+      return await this.userService.getUserById(userId);
+    }
+
+    @ApiOperation({ summary: 'Get a userId by name' })
+    @Get('byName/:userName')
+    async getUserIdByName(@Param('userName') userName: string) {
+      return await this.userService.getUserIdByName(userName);
     }
 
     @ApiOperation({ summary: 'Update a user by id' })
