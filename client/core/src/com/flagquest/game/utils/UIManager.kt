@@ -19,9 +19,11 @@ object UIManager {
     private var screenWidth = Gdx.graphics.width
     private val screenHeight = Gdx.graphics.height
 
+    // Button parameters
     private val buttonHeight = screenHeight / 11
     private var buttonPos: Float = ((screenHeight / 2) + 150).toFloat()
 
+    // Backbutton parameters
     private val backButtonHeight = buttonHeight
     private val backButtonWidth = backButtonHeight
 
@@ -43,7 +45,7 @@ object UIManager {
         buttonPos = yTop
         for (button in buttons) {
             addTextButton(stage,gsm,button, buttonPos)
-            buttonPos -= button.first.height + 30
+            buttonPos -= button.first.height + 30 // Adjust inter-button distance here
         }
     }
 

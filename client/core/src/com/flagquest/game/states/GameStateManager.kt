@@ -6,11 +6,11 @@ class GameStateManager {
 
     fun push(state: State) {
         states.push(state)
-        state.switchInputProcessor()
+        state.switchInputProcessor() //Ensure that the inputs of the new state are taken
     }
     fun pop() {
         states.pop()
-        states.peek()?.switchInputProcessor()
+        states.peek()?.switchInputProcessor() //Ensure that inputs of previous state are taken up again.
     }
     fun set(state: State) {
         states.pop()
