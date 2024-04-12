@@ -17,6 +17,9 @@ import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.RequestBody.Companion.toRequestBody
+import org.json.JSONException
+import org.json.JSONObject
+
 
 class LobbyInitiationState(gsm: GameStateManager) : State(gsm) {
     private val skin: Skin = Skin(Gdx.files.internal("skins/skin/flat-earth-ui.json"))
@@ -38,10 +41,7 @@ class LobbyInitiationState(gsm: GameStateManager) : State(gsm) {
     private val createBtn = TextButton("CREATE LOBBY", skin)
     private var size: Int = 6
 
-    private val btns = arrayOf(
-        inviteLinkBtn to null, //TODO: Link screen
-        inviteBtn to null, //TODO: Invite screen
-        createBtn to lazy { GameLobbyState(gsm,isAdmin = true) })
+    private val btns = arrayOf(inviteLinkBtn, inviteBtn, createBtn)
     private var counter: Int = 1
 
     init {
@@ -75,10 +75,10 @@ class LobbyInitiationState(gsm: GameStateManager) : State(gsm) {
         createBtn.setColor(0.349f, 0.631f, 0.541f, 1f)
 
         for (btn in btns) {
-            btn.first.width = (screenWidth*80/100).toFloat()
-            btn.first.height = buttonHeight.toFloat()
-            btn.first.setPosition(screenWidth / 2 - btn.first.width / 2, pos - (buttonHeight + 30) * counter)
-            stage.addActor(btn.first)
+            btn.width = (screenWidth*80/100).toFloat()
+            btn.height = buttonHeight.toFloat()
+            btn.setPosition(screenWidth / 2 - btn.width / 2, pos - (buttonHeight + 30) * counter)
+            stage.addActor(btn)
             counter++
         }
 
@@ -110,15 +110,25 @@ class LobbyInitiationState(gsm: GameStateManager) : State(gsm) {
                         "\r\n  }\r\n" +
                         "}").toRequestBody(mediaType)
                 val request = Request.Builder()
-                    .url("http://10.0.2.2:3000/lobby/")
+                    .url("http://flagquest.leotm.de:3000/lobby/")
                     .post(body)
                     .addHeader("Content-Type", "application/json")
                     .addHeader("X-API-Key", "{{token}}")
                     .build()
                 val response = client.newCall(request).execute()
+                val responseBodyString = response.body?.string()
+                println("Response Body: $responseBodyString")
+                try {
+                    responseBodyString?.let {
+                        val lobbyId = JSONObject(it).getString("id")
+                        println("Lobby ID: $lobbyId")
+                        gsm.push(GameLobbyState(gsm, isAdmin = true, lobbyId = lobbyId))
+                    }
+                } catch (e: JSONException) {
+                    println("Failed to parse the response JSON: ${e.message}")
+                }
 
-                println("Lobby created: ${response.body?.string()}")
-                gsm.push(GameLobbyState(gsm,isAdmin = true))
+
             }
         })
 

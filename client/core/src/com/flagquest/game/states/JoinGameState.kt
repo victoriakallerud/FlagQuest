@@ -27,8 +27,8 @@ class JoinGameState(gsm: GameStateManager) : State(gsm) {
     private val randomBtn = TextButton("JOIN RANDOM GAME", skin)
 
     private val btns = arrayOf(
-        codeBtn to lazy { GameLobbyState(gsm, isAdmin = false) }, //TODO: Add backend logic
-        randomBtn to lazy { GameLobbyState(gsm, isAdmin = false) } ) //TODO: Add backend logic
+        codeBtn to lazy { GameLobbyState(gsm, isAdmin = false, lobbyId = "ccc1516a-017e-4132-9782-b68a3c6a4b80") }, //TODO: Add backend logic
+        randomBtn to lazy { GameLobbyState(gsm, isAdmin = false, lobbyId = "ccc1516a-017e-4132-9782-b68a3c6a4b80") } ) //TODO: Add backend logic
     private var counter: Int = 1
 
     init {
