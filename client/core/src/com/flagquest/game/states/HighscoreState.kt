@@ -14,13 +14,14 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.viewport.ScreenViewport
+import com.flagquest.game.utils.UIManager.addBackButton
+import com.flagquest.game.utils.UIManager.addHeading
 
 class HighscoreState(gsm: GameStateManager) : State(gsm) {
     private val skin: Skin = Skin(Gdx.files.internal("skins/skin/flat-earth-ui.json"))
     private val textFieldStyle: TextField.TextFieldStyle = skin.get(TextField.TextFieldStyle::class.java)
     private val titleFont: BitmapFont = skin.getFont("title")
     private var screenWidth = Gdx.graphics.width
-    private val screenHeight = Gdx.graphics.height
     override val stage = Stage(ScreenViewport())
     private val heading = Label("HIGHSCORE", skin)
     private var players = arrayOf( // TODO: Implement way of getting the 10 players with the highest ranking
@@ -50,18 +51,13 @@ class HighscoreState(gsm: GameStateManager) : State(gsm) {
     private val highlightColor = Color(0.3882353f, 0.70980394f, 0.7764706f, 1f)
 
     init {
-        Gdx.input.inputProcessor = stage
         textFieldStyle.font.data.setScale(5f)
 
         players = players.sortedByDescending { it.second }.toTypedArray()
         friends = friends.sortedByDescending { it.second }.toTypedArray()
 
-        heading.setStyle(Label.LabelStyle(titleFont, heading.style.fontColor))
-        heading.setFontScale(2.8f)
-        heading.setAlignment(Align.center)
-        heading.pack()
-        heading.setPosition((screenWidth - heading.prefWidth) / 2, screenHeight - 500f)
-        stage.addActor(heading)
+        addHeading(stage,"HIGHSCORE", 2.8f)
+        addBackButton(stage,gsm)
 
         globalBtn.color = highlightColor
         btnTable.setFillParent(true)
