@@ -208,6 +208,24 @@ export class DatabaseService {
         }
     }
 
+    async getLobbyByInviteCode(inviteCode: number): Promise<Lobby> {
+        try {
+            this.logger.log(`Type of invite code: ${typeof inviteCode}`);
+            let lobbyDoc = await this.db.collection('lobbies').where('inviteCode', '==', inviteCode).get();
+            if (lobbyDoc.empty) {
+                this.logger.error(`Lobby with invite code ${inviteCode} does not exist`);
+                return null;
+            } else {
+                let lobby = lobbyDoc.docs[0].data();
+                lobby.id = lobbyDoc.docs[0].id;
+                return lobby;
+            }
+        } catch (error) {
+            this.logger.error('Error getting lobby', error);
+            throw error;
+        }
+    }
+
     async updateLobby(lobbyId: string, lobby: Lobby): Promise<Lobby> {
         try {
             let lobbyDoc = await this.db.collection('lobbies').doc(lobbyId).get();
