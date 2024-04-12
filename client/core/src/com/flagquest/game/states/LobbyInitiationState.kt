@@ -3,11 +3,13 @@ package com.flagquest.game.states
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.g2d.BitmapFont
+import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.ui.TextField
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.viewport.ScreenViewport
 import com.flagquest.game.utils.ButtonClickListener
@@ -20,6 +22,10 @@ class LobbyInitiationState(gsm: GameStateManager) : State(gsm) {
     private val screenHeight = Gdx.graphics.height
     private val buttonHeight = screenHeight / 11
     private var pos: Float = ((screenHeight / 2) + 50).toFloat()
+
+    private val backButtonHeight = screenHeight / 11
+    private val backButtonWidth = backButtonHeight
+
     private val stage = Stage(ScreenViewport())
     private val code = "12345" // TODO: write function to get code
 
@@ -30,6 +36,8 @@ class LobbyInitiationState(gsm: GameStateManager) : State(gsm) {
     private val inviteBtn = TextButton("INVITE FRIENDS", skin)
     private val createBtn = TextButton("CREATE LOBBY", skin)
 
+    private val backBtn = TextButton("<-", skin)
+
     private val btns = arrayOf(
         inviteLinkBtn to null, //TODO: Link screen
         inviteBtn to null, //TODO: Invite screen
@@ -39,6 +47,18 @@ class LobbyInitiationState(gsm: GameStateManager) : State(gsm) {
     init {
         Gdx.input.inputProcessor = stage
         textFieldStyle.font.data.setScale(5f)
+
+        // Back button:
+        backBtn.width = backButtonWidth.toFloat()
+        backBtn.height = backButtonHeight.toFloat()
+        backBtn.setPosition((screenWidth/11).toFloat(), (screenWidth/11).toFloat() )
+        backBtn.addListener(object: ClickListener(){
+            override fun clicked(event: InputEvent?, x: Float, y: Float) {
+                gsm.pop()
+                gsm.render()
+            }
+        })
+        stage.addActor(backBtn)
 
         heading.setStyle(Label.LabelStyle(titleFont, heading.style.fontColor))
         heading.setFontScale(2.8f)

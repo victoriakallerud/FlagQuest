@@ -6,9 +6,11 @@ import com.flagquest.game.states.GameStateManager
 import com.flagquest.game.states.State
 class ButtonClickListener(private val gsm: GameStateManager, private val lazyState: Lazy<State>?) : ClickListener() {
     override fun clicked(event: InputEvent, x: Float, y: Float) {
+        println("Button Clicked.")
         if (lazyState is Lazy<State>){
             val state = lazyState.value
             gsm.push(state)
+            println("State pushed.")
         }
         else
             println("LINK TO STATE!")

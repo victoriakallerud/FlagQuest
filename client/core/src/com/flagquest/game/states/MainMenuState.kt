@@ -42,13 +42,7 @@ class MainMenuState(gsm: GameStateManager) : State(gsm) {
         heading.setPosition((screenWidth - heading.prefWidth) / 2, screenHeight - 500f)
         stage.addActor(heading)
         titleFont.data.setScale(1.5f)
-        for (button in buttons) {
-            button.first.setSize((screenWidth*80/100).toFloat(), buttonHeight.toFloat())
-            button.first.setPosition(screenWidth / 2 - button.first.width / 2, pos)
-            button.first.addListener(ButtonClickListener(gsm,button.second))
-            stage.addActor(button.first)
-            pos -= button.first.height + 30
-        }
+        initButtons(buttons)
     }
 
     override fun handleInput() {
@@ -62,5 +56,16 @@ class MainMenuState(gsm: GameStateManager) : State(gsm) {
         Gdx.gl.glClearColor(0.92f, 0.88f, 0.84f, 1f)
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
         stage.draw()
+    }
+
+    private fun initButtons (buttons: Array<Pair<TextButton, Lazy<State>>>){
+        for (button in buttons) {
+            button.first.setSize((screenWidth*80/100).toFloat(), buttonHeight.toFloat())
+            button.first.setPosition(screenWidth / 2 - button.first.width / 2, pos)
+            button.first.addListener(ButtonClickListener(gsm,button.second))
+            stage.addActor(button.first)
+            pos -= button.first.height + 30
+            println(button.first.text)
+        }
     }
 }
