@@ -192,6 +192,7 @@ export class LobbyService implements ILobbyService{
             lobby.players.push(userId);
             let updatedLobby = await this.databaseService.updateLobby(lobbyId, lobby);
             this.logger.log('User ' + userId + ' joined lobby with id ' + updatedLobby.id);
+            this.webSocketGateway.pushUpdatedLobby(lobbyId, updatedLobby);
             return updatedLobby;
         } catch (error) {
             if(error instanceof HttpException){

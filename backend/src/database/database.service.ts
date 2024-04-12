@@ -6,6 +6,7 @@ import { Lobby } from 'src/interfaces/lobby.interface';
 import { LobbyService } from 'src/lobby/lobby.service';
 import { Question } from 'src/interfaces/question.interface';
 import { Country } from 'src/interfaces/country.interface';
+import { LobbyStateEnum } from 'src/enums/lobbyState.enum';
 
 @Injectable()
 export class DatabaseService {
@@ -201,6 +202,23 @@ export class DatabaseService {
             throw error;
         }
     }
+
+    async updateLobbyState(lobbyId: string, state: LobbyStateEnum):Promise<Lobby>{
+        try {
+            let lobbyDoc = await this.db.collection('lobbies').doc(lobbyId).get();
+            if (!lobbyDoc.exists) {
+                throw new Error(`Lobby does not exist`);
+            }
+            await this.db.collection('lobbies').doc(lobbyId).update({
+                state: state
+            });
+            return this.getLobbyById(lobbyId);
+        } catch (error) {
+            this.logger.error('Error updating lobby state', error);
+            throw error;
+        }
+    }
+    
     async deleteLobby(lobbyId: string): Promise<void> {
         try {
             let lobbyDoc = this.db.collection('lobbies').doc(lobbyId);

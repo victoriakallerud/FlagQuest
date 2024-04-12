@@ -1,5 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsNotEmpty, IsUUID } from "class-validator";
+import { IsNotEmpty, IsNumber, IsPositive, IsUUID } from "class-validator";
 
 export class submittedAnswerDto {
 
@@ -19,6 +19,8 @@ export class submittedAnswerDto {
 
     @ApiProperty()
     @IsNotEmpty()
+    @IsNumber()
+    @IsPositive()
     //todo add validation for this
     answerTime: number;
 
