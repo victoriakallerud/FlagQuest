@@ -1,16 +1,21 @@
 package com.flagquest.game.utils
 
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.Stage
+import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
+import com.badlogic.gdx.utils.Align
 import com.flagquest.game.states.GameStateManager
 import com.flagquest.game.states.State
 
 object ButtonAdder {
     private val skin: Skin = Skin(Gdx.files.internal("skins/skin/flat-earth-ui.json"))
+    private val titleFont: BitmapFont = skin.getFont("title")
+
     private var screenWidth = Gdx.graphics.width
     private val screenHeight = Gdx.graphics.height
 
@@ -34,7 +39,8 @@ object ButtonAdder {
         stage.addActor(backButton) // Add the back button to the stage
     }
 
-    fun addTextButtons (stage: Stage, gsm: GameStateManager, buttons: Array<Pair<TextButton, Lazy<State>>>){
+    fun addTextButtons (stage: Stage, gsm: GameStateManager, buttons: Array<Pair<TextButton, Lazy<State>>>, yTop: Float) {
+        buttonPos = yTop
         for (button in buttons) {
             button.first.setSize((screenWidth*80/100).toFloat(), buttonHeight.toFloat())
             button.first.setPosition(screenWidth / 2 - button.first.width / 2, buttonPos)
@@ -43,5 +49,16 @@ object ButtonAdder {
             buttonPos -= button.first.height + 30
             println(button.first.text)
         }
+    }
+
+     fun addTitle(stage: Stage, title: String = "FLAGQUEST", fontScale: Float = 3.5f){
+        val heading = Label(title, skin)
+        heading.setStyle(Label.LabelStyle(titleFont, heading.style.fontColor))
+        heading.setFontScale(fontScale)
+        heading.setAlignment(Align.center)
+        heading.pack()
+        heading.setPosition((screenWidth - heading.prefWidth) / 2, screenHeight - 500f)
+        titleFont.data.setScale(1.5f)
+        stage.addActor(heading)
     }
 }
