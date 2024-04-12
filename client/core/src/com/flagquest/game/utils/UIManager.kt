@@ -12,7 +12,7 @@ import com.badlogic.gdx.utils.Align
 import com.flagquest.game.states.GameStateManager
 import com.flagquest.game.states.State
 
-object ButtonAdder {
+object UIManager {
     private val skin: Skin = Skin(Gdx.files.internal("skins/skin/flat-earth-ui.json"))
     private val titleFont: BitmapFont = skin.getFont("title")
 
@@ -47,18 +47,16 @@ object ButtonAdder {
             button.first.addListener(ButtonClickListener(gsm,button.second))
             stage.addActor(button.first)
             buttonPos -= button.first.height + 30
-            println(button.first.text)
         }
     }
 
-     fun addTitle(stage: Stage, title: String = "FLAGQUEST", fontScale: Float = 3.5f){
+     fun addHeading(stage: Stage, title: String, fontScale: Float = 2.8f){
         val heading = Label(title, skin)
-        heading.setStyle(Label.LabelStyle(titleFont, heading.style.fontColor))
+        heading.style = Label.LabelStyle(titleFont, heading.style.fontColor)
         heading.setFontScale(fontScale)
         heading.setAlignment(Align.center)
         heading.pack()
         heading.setPosition((screenWidth - heading.prefWidth) / 2, screenHeight - 500f)
-        titleFont.data.setScale(1.5f)
         stage.addActor(heading)
     }
 }

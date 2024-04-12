@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.ui.TextField
 import com.badlogic.gdx.utils.viewport.ScreenViewport
 import com.flagquest.game.utils.ButtonClickListener
+import com.flagquest.game.utils.UIManager.addHeading
 
 class LoginState(gsm: GameStateManager) : State(gsm) {
     private val skin: Skin = Skin(Gdx.files.internal("skins/skin/flat-earth-ui.json"))
@@ -21,7 +22,6 @@ class LoginState(gsm: GameStateManager) : State(gsm) {
     private var pos: Float = ((screenHeight / 2) + 50).toFloat()
     override val stage = Stage(ScreenViewport())
 
-    private val heading = Label("LOGIN", skin)
     private val usernameField = TextField("", skin).apply{ messageText="  Username"}
     private val passwordField = TextField("", skin).apply{
         messageText="  Password"
@@ -34,11 +34,7 @@ class LoginState(gsm: GameStateManager) : State(gsm) {
         Gdx.input.inputProcessor = stage
         textFieldStyle.font.data.setScale(5f)
 
-        heading.setStyle(Label.LabelStyle(titleFont, heading.style.fontColor))
-        heading.setFontScale(2.8f)
-        heading.pack()
-        heading.setPosition((screenWidth - heading.prefWidth) / 2, screenHeight - 500f)
-        stage.addActor(heading)
+        addHeading(stage,"LOGIN", 2.8f)
 
         usernameField.width = (screenWidth*80/100).toFloat()
         usernameField.height = buttonHeight.toFloat()

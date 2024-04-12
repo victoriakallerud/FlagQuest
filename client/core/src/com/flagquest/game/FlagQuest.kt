@@ -13,7 +13,7 @@ class FlagQuest : ApplicationAdapter() {
     var gsm: GameStateManager = GameStateManager()
     var batch: SpriteBatch? = null
     var img: Texture? = null
-    private val isLoggedIn:Boolean = true // TODO: Retrieve from internal storage
+    private val isLoggedIn:Boolean = false // TODO: Retrieve from internal storage
     override fun create() {
         batch = SpriteBatch()
         img = Texture("badlogic.jpg")

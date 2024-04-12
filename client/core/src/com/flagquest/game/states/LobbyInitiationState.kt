@@ -8,10 +8,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.ui.TextField
-import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.viewport.ScreenViewport
-import com.flagquest.game.utils.ButtonAdder.addBackButton
-import com.flagquest.game.utils.ButtonAdder.addTitle
+import com.flagquest.game.utils.UIManager.addBackButton
+import com.flagquest.game.utils.UIManager.addHeading
 import com.flagquest.game.utils.ButtonClickListener
 
 class LobbyInitiationState(gsm: GameStateManager) : State(gsm) {
@@ -42,7 +41,7 @@ class LobbyInitiationState(gsm: GameStateManager) : State(gsm) {
         Gdx.input.inputProcessor = stage
         textFieldStyle.font.data.setScale(5f)
 
-        addTitle(stage,"CREATE GAME\nLOBBY", 2.8f)
+        addHeading(stage,"CREATE GAME\nLOBBY", 2.8f)
         addBackButton(stage, gsm)
 
         codeText.setStyle(Label.LabelStyle(titleFont, codeText.style.fontColor))

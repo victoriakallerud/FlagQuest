@@ -8,10 +8,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.utils.viewport.ScreenViewport
-import com.flagquest.game.utils.ButtonAdder
-import com.flagquest.game.utils.ButtonAdder.addBackButton
-import com.flagquest.game.utils.ButtonAdder.addTextButtons
-import com.flagquest.game.utils.ButtonAdder.addTitle
+import com.flagquest.game.utils.UIManager.addBackButton
+import com.flagquest.game.utils.UIManager.addTextButtons
+import com.flagquest.game.utils.UIManager.addHeading
 
 class MainMenuState(gsm: GameStateManager) : State(gsm) {
     private val skin: Skin = Skin(Gdx.files.internal("skins/skin/flat-earth-ui.json"))
@@ -33,7 +32,7 @@ class MainMenuState(gsm: GameStateManager) : State(gsm) {
     init {
         Gdx.input.inputProcessor = stage
         drawTitle()
-        addTitle(stage)
+        addHeading(stage, "FLAGQUEST", fontScale = 3.5f)
         addTextButtons(stage, gsm, buttons, buttonStartingPos)
         addBackButton(stage, gsm)
     }
