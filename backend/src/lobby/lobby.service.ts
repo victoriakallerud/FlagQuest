@@ -41,6 +41,7 @@ export class LobbyService implements ILobbyService{
         let uuid = uuidv4();
         let lobby: Lobby = {
             id: uuid,
+            inviteCode: Math.floor(100000 + Math.random() * 900000),
             name: lobbyDto.name,
             admin: lobbyDto.admin,
             options: lobbyDto.options,
@@ -205,6 +206,23 @@ export class LobbyService implements ILobbyService{
                 this.logger.error('Error joining lobby', error);
                 throw new HttpException('Error joining lobby', 500);
             }
+        }
+    }
+
+    async joinLobbyByInviteCode(inviteCode: number, userId: string): Promise<Lobby> {
+        // Find lobby by invite code
+        this.logger.log(`User ${userId} tries to join lobby with invite code ${inviteCode}`);
+        try{
+            const lobby = await this.databaseService.getLobbyByInviteCode(inviteCode);
+            if(!lobby) {
+                this.logger.error(`Lobby with invite code ${inviteCode} does not exist`);
+                throw new HttpException(`Lobby with invite code ${inviteCode} does not exist`, 404);
+            } else {
+                return this.joinLobby(lobby.id, userId);
+            }
+        } catch (error) {
+            this.logger.error('Error joining lobby', error);
+            throw new HttpException(`Error joining lobby: ${error}`, 500);
         }
     }
     
