@@ -12,6 +12,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField
 import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.viewport.ScreenViewport
 import com.flagquest.game.utils.ButtonClickListener
+import com.flagquest.game.utils.UIManager.addBackButton
+import com.flagquest.game.utils.UIManager.addHeading
 
 class GameLobbyState(gsm: GameStateManager, isAdmin: Boolean) : State(gsm) {
     private val skin: Skin = Skin(Gdx.files.internal("skins/skin/flat-earth-ui.json"))
@@ -30,15 +32,10 @@ class GameLobbyState(gsm: GameStateManager, isAdmin: Boolean) : State(gsm) {
     private val names = arrayOf("Amel De Kok", "Felix Kuhn", "Leo Laisé", "Victoria Kallerud") // TODO: Implement way of getting participants
 
     init {
-        Gdx.input.inputProcessor = stage
         textFieldStyle.font.data.setScale(5f)
 
-        heading.setStyle(Label.LabelStyle(titleFont, heading.style.fontColor))
-        heading.setFontScale(2.8f)
-        heading.setAlignment(Align.center)
-        heading.pack()
-        heading.setPosition((screenWidth - heading.prefWidth) / 2, screenHeight - 500f)
-        stage.addActor(heading)
+        addHeading(stage, "GAME LOBBY", 2.8f)
+        addBackButton(stage,gsm)
 
         codeText.setStyle(Label.LabelStyle(titleFont, codeText.style.fontColor))
         codeText.setFontScale(1.5f)
@@ -66,7 +63,6 @@ class GameLobbyState(gsm: GameStateManager, isAdmin: Boolean) : State(gsm) {
         }
 
         stage.addActor(table)
-
         titleFont.data.setScale(1.5f)
 
     }
