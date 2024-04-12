@@ -2,7 +2,8 @@ import { User } from '../interfaces/user.interface';
 
 export interface IUserService {
     createUser(user: User): Promise<User>;
-    getUser(userId: string): Promise<User>;
+    getUserById(userId: string): Promise<User>;
+    getUserIdByName(userName: string): Promise<string>;
     updateUser(userId: string, user: User): Promise<User>;
     deleteUser(userId: string): Promise<void>;
     removeFriend(userId: string, friendId: string): Promise<void>;

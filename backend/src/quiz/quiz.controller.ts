@@ -1,6 +1,8 @@
-import { Body, Controller, Get, Logger, Post } from '@nestjs/common';
+import { Body, Controller, Get, Logger, Param, Post } from '@nestjs/common';
 import { QuizService } from './quiz.service';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { CountryDTO } from './dto/country.dto';
+import { LevelEnum } from 'src/enums/level.enum';
 
 @ApiTags('quiz')
 @Controller('quiz')
@@ -13,14 +15,20 @@ export class QuizController {
 
     @ApiOperation({summary: 'insertCountries'})
     @Post('questions')
-    async createCountries(@Body('countries') countryNames: string[]){
-      return this.quizService.createCountries(countryNames);
+    async createCountries(@Body('countries') countries: CountryDTO[]){
+      return this.quizService.createCountries(countries);
+    }
+    
+    @ApiOperation({summary: 'get a fixed number of random generated Question'})
+    @Get('questions')
+    async getNumberQuestion(@Body('numberOfQuestions') numberOfQuestions: number){
+      return this.quizService.generateNumberOfQuestion(numberOfQuestions);
     }
 
-    @ApiOperation({summary: 'insertCountries'})
-    @Get('questions')
-    async getQuestion(){
-      return this.quizService.generateQuestion();
+    @ApiOperation({summary: 'get a fixed number of random generated Question from a specific region in'})
+    @Get('questions/:region')
+    async getNumberEuropeQuestion(@Param('region') region: LevelEnum, @Body('numberOfQuestions') numberOfQuestions: number){
+      return this.quizService.generateNumberOfQuestion(numberOfQuestions, region);
     }
 
 }

@@ -5,6 +5,8 @@ import { User } from '../interfaces/user.interface';
 import { Lobby } from 'src/interfaces/lobby.interface';
 import { LobbyService } from 'src/lobby/lobby.service';
 import { Question } from 'src/interfaces/question.interface';
+import { Country } from 'src/interfaces/country.interface';
+import { LobbyStateEnum } from 'src/enums/lobbyState.enum';
 
 @Injectable()
 export class DatabaseService {
@@ -29,6 +31,21 @@ export class DatabaseService {
             }
         } catch (error) {
             this.logger.error('Error getting user', error);
+            throw error;
+        }
+    }
+
+    async getUserIdByUserName(userName: string): Promise<string> {
+        try {
+            let userDocs = await this.db.collection('user').where('userName', '==', userName).get();
+            if (userDocs.empty) {
+                this.logger.error(`User with username ${userName} does not exist`);
+                return null;
+            } else {
+                return userDocs.docs[0].id;
+            }
+        } catch (error) {
+            this.logger.error('Error getting user ID by username', error);
             throw error;
         }
     }
@@ -93,10 +110,20 @@ export class DatabaseService {
         }
     }  
 
-    async userExists(userId: string): Promise<boolean> {
+    async userExistsById(userId: string): Promise<boolean> {
         try {
             let userDoc = await this.db.collection('user').doc(userId).get();
             return userDoc.exists;
+        } catch (error) {
+            this.logger.error('Error checking if user exists', error);
+            throw error;
+        }
+    }
+
+    async userExistsByUserName(userName: string): Promise<boolean> {
+        try {
+            let userDocs = await this.db.collection('user').where('userName', '==', userName).get();
+            return !userDocs.empty;
         } catch (error) {
             this.logger.error('Error checking if user exists', error);
             throw error;
@@ -200,6 +227,23 @@ export class DatabaseService {
             throw error;
         }
     }
+
+    async updateLobbyState(lobbyId: string, state: LobbyStateEnum):Promise<Lobby>{
+        try {
+            let lobbyDoc = await this.db.collection('lobbies').doc(lobbyId).get();
+            if (!lobbyDoc.exists) {
+                throw new Error(`Lobby does not exist`);
+            }
+            await this.db.collection('lobbies').doc(lobbyId).update({
+                state: state
+            });
+            return this.getLobbyById(lobbyId);
+        } catch (error) {
+            this.logger.error('Error updating lobby state', error);
+            throw error;
+        }
+    }
+    
     async deleteLobby(lobbyId: string): Promise<void> {
         try {
             let lobbyDoc = this.db.collection('lobbies').doc(lobbyId);
@@ -241,10 +285,10 @@ export class DatabaseService {
 
     // --------------------- Quizz Functions ---------------------
 
-    async uploadQuestions(countrySet: string[]) {
+    async uploadQuestions(countries: Country[]) {
         try {
-            countrySet.forEach(async (country, index) => {
-                await this.db.collection('countries').doc(`${country}`).set({"name": country});
+            countries.forEach(async (country, index) => {
+                await this.db.collection('countries').doc(`${country.name}`).set(country);
             })
         } catch (error) {
             this.logger.error('Error uploading countries', error);
@@ -257,6 +301,25 @@ export class DatabaseService {
         try{
             // Get only 4 random unique countries from the database
             let countries = await this.db.collection('countries').get();
+            let countrySet: Set<string> = new Set();
+            while (countrySet.size < 4) {
+                let randomIndex = Math.floor(Math.random() * countries.size);
+                countrySet.add(countries.docs[randomIndex].data().name);
+            }
+            answerOptions = Array.from(countrySet);
+
+            return answerOptions;
+        } catch (error) {
+            this.logger.error('Error getting answer options', error);
+            throw error;
+        }
+    }
+
+    async getAnwserOptionsByRegion(region: string): Promise<string[]> {
+        let answerOptions: string[] = [];
+        try{
+            // Get only 4 random unique countries from the database
+            let countries = await this.db.collection('countries').where('region', '==', region).get();
             let countrySet: Set<string> = new Set();
             while (countrySet.size < 4) {
                 let randomIndex = Math.floor(Math.random() * countries.size);
