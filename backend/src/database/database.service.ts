@@ -35,6 +35,21 @@ export class DatabaseService {
         }
     }
 
+    async getUserIdByUserName(userName: string): Promise<string> {
+        try {
+            let userDocs = await this.db.collection('user').where('userName', '==', userName).get();
+            if (userDocs.empty) {
+                this.logger.error(`User with username ${userName} does not exist`);
+                return null;
+            } else {
+                return userDocs.docs[0].id;
+            }
+        } catch (error) {
+            this.logger.error('Error getting user ID by username', error);
+            throw error;
+        }
+    }
+
     async createUser(user: User): Promise<User> {
         try {
            await this.db.collection('user').doc(user.id).set(user);
@@ -95,10 +110,20 @@ export class DatabaseService {
         }
     }  
 
-    async userExists(userId: string): Promise<boolean> {
+    async userExistsById(userId: string): Promise<boolean> {
         try {
             let userDoc = await this.db.collection('user').doc(userId).get();
             return userDoc.exists;
+        } catch (error) {
+            this.logger.error('Error checking if user exists', error);
+            throw error;
+        }
+    }
+
+    async userExistsByUserName(userName: string): Promise<boolean> {
+        try {
+            let userDocs = await this.db.collection('user').where('userName', '==', userName).get();
+            return !userDocs.empty;
         } catch (error) {
             this.logger.error('Error checking if user exists', error);
             throw error;

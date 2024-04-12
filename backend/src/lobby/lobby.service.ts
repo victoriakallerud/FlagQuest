@@ -157,7 +157,7 @@ export class LobbyService implements ILobbyService{
     async joinLobby(lobbyId: string, userId: string): Promise<Lobby> {
         try {
             //checks if user exists
-            if(!this.databaseService.userExists){
+            if(!this.databaseService.userExistsById(userId)){
                 throw new HttpException(`User with ${userId} does not exist`, 403);
             }
             let user = await this.databaseService.getUserById(userId);
