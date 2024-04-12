@@ -39,15 +39,19 @@ object UIManager {
         stage.addActor(backButton) // Add the back button to the stage
     }
 
-    fun addTextButtons (stage: Stage, gsm: GameStateManager, buttons: Array<Pair<TextButton, Lazy<State>>>, yTop: Float) {
+    fun addTextButtonArray (stage: Stage, gsm: GameStateManager, buttons: Array<Pair<TextButton, Lazy<State>>>, yTop: Float) {
         buttonPos = yTop
         for (button in buttons) {
-            button.first.setSize((screenWidth*80/100).toFloat(), buttonHeight.toFloat())
-            button.first.setPosition(screenWidth / 2 - button.first.width / 2, buttonPos)
-            button.first.addListener(ButtonClickListener(gsm,button.second))
-            stage.addActor(button.first)
+            addTextButton(stage,gsm,button, buttonPos)
             buttonPos -= button.first.height + 30
         }
+    }
+
+    fun addTextButton (stage: Stage, gsm: GameStateManager,button: Pair<TextButton,Lazy<State>>, yTop: Float){
+        button.first.setSize((screenWidth*80/100).toFloat(), buttonHeight.toFloat())
+        button.first.setPosition(screenWidth / 2 - button.first.width / 2, yTop)
+        button.first.addListener(ButtonClickListener(gsm,button.second))
+        stage.addActor(button.first)
     }
 
      fun addHeading(stage: Stage, title: String, fontScale: Float = 2.8f){
