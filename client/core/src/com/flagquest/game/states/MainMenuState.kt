@@ -8,7 +8,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.utils.viewport.ScreenViewport
-import com.flagquest.game.utils.ButtonClickListener
+import com.flagquest.game.utils.ButtonAdder.addBackButton
+import com.flagquest.game.utils.ButtonAdder.addTextButtons
 
 class MainMenuState(gsm: GameStateManager) : State(gsm) {
     private val skin: Skin = Skin(Gdx.files.internal("skins/skin/flat-earth-ui.json"))
@@ -20,24 +21,20 @@ class MainMenuState(gsm: GameStateManager) : State(gsm) {
     override val stage = Stage(ScreenViewport())
 
     private val heading = Label("FLAGQUEST", skin)
-    private val createBtn = TextButton("CREATE GAME", skin)
-    private val joinBtn = TextButton("JOIN GAME", skin)
-    private val trainingBtn = TextButton("TRAINING MODE", skin)
-    private val highscoreBtn = TextButton("HIGHSCORE BOARD", skin)
-    private val friendsBtn = TextButton("MANAGE FRIENDS", skin)
 
     private val buttons = arrayOf(
-        createBtn to lazy { LobbyInitiationState(gsm) },
-        joinBtn to lazy { JoinGameState(gsm) },
-        trainingBtn to lazy { OnlineGameState(gsm) }, //TODO: Link to OFFLINE state upon implementation
-        highscoreBtn to lazy { HighscoreState(gsm) },
-        friendsBtn to lazy { ManageFriendsState(gsm) }
+        TextButton("CREATE GAME", skin) to lazy { LobbyInitiationState(gsm) },
+        TextButton("JOIN GAME", skin) to lazy { JoinGameState(gsm) },
+        TextButton("TRAINING MODE", skin) to lazy { OnlineGameState(gsm) }, //TODO: Link to OFFLINE state upon implementation
+        TextButton("HIGHSCORE BOARD", skin) to lazy { HighscoreState(gsm) },
+        TextButton("MANAGE FRIENDS", skin) to lazy { ManageFriendsState(gsm) }
     )
 
     init {
         Gdx.input.inputProcessor = stage
         drawTitle()
-        initButtons(buttons)
+        addTextButtons(stage, gsm, buttons)
+        addBackButton(stage, gsm)
     }
 
     override fun handleInput() {
@@ -62,14 +59,4 @@ class MainMenuState(gsm: GameStateManager) : State(gsm) {
         stage.addActor(heading)
     }
 
-    private fun initButtons (buttons: Array<Pair<TextButton, Lazy<State>>>){
-        for (button in buttons) {
-            button.first.setSize((screenWidth*80/100).toFloat(), buttonHeight.toFloat())
-            button.first.setPosition(screenWidth / 2 - button.first.width / 2, pos)
-            button.first.addListener(ButtonClickListener(gsm,button.second))
-            stage.addActor(button.first)
-            pos -= button.first.height + 30
-            println(button.first.text)
-        }
-    }
 }
