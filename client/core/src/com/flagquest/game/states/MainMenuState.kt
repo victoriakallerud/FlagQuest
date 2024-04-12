@@ -36,12 +36,7 @@ class MainMenuState(gsm: GameStateManager) : State(gsm) {
 
     init {
         Gdx.input.inputProcessor = stage
-        heading.setStyle(Label.LabelStyle(titleFont, heading.style.fontColor))
-        heading.setFontScale(3.5f)
-        heading.pack()
-        heading.setPosition((screenWidth - heading.prefWidth) / 2, screenHeight - 500f)
-        stage.addActor(heading)
-        titleFont.data.setScale(1.5f)
+        drawTitle()
         initButtons(buttons)
     }
 
@@ -56,6 +51,15 @@ class MainMenuState(gsm: GameStateManager) : State(gsm) {
         Gdx.gl.glClearColor(0.92f, 0.88f, 0.84f, 1f)
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
         stage.draw()
+    }
+
+    private fun drawTitle(){
+        heading.setStyle(Label.LabelStyle(titleFont, heading.style.fontColor))
+        heading.setFontScale(3.5f)
+        heading.pack()
+        heading.setPosition((screenWidth - heading.prefWidth) / 2, screenHeight - 500f)
+        titleFont.data.setScale(1.5f)
+        stage.addActor(heading)
     }
 
     private fun initButtons (buttons: Array<Pair<TextButton, Lazy<State>>>){
