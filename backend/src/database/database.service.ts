@@ -272,6 +272,25 @@ export class DatabaseService {
         }
     }
 
+    async getAnwserOptionsByRegion(region: string): Promise<string[]> {
+        let answerOptions: string[] = [];
+        try{
+            // Get only 4 random unique countries from the database
+            let countries = await this.db.collection('countries').where('region', '==', region).get();
+            let countrySet: Set<string> = new Set();
+            while (countrySet.size < 4) {
+                let randomIndex = Math.floor(Math.random() * countries.size);
+                countrySet.add(countries.docs[randomIndex].data().name);
+            }
+            answerOptions = Array.from(countrySet);
+
+            return answerOptions;
+        } catch (error) {
+            this.logger.error('Error getting answer options', error);
+            throw error;
+        }
+    }
+
     // --------------------- Helper Methods ---------------------
 
 }

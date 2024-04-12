@@ -1,5 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { DatabaseService } from 'src/database/database.service';
+import { LevelEnum } from 'src/enums/level.enum';
 import { AnswerOption } from 'src/interfaces/answerOption.interface';
 import { Country } from 'src/interfaces/country.interface';
 import { Question } from 'src/interfaces/question.interface';
@@ -17,9 +18,14 @@ export class QuizService {
         this.databaseService.uploadQuestions(countries);
     }
 
-    async generateQuestion(): Promise<Question> {
+    async generateQuestion(region?: LevelEnum): Promise<Question> {
         this.logger.log('Generating question');
-        const generatedAnswers = await this.databaseService.getAnwserOptions();
+        let generatedAnswers: string[] = [];
+        if (region) {
+            generatedAnswers = await this.databaseService.getAnwserOptionsByRegion(region);
+        } else {
+        generatedAnswers = await this.databaseService.getAnwserOptions();
+        }
 
         const desc: string = generatedAnswers[0];
         const answerOptions: AnswerOption[] = generatedAnswers.map((answer, index) => {
@@ -38,73 +44,10 @@ export class QuizService {
         return question;
     }
 
-    async generateNumberOfQuestion(numberOfQuestions: number): Promise<Question[]> {
+    async generateNumberOfQuestion(numberOfQuestions: number, region?: LevelEnum): Promise<Question[]> {
         const questions: Question[] = [];
         for (let i = 0; i < numberOfQuestions; i++) {
-            questions.push(await this.generateQuestion());
-        }
-        return questions;
-    }
-
-    async generateNumberOfEuropeQuestion(numberOfQuestions: number): Promise<Question[]> {
-        const questions: Question[] = [];
-        // TODO add logic to only generate questions about Europe
-        for (let i = 0; i < numberOfQuestions; i++) {
-            questions.push(await this.generateQuestion());
-        }
-        return questions;
-    }
-
-    async generateNumberOfAsiaQuestion(numberOfQuestions: number): Promise<Question[]> {
-        const questions: Question[] = [];
-        // TODO add logic to only generate questions about Asia
-        for (let i = 0; i < numberOfQuestions; i++) {
-            questions.push(await this.generateQuestion());
-        }
-        return questions;
-    }
-
-    async generateNumberOfSouthAmericaQuestion(numberOfQuestions: number): Promise<Question[]> {
-        const questions: Question[] = [];
-        // TODO add logic to only generate questions about South America
-        for (let i = 0; i < numberOfQuestions; i++) {
-            questions.push(await this.generateQuestion());
-        }
-        return questions;
-    }
-
-    async generateNumberOfAfricaQuestion(numberOfQuestions: number): Promise<Question[]> {
-        const questions: Question[] = [];
-        // TODO add logic to only generate questions about Africa
-        for (let i = 0; i < numberOfQuestions; i++) {
-            questions.push(await this.generateQuestion());
-        }
-        return questions;
-    }
-
-    async generateNumberOfNorthamericaQuestion(numberOfQuestions: number): Promise<Question[]> {
-        const questions: Question[] = [];
-        // TODO add logic to only generate questions about North America
-        for (let i = 0; i < numberOfQuestions; i++) {
-            questions.push(await this.generateQuestion());
-        }
-        return questions;
-    }
-
-    async generateNumberOfOceaniaQuestion(numberOfQuestions: number): Promise<Question[]> {
-        const questions: Question[] = [];
-        // TODO add logic to only generate questions about Oceania
-        for (let i = 0; i < numberOfQuestions; i++) {
-            questions.push(await this.generateQuestion());
-        }
-        return questions;
-    }
-
-    async generateNumberOfCentralAmericaQuestion(numberOfQuestions: number): Promise<Question[]> {
-        const questions: Question[] = [];
-        // TODO add logic to only generate questions about Central America
-        for (let i = 0; i < numberOfQuestions; i++) {
-            questions.push(await this.generateQuestion());
+            questions.push(await this.generateQuestion(region));
         }
         return questions;
     }
