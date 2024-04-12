@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField
 import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.viewport.ScreenViewport
 import com.flagquest.game.utils.ButtonClickListener
+import okhttp3.Request
 
 class GameLobbyState(gsm: GameStateManager, isAdmin: Boolean, lobbyId: String) : State(gsm) {
     private val skin: Skin = Skin(Gdx.files.internal("skins/skin/flat-earth-ui.json"))
@@ -22,8 +23,8 @@ class GameLobbyState(gsm: GameStateManager, isAdmin: Boolean, lobbyId: String) :
     private val buttonHeight = screenHeight / 11
     private var pos: Float = ((screenHeight / 2) + 50).toFloat()
     private val stage = Stage(ScreenViewport())
-    private val currParticipants: Int = 4 // TODO: Implement way of getting current participants number
-    private val totalParticipants: Int = 6 // TODO: Implement way of getting total participants number
+    private val currParticipants: Int = 0 // TODO: Implement way of getting current participants number
+    private val totalParticipants: Int = 0 // TODO: Implement way of getting total participants number
 
     private val heading = Label("GAME LOBBY", skin)
     private val codeText = Label("$currParticipants/$totalParticipants has joined", skin)

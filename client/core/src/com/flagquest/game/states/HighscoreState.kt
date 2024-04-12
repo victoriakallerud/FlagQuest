@@ -83,7 +83,7 @@ class HighscoreState(gsm: GameStateManager) : State(gsm) {
             scoreTable.row()
         }
 
-        scoreTable.top().padTop(800f)
+        scoreTable.top().padTop(850f)
         stage.addActor(scoreTable)
 
         titleFont.data.setScale(1.2f)

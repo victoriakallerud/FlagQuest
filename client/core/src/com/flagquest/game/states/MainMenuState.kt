@@ -52,6 +52,7 @@ class MainMenuState(gsm: GameStateManager) : State(gsm) {
             pos -= button.first.height + 30
         }
 
+        // Test get request, get Lunitik user with id 398315ed-3e05-47dd-ac50-37d1fbe441d9
         val client = OkHttpClient()
         val request = Request.Builder()
             .url("http://10.0.2.2:3000/user/398315ed-3e05-47dd-ac50-37d1fbe441d9")

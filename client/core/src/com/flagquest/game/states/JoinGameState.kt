@@ -55,6 +55,7 @@ class JoinGameState(gsm: GameStateManager) : State(gsm) {
             stage.addActor(btn.first)
             counter++
         }
+
     }
 
     override fun handleInput() {
