@@ -55,7 +55,7 @@ class MainMenuState(gsm: GameStateManager) : State(gsm) {
         // Test get request, get Lunitik user with id 398315ed-3e05-47dd-ac50-37d1fbe441d9
         val client = OkHttpClient()
         val request = Request.Builder()
-            .url("http://10.0.2.2:3000/user/398315ed-3e05-47dd-ac50-37d1fbe441d9")
+            .url("http://flagquest.leotm.de:3000/user/398315ed-3e05-47dd-ac50-37d1fbe441d9")
             .addHeader("X-API-Key", "{{token}}")
             .build()
         val response = client.newCall(request).execute()

@@ -18,6 +18,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.Window
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
 import com.badlogic.gdx.utils.viewport.ScreenViewport
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.RequestBody.Companion.toRequestBody
 
 class ManageFriendsState(gsm: GameStateManager) : State(gsm) {
     private val skin: Skin = Skin(Gdx.files.internal("skins/skin/flat-earth-ui.json"))
@@ -109,6 +113,52 @@ class ManageFriendsState(gsm: GameStateManager) : State(gsm) {
                     // Add listener that (for now) only closes the window
                     addBtn.addListener(object : ClickListener() {
                         override fun clicked(event: InputEvent?, x: Float, y: Float) { // TODO: Add logic to add friend here
+                            // Get user id from username
+                            val nameClient = OkHttpClient()
+                            val nameRequest = Request.Builder()
+                                .url("http://flagquest.leotm.de:3000/user/byName/Spieler1")
+                                .addHeader("X-API-Key", "{{token}}")
+                                .build()
+                            val nameResponse = nameClient.newCall(nameRequest).execute()
+                            val responseBody = nameResponse.body?.string() ?: ""
+
+                            // TODO: Remove code and just use userid of the device's user. Used for testing.
+                            val nameClient2 = OkHttpClient()
+                            val nameRequest2 = Request.Builder()
+                                .url("http://flagquest.leotm.de:3000/user/byName/lunitik")
+                                .addHeader("X-API-Key", "{{token}}")
+                                .build()
+                            val nameResponse2 = nameClient2.newCall(nameRequest2).execute()
+                            val responseBody2 = nameResponse2.body?.string() ?: ""
+
+                            if (nameResponse.isSuccessful) {
+                                // Process the successful response
+                                println("Response successful with body: ${responseBody}")
+                                println("Response successful with body 2: ${responseBody2}")
+                            } else {
+                                // Handle the failure
+                                println("Response failed with status code: ${nameResponse.code}")
+                            }
+
+
+                            // Send friend request
+                            val client = OkHttpClient()
+                            val mediaType = "text/plain".toMediaType()
+                            val body = "".toRequestBody(mediaType)
+                            val request = Request.Builder()
+                                .url("http://flagquest.leotm.de:3000/user/" +
+                                        "${responseBody2}/" +
+                                        "friends/" +
+                                        "$responseBody")
+                                .put(body)
+                                .addHeader("X-API-Key", "{{token}}")
+                                .build()
+                            val response = client.newCall(request).execute()
+                            if (response.isSuccessful) {
+                                println("Success: ${response.body?.string()}")
+                            } else {
+                                println("Failed with status code: ${response.body?.string()}")
+                            }
                             remove()
                         }
                     })

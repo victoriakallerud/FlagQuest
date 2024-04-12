@@ -110,7 +110,7 @@ class LobbyInitiationState(gsm: GameStateManager) : State(gsm) {
                         "\r\n  }\r\n" +
                         "}").toRequestBody(mediaType)
                 val request = Request.Builder()
-                    .url("http://10.0.2.2:3000/lobby/")
+                    .url("http://flagquest.leotm.de:3000/lobby/")
                     .post(body)
                     .addHeader("Content-Type", "application/json")
                     .addHeader("X-API-Key", "{{token}}")

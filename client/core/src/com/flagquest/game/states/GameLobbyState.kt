@@ -11,7 +11,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.ui.TextField
 import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.viewport.ScreenViewport
-import com.flagquest.game.communication.SocketHandler
 import com.flagquest.game.utils.ButtonClickListener
 
 class GameLobbyState(gsm: GameStateManager, isAdmin: Boolean) : State(gsm) {
@@ -69,9 +68,6 @@ class GameLobbyState(gsm: GameStateManager, isAdmin: Boolean) : State(gsm) {
         stage.addActor(table)
 
         titleFont.data.setScale(1.5f)
-
-        SocketHandler.setSocket()
-        SocketHandler.establishConnection()
 
     }
 
