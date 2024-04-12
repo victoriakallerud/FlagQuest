@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.viewport.ScreenViewport
+import com.flagquest.game.utils.BackButtonUtils.addBackButton
 import com.flagquest.game.utils.ButtonClickListener
 
 class LobbyInitiationState(gsm: GameStateManager) : State(gsm) {
@@ -36,8 +37,6 @@ class LobbyInitiationState(gsm: GameStateManager) : State(gsm) {
     private val inviteBtn = TextButton("INVITE FRIENDS", skin)
     private val createBtn = TextButton("CREATE LOBBY", skin)
 
-    private val backBtn = TextButton("<-", skin)
-
     private val btns = arrayOf(
         inviteLinkBtn to null, //TODO: Link screen
         inviteBtn to null, //TODO: Invite screen
@@ -48,16 +47,7 @@ class LobbyInitiationState(gsm: GameStateManager) : State(gsm) {
         Gdx.input.inputProcessor = stage
         textFieldStyle.font.data.setScale(5f)
 
-        // Back button:
-        backBtn.width = backButtonWidth.toFloat()
-        backBtn.height = backButtonHeight.toFloat()
-        backBtn.setPosition((screenWidth/11).toFloat(), (screenWidth/11).toFloat() )
-        backBtn.addListener(object: ClickListener(){
-            override fun clicked(event: InputEvent?, x: Float, y: Float) {
-                gsm.pop()
-            }
-        })
-        stage.addActor(backBtn)
+        addBackButton(stage, gsm)
 
         heading.setStyle(Label.LabelStyle(titleFont, heading.style.fontColor))
         heading.setFontScale(2.8f)
