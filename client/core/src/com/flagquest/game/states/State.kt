@@ -16,12 +16,12 @@ abstract class State(protected val gsm: GameStateManager) {
     abstract fun handleInput()
     abstract fun update(dt: Float) // dt = delta time (difference between two frames)
     abstract fun render()
-    fun switchInputProcessor(){ //Takes the back press and pops the current state.
-        if (!backButtonListenerAdded){
+    fun switchInputProcessor(){
+        if (!backButtonListenerAdded){ //Adds the system back press listener to the stage if not yet added.
             stage.addListener(backButtonListener)
             backButtonListenerAdded = true
         }
-        Gdx.input.inputProcessor = stage
+        Gdx.input.inputProcessor = stage //Switches the input processor to that of the state to be shown.
     }
 
     // Handles system back button presses s.t. state is popped.
