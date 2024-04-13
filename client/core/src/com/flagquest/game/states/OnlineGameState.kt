@@ -23,6 +23,7 @@ class OnlineGameState(gsm: GameStateManager, chosen: String? = null, correct: St
     private val buttonHeight = screenHeight / 11
     private var pos: Float = ((screenHeight / 2) - 50).toFloat()
     override val stage = Stage(ScreenViewport())
+    override var backNavType = "pause"
 
     private val countries = arrayOf("SLOVAKIA", "RUSSIA", "SLOVENIA", "CROATIA") //TODO: Retrieve from backend
     private val correctCountry = "SLOVENIA" //TODO: Retrieve from backend

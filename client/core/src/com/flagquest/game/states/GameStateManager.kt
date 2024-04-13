@@ -25,8 +25,7 @@ class GameStateManager {
     fun isEmpty(): Boolean {
         return states.isEmpty()
     }
-    fun mainMenu(){
+    fun clear(){
         states.clear()
-        push(MainMenuState(this))
     }
 }
