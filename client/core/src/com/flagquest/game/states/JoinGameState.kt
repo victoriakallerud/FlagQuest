@@ -3,14 +3,22 @@ package com.flagquest.game.states
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.g2d.BitmapFont
+import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.ui.TextField
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.viewport.ScreenViewport
 import com.flagquest.game.utils.ButtonClickListener
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.RequestBody.Companion.toRequestBody
+import org.json.JSONException
+import org.json.JSONObject
 
 class JoinGameState(gsm: GameStateManager) : State(gsm) {
     private val skin: Skin = Skin(Gdx.files.internal("skins/skin/flat-earth-ui.json"))
@@ -27,8 +35,8 @@ class JoinGameState(gsm: GameStateManager) : State(gsm) {
     private val randomBtn = TextButton("JOIN RANDOM GAME", skin)
 
     private val btns = arrayOf(
-        codeBtn to lazy { GameLobbyState(gsm, isAdmin = false, lobbyId = "ccc1516a-017e-4132-9782-b68a3c6a4b80") }, //TODO: Add backend logic
-        randomBtn to lazy { GameLobbyState(gsm, isAdmin = false, lobbyId = "ccc1516a-017e-4132-9782-b68a3c6a4b80") } ) //TODO: Add backend logic
+        codeBtn to lazy { GameLobbyState(gsm, isAdmin = false, "14d29155-82ef-4d11-9c36-7214d1a8e4b7") }, //TODO: Add backend logic
+        randomBtn to lazy { GameLobbyState(gsm, isAdmin = false, "14d29155-82ef-4d11-9c36-7214d1a8e4b7") } ) //TODO: Add backend logic
     private var counter: Int = 1
 
     init {
@@ -51,10 +59,40 @@ class JoinGameState(gsm: GameStateManager) : State(gsm) {
             btn.first.width = (screenWidth*80/100).toFloat()
             btn.first.height = buttonHeight.toFloat()
             btn.first.setPosition(screenWidth / 2 - btn.first.width / 2, pos - (buttonHeight + 30) * counter)
-            btn.first.addListener(ButtonClickListener(gsm, btn.second))
+            //btn.first.addListener(ButtonClickListener(gsm, btn.second))
             stage.addActor(btn.first)
             counter++
         }
+
+        codeBtn.addListener(object : ClickListener() {
+            override fun clicked(event: InputEvent?, x: Float, y: Float) {
+                var code: Int = 0
+                if (codeInput.text != "") {
+                    code = codeInput.text.toInt()
+                }
+
+                val client = OkHttpClient()
+                val mediaType = "text/plain".toMediaType()
+                val body = "".toRequestBody(mediaType)
+                val request = Request.Builder()
+                    .url("http://localhost:3000/lobby/51bdfbe3-88b7-4ed5-8c71-079adc346026/47664ed6-98fd-4cf3-8157-1582183c96f1") // lobbyId/userId
+                    .put(body)
+                    .addHeader("X-API-Key", "{{token}}")
+                    .build()
+                val response = client.newCall(request).execute()
+                val responseBodyString = response.body?.string()
+                println("Response Body: $responseBodyString")
+                try {
+                    responseBodyString?.let {
+                        val lobbyId = JSONObject(it).getString("id")
+                        println("Lobby ID: $lobbyId")
+                        gsm.push(GameLobbyState(gsm, isAdmin = true, lobbyId = lobbyId))
+                    }
+                } catch (e: JSONException) {
+                    println("Failed to parse the response JSON: ${e.message}")
+                }
+            }
+        })
 
     }
 

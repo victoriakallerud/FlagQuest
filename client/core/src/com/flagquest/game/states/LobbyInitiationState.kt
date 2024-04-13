@@ -20,7 +20,6 @@ import okhttp3.RequestBody.Companion.toRequestBody
 import org.json.JSONException
 import org.json.JSONObject
 
-
 class LobbyInitiationState(gsm: GameStateManager) : State(gsm) {
     private val skin: Skin = Skin(Gdx.files.internal("skins/skin/flat-earth-ui.json"))
     private val textFieldStyle: TextField.TextFieldStyle = skin.get(TextField.TextFieldStyle::class.java)
@@ -99,7 +98,7 @@ class LobbyInitiationState(gsm: GameStateManager) : State(gsm) {
                 val mediaType = "application/json".toMediaType()
                 val body = ("{" +
                         "\r\n  \"name\": \"$code\"," + //
-                        "\r\n  \"admin\": \"398315ed-3e05-47dd-ac50-37d1fbe441d9\"," + // TODO: Implement function to get user's id
+                        "\r\n  \"admin\": \"873194ce-5f36-4e0c-8c9c-ce2bdedeb3f0\"," + // TODO: Implement function to get user's id
                         "\r\n  \"options\": " +
                         "{\r\n    \"maxNumOfPlayers\": \"$size\"," +
                         "\r\n    \"numberOfQuestions\": 10," +
@@ -127,8 +126,6 @@ class LobbyInitiationState(gsm: GameStateManager) : State(gsm) {
                 } catch (e: JSONException) {
                     println("Failed to parse the response JSON: ${e.message}")
                 }
-
-
             }
         })
 
