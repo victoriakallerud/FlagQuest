@@ -20,15 +20,9 @@ abstract class State(protected val gsm: GameStateManager) {
     abstract fun render()
     fun switchInputProcessor(){
         if (!backButtonListenerAdded){ //Adds the system back press listener to the stage if not yet added.
-            when(backNavType) {
-                "menu" -> println("") //TODO: Implement menu
-                "pause" -> println("") //TODO: Implement pause
-                else -> {
-                    stage.addListener(backButtonListener)
-                    backButtonListenerAdded = true
-                }
+            stage.addListener(backButtonListener)
+            backButtonListenerAdded = true
             }
-        }
         Gdx.input.inputProcessor = stage //Switches the input processor to that of the state to be shown.
     }
 

@@ -7,7 +7,7 @@ object NavManager {
 
     fun backButtonFunc (stage: Stage, gsm: GameStateManager, backNavType: String) {
         when(backNavType) {
-            "menu" -> println("") //TODO: Implement menu
+            "menu" -> gsm.mainMenu()
             "pause" -> println("") //TODO: Implement pause
             "back" -> {
                 if (!gsm.isEmpty()) {

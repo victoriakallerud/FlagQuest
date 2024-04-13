@@ -24,6 +24,8 @@ class GameLobbyState(gsm: GameStateManager, isAdmin: Boolean) : State(gsm) {
     private val buttonHeight = screenHeight / 11
     private var pos: Float = ((screenHeight / 2) + 50).toFloat()
     override val stage = Stage(ScreenViewport())
+    override var backNavType = "menu"
+
     private val currParticipants: Int = 4 // TODO: Implement way of getting current participants number
     private val totalParticipants: Int = 6 // TODO: Implement way of getting total participants number
 
