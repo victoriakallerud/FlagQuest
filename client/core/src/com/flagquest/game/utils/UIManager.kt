@@ -41,7 +41,6 @@ object UIManager {
         })
         stage.addActor(backButton) // Add the back button to the stage
     }
-    //No function for mixed array, lmk if you know a solution.
     fun addNavButtonArray (stage: Stage, gsm: GameStateManager, buttons: Array<Pair<TextButton, Lazy<State>>>, yTop: Float) {
         buttonPos = yTop
         for (button in buttons) {
@@ -57,12 +56,20 @@ object UIManager {
         }
     }
 
+    /**
+     * Adds a button that pushes the associated state.
+     */
     fun addNavButton (stage: Stage, gsm: GameStateManager, button: Pair<TextButton,Lazy<State>>, yTop: Float){
         button.first.setSize((screenWidth*80/100).toFloat(), buttonHeight.toFloat())
         button.first.setPosition(screenWidth / 2 - button.first.width / 2, yTop)
         button.first.addListener(ButtonClickListener(gsm,button.second))
         stage.addActor(button.first)
     }
+
+    /**
+     * This function adds a button which contains a string for instructions.
+     * Carried out as documented in ButtonClickListener.kt
+     */
     fun addInstructButton (stage: Stage, gsm: GameStateManager, button: Pair<TextButton, String>, yTop: Float){
         button.first.setSize((screenWidth*80/100).toFloat(), buttonHeight.toFloat())
         button.first.setPosition(screenWidth / 2 - button.first.width / 2, yTop)
