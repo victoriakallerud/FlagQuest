@@ -8,10 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.utils.viewport.ScreenViewport
 import com.flagquest.game.utils.UIManager.addHeading
-import com.flagquest.game.utils.UIManager.addTextButton
-import com.flagquest.game.utils.UIManager.addTextButtonArray
-import com.flagquest.game.utils.UIManager.addTextButtonArrayString
-import com.flagquest.game.utils.UIManager.addTextButtonString
+import com.flagquest.game.utils.UIManager.addInstructButtonArray
 
 class PauseState(gsm: GameStateManager) : State(gsm) {
     private val skin: Skin = Skin(Gdx.files.internal("skins/skin/flat-earth-ui.json"))
@@ -30,7 +27,7 @@ class PauseState(gsm: GameStateManager) : State(gsm) {
         addHeading(stage,"GAME PAUSED",2.8f)
         resumeBtn.first.setColor(0.286F, 0.612F, 0.384F,1f)
         menuBtn.first.setColor(.892f,.393f,.37f,1f)
-        addTextButtonArrayString(stage,gsm,buttons,pos)
+        addInstructButtonArray(stage,gsm,buttons,pos)
     }
 
     override fun handleInput() {

@@ -42,28 +42,28 @@ object UIManager {
         stage.addActor(backButton) // Add the back button to the stage
     }
     //No function for mixed array, lmk if you know a solution.
-    fun addTextButtonArray (stage: Stage, gsm: GameStateManager, buttons: Array<Pair<TextButton, Lazy<State>>>, yTop: Float) {
+    fun addNavButtonArray (stage: Stage, gsm: GameStateManager, buttons: Array<Pair<TextButton, Lazy<State>>>, yTop: Float) {
         buttonPos = yTop
         for (button in buttons) {
-            addTextButton(stage,gsm,button, buttonPos)
+            addNavButton(stage,gsm,button, buttonPos)
             buttonPos -= button.first.height + 30 // Adjust inter-button distance here
         }
     }
-    fun addTextButtonArrayString (stage: Stage, gsm: GameStateManager, buttons: Array<Pair<TextButton, String>>, yTop: Float) {
+    fun addInstructButtonArray (stage: Stage, gsm: GameStateManager, buttons: Array<Pair<TextButton, String>>, yTop: Float) {
         buttonPos = yTop
         for (button in buttons) {
-            addTextButtonString(stage,gsm,button, buttonPos)
+            addInstructButton(stage,gsm,button, buttonPos)
             buttonPos -= button.first.height + 30 // Adjust inter-button distance here
         }
     }
 
-    fun addTextButton (stage: Stage, gsm: GameStateManager,button: Pair<TextButton,Lazy<State>>, yTop: Float){
+    fun addNavButton (stage: Stage, gsm: GameStateManager, button: Pair<TextButton,Lazy<State>>, yTop: Float){
         button.first.setSize((screenWidth*80/100).toFloat(), buttonHeight.toFloat())
         button.first.setPosition(screenWidth / 2 - button.first.width / 2, yTop)
         button.first.addListener(ButtonClickListener(gsm,button.second))
         stage.addActor(button.first)
     }
-    fun addTextButtonString (stage: Stage, gsm: GameStateManager, button: Pair<TextButton, String>, yTop: Float){
+    fun addInstructButton (stage: Stage, gsm: GameStateManager, button: Pair<TextButton, String>, yTop: Float){
         button.first.setSize((screenWidth*80/100).toFloat(), buttonHeight.toFloat())
         button.first.setPosition(screenWidth / 2 - button.first.width / 2, yTop)
         button.first.addListener(ButtonClickListener(gsm,button.second))

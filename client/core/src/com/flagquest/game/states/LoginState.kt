@@ -10,7 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField
 import com.badlogic.gdx.utils.viewport.ScreenViewport
 import com.flagquest.game.utils.UIManager.addBackButton
 import com.flagquest.game.utils.UIManager.addHeading
-import com.flagquest.game.utils.UIManager.addTextButton
+import com.flagquest.game.utils.UIManager.addNavButton
 
 class LoginState(gsm: GameStateManager) : State(gsm) {
     private val skin: Skin = Skin(Gdx.files.internal("skins/skin/flat-earth-ui.json"))
@@ -47,7 +47,7 @@ class LoginState(gsm: GameStateManager) : State(gsm) {
         passwordField.setPosition(screenWidth / 2 - passwordField.width / 2, pos - buttonHeight - 30)
         stage.addActor(passwordField)
 
-        addTextButton(stage,gsm, loginBtn,buttonY)
+        addNavButton(stage,gsm, loginBtn,buttonY)
         addBackButton(stage,gsm, backNavType)
     }
 

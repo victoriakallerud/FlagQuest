@@ -7,7 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.utils.viewport.ScreenViewport
-import com.flagquest.game.utils.UIManager.addTextButtonArray
+import com.flagquest.game.utils.UIManager.addNavButtonArray
 import com.flagquest.game.utils.UIManager.addHeading
 
 class MainMenuState(gsm: GameStateManager) : State(gsm) {
@@ -30,7 +30,7 @@ class MainMenuState(gsm: GameStateManager) : State(gsm) {
     init {
         Gdx.input.inputProcessor = stage
         addHeading(stage, "FLAGQUEST", fontScale = 3.5f)
-        addTextButtonArray(stage, gsm, buttons, buttonStartingPos)
+        addNavButtonArray(stage, gsm, buttons, buttonStartingPos)
         titleFont.data.setScale(1.5f)
     }
 

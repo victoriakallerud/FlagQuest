@@ -8,7 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.utils.viewport.ScreenViewport
 import com.flagquest.game.utils.UIManager.addHeading
-import com.flagquest.game.utils.UIManager.addTextButtonArray
+import com.flagquest.game.utils.UIManager.addNavButtonArray
 
 class LoginMenuState(gsm: GameStateManager) : State(gsm) {
     private val skin: Skin = Skin(Gdx.files.internal("skins/skin/flat-earth-ui.json"))
@@ -25,7 +25,7 @@ class LoginMenuState(gsm: GameStateManager) : State(gsm) {
     init {
         titleFont.data.setScale(1.5f)
         addHeading(stage,"FLAGQUEST",3.5f)
-        addTextButtonArray(stage,gsm,buttons,pos)
+        addNavButtonArray(stage,gsm,buttons,pos)
     }
 
     override fun handleInput() {
