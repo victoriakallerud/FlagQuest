@@ -5,14 +5,17 @@ import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.TextureRegion
+import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton
 import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.scenes.scene2d.ui.Table
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
 import com.badlogic.gdx.utils.viewport.ScreenViewport
+import com.flagquest.game.utils.FriendRequestListener
 import com.flagquest.game.utils.UIManager.addBackButton
 import com.flagquest.game.utils.UIManager.addHeading
 class FriendRequestState(gsm: GameStateManager) : State(gsm) {
@@ -29,27 +32,23 @@ class FriendRequestState(gsm: GameStateManager) : State(gsm) {
         addBackButton(stage, gsm, backNavType)
 
         // Friend list
-        var untruncatedFriends = arrayOf(
+        var friends = arrayOf(
             "Tina Brynislen",
             "Markus Rosenhav",
             "Magnus Hegdahl",
             "Amel, Ruler of the first and second world and beyond",
             "Johan Store"
         )
-        val maxNameLength = 18
-        val friends = untruncatedFriends.map { friend ->
-            truncateString(friend, maxNameLength)
-        }
 
 
         val list = Table().apply {
             defaults().pad(30f)
         }
 
+        val maxNameLength = 18 // Max nr. characters in name before it gets truncated.
+        friends.forEach { name -> //Create a row for each name.
 
-        friends.forEach { name ->
-
-            val nameLabel = Label(name, skin).apply {
+            val nameLabel = Label(truncateString(name,maxNameLength), skin).apply {// Only show truncated names.
                 setFontScale(3.5f) // Set the font scale to make the text bigger
             }
             // AcceptButton
@@ -58,7 +57,9 @@ class FriendRequestState(gsm: GameStateManager) : State(gsm) {
                 minWidth = imgBtnHeight.toFloat()
                 minHeight = imgBtnHeight.toFloat()
             }
-            val acceptButton = ImageButton(acceptDrawable)
+            val acceptButton = ImageButton(acceptDrawable).apply {
+                addListener(FriendRequestListener(name,"accept")) //Functionality in utils/FriendRequestListener
+            }
 
             // RejectButton
             val rejectTexture = Texture(Gdx.files.internal("skins/raw/button-close.png"))
@@ -66,7 +67,9 @@ class FriendRequestState(gsm: GameStateManager) : State(gsm) {
                 minWidth = imgBtnHeight.toFloat()
                 minHeight = imgBtnHeight.toFloat()
             }
-            val rejectButton = ImageButton(rejectDrawable)
+            val rejectButton = ImageButton(rejectDrawable).apply {
+                addListener(FriendRequestListener(name,"reject"))
+            }
 
             val item = Table().apply {
                 add(nameLabel).expandX().fillX().padRight(10f)
