@@ -25,6 +25,7 @@ import com.flagquest.game.utils.UIManager.addNavButton
 class ManageFriendsState(gsm: GameStateManager) : State(gsm) {
     private val skin: Skin = Skin(Gdx.files.internal("skins/skin/flat-earth-ui.json"))
     private val titleFont: BitmapFont = skin.getFont("title")
+    private val defaultFont: BitmapFont = skin.getFont("font")
     private var screenWidth = Gdx.graphics.width
     private val screenHeight = Gdx.graphics.height
     private val buttonHeight = screenHeight / 11
@@ -77,22 +78,26 @@ class ManageFriendsState(gsm: GameStateManager) : State(gsm) {
         addHeading(stage,"MANAGE\nFRIENDS", 2.8f)
         addBackButton(stage,gsm, backNavType)
 
+
         // Friend list styling
-        friendsLabel.setStyle(Label.LabelStyle(titleFont, friendsLabel.style.fontColor))
-        friendsLabel.setFontScale(1.3f)
+        friendsLabel.setStyle(Label.LabelStyle(defaultFont, friendsLabel.style.fontColor))
+        friendsLabel.setFontScale(3.5f)
+
+        // Pane Size and positions
         scrollPane.setSize((screenWidth/100*80).toFloat(), 700f)
-        scrollPane.setPosition((screenWidth - scrollPane.width)/2f, (screenHeight - scrollPane.height)/2f)
+        val panePosY = (screenHeight - scrollPane.height)/2f + 100f
+        scrollPane.setPosition((screenWidth - scrollPane.width)/2f, panePosY)
         scrollPane.setColor(0.92f, 0.88f, 0.84f, 1f)
         stage.addActor(scrollPane)
 
         // Add friend button styling
-        val friendBtnPos = (screenHeight - scrollPane.height)/2f - buttonHeight - 30
+        val friendBtnPosY = panePosY - buttonHeight - 30
         addFriendBtn.setSize((screenWidth*80/100).toFloat(), buttonHeight.toFloat())
-        addFriendBtn.setPosition(screenWidth / 2 - addFriendBtn.width / 2, friendBtnPos)
+        addFriendBtn.setPosition(screenWidth / 2 - addFriendBtn.width / 2, friendBtnPosY)
         stage.addActor(addFriendBtn)
 
         // Add Friend Request Button
-        addNavButton(stage,gsm,friendRequestButton,friendBtnPos - buttonHeight - 30)
+        addNavButton(stage,gsm,friendRequestButton,friendBtnPosY - buttonHeight - 30)
 
         // Listener that opens popup when add friend button is clicked
         addFriendBtn.addListener(object : ClickListener() {

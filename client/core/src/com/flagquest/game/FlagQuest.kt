@@ -19,7 +19,7 @@ class FlagQuest : ApplicationAdapter() {
         batch = SpriteBatch()
         img = Texture("badlogic.jpg")
         Gdx.input.setCatchBackKey(true); // Ensures that app is not exited upon back button press
-        gsm.push(FriendRequestState(gsm)) //if (isLoggedIn) gsm.push(MainMenuState(gsm)) else gsm.push(LoginMenuState(gsm))
+        if (isLoggedIn) gsm.push(MainMenuState(gsm)) else gsm.push(LoginMenuState(gsm))
     }
 
     override fun render() {
