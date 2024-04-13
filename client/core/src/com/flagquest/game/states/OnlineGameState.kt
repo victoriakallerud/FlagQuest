@@ -39,7 +39,7 @@ class OnlineGameState(gsm: GameStateManager, chosen: String? = null, correct: St
         heading.setPosition((screenWidth - heading.prefWidth) / 2, screenHeight - 300f)
         stage.addActor(heading)
 
-        addBackButton(stage,gsm)
+        addBackButton(stage,gsm, backNavType)
 
         //Flag
         val flagImg = Image(flagTex)

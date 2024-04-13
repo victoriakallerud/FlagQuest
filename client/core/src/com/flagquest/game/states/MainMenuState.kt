@@ -19,6 +19,7 @@ class MainMenuState(gsm: GameStateManager) : State(gsm) {
     private val screenHeight = Gdx.graphics.height
     override val stage = Stage(ScreenViewport())
     private val buttonStartingPos = ((screenHeight / 2) + 150).toFloat()
+    override var backNavType = "nothing"
 
     private val buttons = arrayOf(
         TextButton("CREATE GAME", skin) to lazy { LobbyInitiationState(gsm) },
@@ -32,7 +33,6 @@ class MainMenuState(gsm: GameStateManager) : State(gsm) {
         Gdx.input.inputProcessor = stage
         addHeading(stage, "FLAGQUEST", fontScale = 3.5f)
         addTextButtonArray(stage, gsm, buttons, buttonStartingPos)
-        addBackButton(stage, gsm)
         titleFont.data.setScale(1.5f)
     }
 

@@ -39,7 +39,7 @@ class RegistrationState(gsm: GameStateManager) : State(gsm) {
         titleFont.data.setScale(1.5f)
 
         addHeading(stage,"REGISTRATION", 2.8f)
-        addBackButton(stage,gsm)
+        addBackButton(stage,gsm, backNavType)
 
         for (input in inputFields) {
             input.width = (screenWidth*80/100).toFloat()

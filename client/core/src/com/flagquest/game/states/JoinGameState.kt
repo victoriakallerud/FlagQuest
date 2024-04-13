@@ -34,7 +34,7 @@ class JoinGameState(gsm: GameStateManager) : State(gsm) {
 
     init {
         addHeading(stage,"JOIN GAME\n LOBBY", 2.8f)
-        addBackButton(stage,gsm)
+        addBackButton(stage,gsm, backNavType)
 
         codeInput.width = (screenWidth*80/100).toFloat()
         codeInput.height = buttonHeight.toFloat()

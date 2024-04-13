@@ -59,7 +59,7 @@ class HighscoreState(gsm: GameStateManager) : State(gsm) {
         friends = friends.sortedByDescending { it.second }.toTypedArray()
 
         addHeading(stage,"HIGHSCORE", 2.8f)
-        addBackButton(stage,gsm)
+        addBackButton(stage,gsm, backNavType)
 
         globalBtn.color = highlightColor
         btnTable.setFillParent(true)

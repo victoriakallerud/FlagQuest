@@ -73,7 +73,7 @@ class ManageFriendsState(gsm: GameStateManager) : State(gsm) {
 
         // Heading
         addHeading(stage,"MANAGE\nFRIENDS", 2.8f)
-        addBackButton(stage,gsm)
+        addBackButton(stage,gsm, backNavType)
 
         // Friend list styling
         friendsLabel.setStyle(Label.LabelStyle(titleFont, friendsLabel.style.fontColor))

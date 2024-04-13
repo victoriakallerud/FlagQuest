@@ -50,7 +50,7 @@ class LoginState(gsm: GameStateManager) : State(gsm) {
         stage.addActor(passwordField)
 
         addTextButton(stage,gsm, loginBtn,buttonY)
-        addBackButton(stage,gsm)
+        addBackButton(stage,gsm, backNavType)
     }
 
     override fun handleInput() {

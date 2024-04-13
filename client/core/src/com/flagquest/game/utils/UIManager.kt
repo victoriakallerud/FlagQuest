@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.badlogic.gdx.utils.Align
 import com.flagquest.game.states.GameStateManager
 import com.flagquest.game.states.State
+import com.flagquest.game.utils.NavManager.backButtonFunc
 
 object UIManager {
     private val skin: Skin = Skin(Gdx.files.internal("skins/skin/flat-earth-ui.json"))
@@ -28,14 +29,14 @@ object UIManager {
     private val backButtonWidth = backButtonHeight
 
 
-    fun addBackButton(stage: Stage, gsm: GameStateManager) {
+    fun addBackButton(stage: Stage, gsm: GameStateManager, backNavType: String) {
         val backButton = TextButton("<-", skin) // Create the back button
         backButton.width = backButtonWidth.toFloat()
         backButton.height = backButtonHeight.toFloat()
         backButton.setPosition((screenWidth / 11).toFloat(), (screenWidth / 11).toFloat())
         backButton.addListener(object : ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
-                gsm.pop() // Pop the current state
+                backButtonFunc(stage,gsm, backNavType) // Pop the current state
             }
         })
         stage.addActor(backButton) // Add the back button to the stage

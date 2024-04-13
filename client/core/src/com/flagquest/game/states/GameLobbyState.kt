@@ -35,7 +35,7 @@ class GameLobbyState(gsm: GameStateManager, isAdmin: Boolean) : State(gsm) {
         textFieldStyle.font.data.setScale(5f)
 
         addHeading(stage, "GAME LOBBY", 2.8f)
-        addBackButton(stage,gsm)
+        addBackButton(stage,gsm, backNavType)
 
         codeText.setStyle(Label.LabelStyle(titleFont, codeText.style.fontColor))
         codeText.setFontScale(1.5f)
