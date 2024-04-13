@@ -66,31 +66,32 @@ class JoinGameState(gsm: GameStateManager) : State(gsm) {
 
         codeBtn.addListener(object : ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
-                var code: Int = 0
+                var code: String = ""
                 if (codeInput.text != "") {
-                    code = codeInput.text.toInt()
+                    code = codeInput.text
+                    println("Code: $code")
+                    val client = OkHttpClient()
+                    val mediaType = "text/plain".toMediaType()
+                    val body = "".toRequestBody(mediaType)
+                    val request = Request.Builder()
+                        .url("http://flagquest.leotm.de:3000/lobby/invite/$code/87a56b6f-31e5-42d1-9f55-a3ee8c2fe5c0") // lobbyId/userId TODO: Add functionality to use the device's user's ID
+                        .put(body)
+                        .addHeader("X-API-Key", "{{token}}")
+                        .build()
+                    val response = client.newCall(request).execute()
+                    val responseBodyString = response.body?.string()
+                    println("Response Body: $responseBodyString")
+                    try {
+                        responseBodyString?.let {
+                            val lobbyId = JSONObject(it).getString("id")
+                            println("Lobby ID: $lobbyId")
+                            gsm.push(GameLobbyState(gsm, isAdmin = false, lobbyId = lobbyId))
+                        }
+                    } catch (e: JSONException) {
+                        println("Failed to parse the response JSON: ${e.message}")
+                    }
                 }
 
-                val client = OkHttpClient()
-                val mediaType = "text/plain".toMediaType()
-                val body = "".toRequestBody(mediaType)
-                val request = Request.Builder()
-                    .url("http://localhost:3000/lobby/51bdfbe3-88b7-4ed5-8c71-079adc346026/47664ed6-98fd-4cf3-8157-1582183c96f1") // lobbyId/userId
-                    .put(body)
-                    .addHeader("X-API-Key", "{{token}}")
-                    .build()
-                val response = client.newCall(request).execute()
-                val responseBodyString = response.body?.string()
-                println("Response Body: $responseBodyString")
-                try {
-                    responseBodyString?.let {
-                        val lobbyId = JSONObject(it).getString("id")
-                        println("Lobby ID: $lobbyId")
-                        gsm.push(GameLobbyState(gsm, isAdmin = true, lobbyId = lobbyId))
-                    }
-                } catch (e: JSONException) {
-                    println("Failed to parse the response JSON: ${e.message}")
-                }
             }
         })
 

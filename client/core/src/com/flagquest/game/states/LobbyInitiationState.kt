@@ -97,7 +97,7 @@ class LobbyInitiationState(gsm: GameStateManager) : State(gsm) {
                 val client = OkHttpClient()
                 val mediaType = "application/json".toMediaType()
                 val body = ("{" +
-                        "\r\n  \"name\": \"$code\"," + //
+                        "\r\n  \"name\": \"testname\"," + //
                         "\r\n  \"admin\": \"873194ce-5f36-4e0c-8c9c-ce2bdedeb3f0\"," + // TODO: Implement function to get user's id
                         "\r\n  \"options\": " +
                         "{\r\n    \"maxNumOfPlayers\": \"$size\"," +
