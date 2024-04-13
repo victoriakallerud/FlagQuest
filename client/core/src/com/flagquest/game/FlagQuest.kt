@@ -5,7 +5,6 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.utils.ScreenUtils
-import com.flagquest.game.states.FriendRequestState
 import com.flagquest.game.states.GameStateManager
 import com.flagquest.game.states.LoginMenuState
 import com.flagquest.game.states.MainMenuState
