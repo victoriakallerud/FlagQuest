@@ -34,7 +34,10 @@ class FriendRequestState(gsm: GameStateManager) : State(gsm) {
             "Markus Rosenhav",
             "Magnus Hegdahl",
             "Amel, Ruler of the first and second world and beyond",
-            "Johan Store"
+            "Johan Store",
+            "Karel de Grote",
+            "Edgar",
+            "Rasmus"
         )
 
 
@@ -85,7 +88,7 @@ class FriendRequestState(gsm: GameStateManager) : State(gsm) {
 
             // Calculate the position to center the scroll pane
             val scrollPaneWidth = (screenWidth / 100 * 80).toFloat() // Assuming 80% of the screen width
-            val scrollPaneHeight = 700f // Assuming a fixed height
+            val scrollPaneHeight = (screenHeight/100*48).toFloat() // Assuming a fixed height
             val xPos = (screenWidth - scrollPaneWidth) / 2
             val yPos = (screenHeight - scrollPaneHeight) / 2
 
