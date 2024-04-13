@@ -8,24 +8,26 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.utils.viewport.ScreenViewport
 import com.flagquest.game.utils.UIManager.addHeading
-import com.flagquest.game.utils.UIManager.addNavButtonArray
+import com.flagquest.game.utils.UIManager.addInstructButtonArray
 
-class LoginMenuState(gsm: GameStateManager) : State(gsm) {
+class PauseState(gsm: GameStateManager) : State(gsm) {
     private val skin: Skin = Skin(Gdx.files.internal("skins/skin/flat-earth-ui.json"))
     val titleFont: BitmapFont = skin.getFont("title")
     var screenWidth = Gdx.graphics.width
     val screenHeight = Gdx.graphics.height
-    var pos: Float = ((screenHeight / 2) + 50).toFloat()
+    var pos: Float = ((screenHeight / 2) - 150).toFloat()
     override val stage = Stage(ScreenViewport())
 
-    val loginBtn = TextButton("LOGIN", skin)
-    val registerBtn = TextButton("REGISTER", skin)
-    val buttons = arrayOf(Pair(loginBtn, lazy { LoginState(gsm) }),Pair(registerBtn, lazy { RegistrationState(gsm) }))
+    val resumeBtn = TextButton("RESUME", skin) to "back"
+    val menuBtn = TextButton("MAIN MENU", skin) to "menu"
+    val buttons = arrayOf(resumeBtn, menuBtn)
 
     init {
         titleFont.data.setScale(1.5f)
-        addHeading(stage,"FLAGQUEST",3.5f)
-        addNavButtonArray(stage,gsm,buttons,pos)
+        addHeading(stage,"GAME PAUSED",2.8f)
+        resumeBtn.first.setColor(0.286F, 0.612F, 0.384F,1f)
+        menuBtn.first.setColor(.892f,.393f,.37f,1f)
+        addInstructButtonArray(stage,gsm,buttons,pos)
     }
 
     override fun handleInput() {

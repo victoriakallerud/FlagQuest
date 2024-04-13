@@ -18,6 +18,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Window
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
 import com.badlogic.gdx.utils.viewport.ScreenViewport
+import com.flagquest.game.utils.UIManager.addBackButton
+import com.flagquest.game.utils.UIManager.addHeading
 
 class ManageFriendsState(gsm: GameStateManager) : State(gsm) {
     private val skin: Skin = Skin(Gdx.files.internal("skins/skin/flat-earth-ui.json"))
@@ -25,7 +27,7 @@ class ManageFriendsState(gsm: GameStateManager) : State(gsm) {
     private var screenWidth = Gdx.graphics.width
     private val screenHeight = Gdx.graphics.height
     private val buttonHeight = screenHeight / 11
-    private val stage = Stage(ScreenViewport())
+    override val stage = Stage(ScreenViewport())
 
     // Heading
     private val heading = Label("MANAGE\nFRIENDS", skin)
@@ -66,17 +68,12 @@ class ManageFriendsState(gsm: GameStateManager) : State(gsm) {
     private val addFriendBtn = TextButton("+ ADD FRIEND", skin)
 
     init {
-        Gdx.input.inputProcessor = stage
-
         // Color of title bar on popup window
         val popupTitleColor = Color(0.011764706f, 0.23921569f, 0.3764706f, 1f)
 
-        // Heading styling
-        heading.setStyle(Label.LabelStyle(titleFont, heading.style.fontColor))
-        heading.setFontScale(2.8f)
-        heading.pack()
-        heading.setPosition((screenWidth - heading.prefWidth) / 2, screenHeight - 500f)
-        stage.addActor(heading)
+        // Heading
+        addHeading(stage,"MANAGE\nFRIENDS", 2.8f)
+        addBackButton(stage,gsm, backNavType)
 
         // Friend list styling
         friendsLabel.setStyle(Label.LabelStyle(titleFont, friendsLabel.style.fontColor))

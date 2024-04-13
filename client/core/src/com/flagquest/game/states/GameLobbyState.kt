@@ -12,6 +12,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField
 import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.viewport.ScreenViewport
 import com.flagquest.game.utils.ButtonClickListener
+import com.flagquest.game.utils.UIManager.addBackButton
+import com.flagquest.game.utils.UIManager.addHeading
 
 class GameLobbyState(gsm: GameStateManager, isAdmin: Boolean) : State(gsm) {
     private val skin: Skin = Skin(Gdx.files.internal("skins/skin/flat-earth-ui.json"))
@@ -21,7 +23,9 @@ class GameLobbyState(gsm: GameStateManager, isAdmin: Boolean) : State(gsm) {
     private val screenHeight = Gdx.graphics.height
     private val buttonHeight = screenHeight / 11
     private var pos: Float = ((screenHeight / 2) + 50).toFloat()
-    private val stage = Stage(ScreenViewport())
+    override val stage = Stage(ScreenViewport())
+    override var backNavType = "menu"
+
     private val currParticipants: Int = 4 // TODO: Implement way of getting current participants number
     private val totalParticipants: Int = 6 // TODO: Implement way of getting total participants number
 
@@ -30,15 +34,10 @@ class GameLobbyState(gsm: GameStateManager, isAdmin: Boolean) : State(gsm) {
     private val names = arrayOf("Amel De Kok", "Felix Kuhn", "Leo Laisé", "Victoria Kallerud") // TODO: Implement way of getting participants
 
     init {
-        Gdx.input.inputProcessor = stage
         textFieldStyle.font.data.setScale(5f)
 
-        heading.setStyle(Label.LabelStyle(titleFont, heading.style.fontColor))
-        heading.setFontScale(2.8f)
-        heading.setAlignment(Align.center)
-        heading.pack()
-        heading.setPosition((screenWidth - heading.prefWidth) / 2, screenHeight - 500f)
-        stage.addActor(heading)
+        addHeading(stage, "GAME LOBBY", 2.8f)
+        addBackButton(stage,gsm, backNavType)
 
         codeText.setStyle(Label.LabelStyle(titleFont, codeText.style.fontColor))
         codeText.setFontScale(1.5f)
@@ -66,7 +65,6 @@ class GameLobbyState(gsm: GameStateManager, isAdmin: Boolean) : State(gsm) {
         }
 
         stage.addActor(table)
-
         titleFont.data.setScale(1.5f)
 
     }

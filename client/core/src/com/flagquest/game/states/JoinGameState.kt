@@ -11,6 +11,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField
 import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.viewport.ScreenViewport
 import com.flagquest.game.utils.ButtonClickListener
+import com.flagquest.game.utils.UIManager.addBackButton
+import com.flagquest.game.utils.UIManager.addHeading
 
 class JoinGameState(gsm: GameStateManager) : State(gsm) {
     private val skin: Skin = Skin(Gdx.files.internal("skins/skin/flat-earth-ui.json"))
@@ -19,9 +21,8 @@ class JoinGameState(gsm: GameStateManager) : State(gsm) {
     private val screenHeight = Gdx.graphics.height
     private val buttonHeight = screenHeight / 11
     private var pos: Float = ((screenHeight / 2) + 50).toFloat()
-    private val stage = Stage(ScreenViewport())
+    override val stage = Stage(ScreenViewport())
 
-    private val heading = Label("JOIN GAME\nLOBBY", skin)
     private val codeInput = TextField("", skin).apply{ messageText="  GAME CODE"}
     private val codeBtn = TextButton("JOIN WITH CODE", skin)
     private val randomBtn = TextButton("JOIN RANDOM GAME", skin)
@@ -32,14 +33,8 @@ class JoinGameState(gsm: GameStateManager) : State(gsm) {
     private var counter: Int = 1
 
     init {
-        Gdx.input.inputProcessor = stage
-
-        heading.setStyle(Label.LabelStyle(titleFont, heading.style.fontColor))
-        heading.setFontScale(2.8f)
-        heading.setAlignment(Align.center)
-        heading.pack()
-        heading.setPosition((screenWidth - heading.prefWidth) / 2, screenHeight - 500f)
-        stage.addActor(heading)
+        addHeading(stage,"JOIN GAME\n LOBBY", 2.8f)
+        addBackButton(stage,gsm, backNavType)
 
         codeInput.width = (screenWidth*80/100).toFloat()
         codeInput.height = buttonHeight.toFloat()
