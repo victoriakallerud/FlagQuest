@@ -20,9 +20,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
 import com.badlogic.gdx.utils.viewport.ScreenViewport
 import com.flagquest.game.utils.UIManager.addBackButton
 import com.flagquest.game.utils.UIManager.addHeading
-import com.flagquest.game.utils.UIManager.addNavButton
 
-class ManageFriendsState(gsm: GameStateManager) : State(gsm) {
+class FriendRequestState(gsm: GameStateManager) : State(gsm) {
     private val skin: Skin = Skin(Gdx.files.internal("skins/skin/flat-earth-ui.json"))
     private val titleFont: BitmapFont = skin.getFont("title")
     private var screenWidth = Gdx.graphics.width
@@ -31,27 +30,10 @@ class ManageFriendsState(gsm: GameStateManager) : State(gsm) {
     override val stage = Stage(ScreenViewport())
 
     // Heading
-    private val heading = Label("MANAGE\nFRIENDS", skin)
+    private val heading = Label("FRIEND\nREQUESTS", skin)
 
     // Friend list
-    private val friends = arrayOf( // TODO: Implement function to retrieve friends
-        "Amel De Kok",
-        "Felix Kuhn",
-        "Håvar Hagelund",
-        "Leo Laisé",
-        "Nina Tran",
-        "Victoria Kallerud",
-        "Hanna Lunne",
-        "Sindre Havn",
-        "Magnus Lien",
-        "Urban Mikic",
-        "Johan Storesund",
-        "Inge Grelland",
-        "Elinda Engvik",
-        "Miriam Matson",
-        "Markus Veblungsnes",
-        "Otto Fearnley",
-        "Ola Haldor Hådi",
+    private val friends = arrayOf( // TODO: Implement function to retrieve friend requests
         "Tina Brynislen",
         "Markus Rosenhave",
         "Magnus Hegdahl"
@@ -67,7 +49,6 @@ class ManageFriendsState(gsm: GameStateManager) : State(gsm) {
 
     // Add friend button
     private val addFriendBtn = TextButton("+ ADD FRIEND", skin)
-    private val friendRequestButton = TextButton("FRIEND REQUESTS", skin) to lazy { FriendRequestState(gsm) }
 
     init {
         // Color of title bar on popup window
@@ -79,20 +60,16 @@ class ManageFriendsState(gsm: GameStateManager) : State(gsm) {
 
         // Friend list styling
         friendsLabel.setStyle(Label.LabelStyle(titleFont, friendsLabel.style.fontColor))
-        friendsLabel.setFontScale(1.3f)
+        friendsLabel.setFontScale(1.8f)
         scrollPane.setSize((screenWidth/100*80).toFloat(), 700f)
         scrollPane.setPosition((screenWidth - scrollPane.width)/2f, (screenHeight - scrollPane.height)/2f)
         scrollPane.setColor(0.92f, 0.88f, 0.84f, 1f)
         stage.addActor(scrollPane)
 
         // Add friend button styling
-        val friendBtnPos = (screenHeight - scrollPane.height)/2f - buttonHeight - 30
         addFriendBtn.setSize((screenWidth*80/100).toFloat(), buttonHeight.toFloat())
-        addFriendBtn.setPosition(screenWidth / 2 - addFriendBtn.width / 2, friendBtnPos)
+        addFriendBtn.setPosition(screenWidth / 2 - addFriendBtn.width / 2, (screenHeight - scrollPane.height)/2f - buttonHeight - 30)
         stage.addActor(addFriendBtn)
-
-        // Add Friend Request Button
-        addNavButton(stage,gsm,friendRequestButton,friendBtnPos - buttonHeight - 30)
 
         // Listener that opens popup when add friend button is clicked
         addFriendBtn.addListener(object : ClickListener() {
