@@ -17,6 +17,8 @@ import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.RequestBody.Companion.toRequestBody
+import org.json.JSONException
+import org.json.JSONObject
 
 class LobbyInitiationState(gsm: GameStateManager) : State(gsm) {
     private val skin: Skin = Skin(Gdx.files.internal("skins/skin/flat-earth-ui.json"))
@@ -107,15 +109,23 @@ class LobbyInitiationState(gsm: GameStateManager) : State(gsm) {
                         "\r\n  }\r\n" +
                         "}").toRequestBody(mediaType)
                 val request = Request.Builder()
-                    .url("http://10.0.2.2:3000/lobby/")
+                    .url("http://flagquest.leotm.de:3000/lobby/")
                     .post(body)
                     .addHeader("Content-Type", "application/json")
                     .addHeader("X-API-Key", "{{token}}")
                     .build()
                 val response = client.newCall(request).execute()
-
-                println("Lobby created: ${response.body?.string()}")
-                gsm.push(GameLobbyState(gsm,isAdmin = true, "14d29155-82ef-4d11-9c36-7214d1a8e4b7"))
+                val responseBodyString = response.body?.string()
+                println("Response Body: $responseBodyString")
+                try {
+                    responseBodyString?.let {
+                        val lobbyId = JSONObject(it).getString("id")
+                        println("Lobby ID: $lobbyId")
+                        gsm.push(GameLobbyState(gsm, isAdmin = true, lobbyId = lobbyId))
+                    }
+                } catch (e: JSONException) {
+                    println("Failed to parse the response JSON: ${e.message}")
+                }
             }
         })
 
