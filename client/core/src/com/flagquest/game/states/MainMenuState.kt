@@ -7,6 +7,9 @@ import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.utils.viewport.ScreenViewport
+import com.flagquest.game.utils.ButtonClickListener
+import okhttp3.OkHttpClient
+import okhttp3.Request
 import com.flagquest.game.utils.UIManager.addNavButtonArray
 import com.flagquest.game.utils.UIManager.addHeading
 
@@ -32,6 +35,22 @@ class MainMenuState(gsm: GameStateManager) : State(gsm) {
         addHeading(stage, "FLAGQUEST", fontScale = 3.5f)
         addNavButtonArray(stage, gsm, buttons, buttonStartingPos)
         titleFont.data.setScale(1.5f)
+        for (button in buttons) {
+            button.first.setSize((screenWidth*80/100).toFloat(), buttonHeight.toFloat())
+            button.first.setPosition(screenWidth / 2 - button.first.width / 2, pos)
+            button.first.addListener(ButtonClickListener(gsm,button.second))
+            stage.addActor(button.first)
+            pos -= button.first.height + 30
+        }
+
+        // Test get request, get Lunitik user with id 398315ed-3e05-47dd-ac50-37d1fbe441d9
+        val client = OkHttpClient()
+        val request = Request.Builder()
+            .url("http://flagquest.leotm.de:3000/user/398315ed-3e05-47dd-ac50-37d1fbe441d9")
+            .addHeader("X-API-Key", "{{token}}")
+            .build()
+        val response = client.newCall(request).execute()
+        println(response.body?.string())
     }
 
     override fun handleInput() {

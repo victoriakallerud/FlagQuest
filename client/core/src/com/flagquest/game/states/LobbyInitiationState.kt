@@ -3,15 +3,22 @@ package com.flagquest.game.states
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.g2d.BitmapFont
+import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.ui.TextField
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
+import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.viewport.ScreenViewport
 import com.flagquest.game.utils.UIManager.addBackButton
 import com.flagquest.game.utils.UIManager.addHeading
 import com.flagquest.game.utils.ButtonClickListener
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.RequestBody.Companion.toRequestBody
 
 class LobbyInitiationState(gsm: GameStateManager) : State(gsm) {
     private val skin: Skin = Skin(Gdx.files.internal("skins/skin/flat-earth-ui.json"))
@@ -21,15 +28,16 @@ class LobbyInitiationState(gsm: GameStateManager) : State(gsm) {
     private val screenHeight = Gdx.graphics.height
     private val buttonHeight = screenHeight / 11
     private var pos: Float = ((screenHeight / 2) + 50).toFloat()
-
+    private val code = (10000..99999).random() // TODO: write function to get code
+    private val codeIsFree = false
     override val stage = Stage(ScreenViewport())
-    private val code = "12345" // TODO: write function to get code
 
     private val codeText = Label("Lobby Code: $code", skin)
     private val sizeInput = TextField("", skin).apply{ messageText="  How many players?"}
     private val inviteLinkBtn = TextButton("GET INVITE LINK", skin)
     private val inviteBtn = TextButton("INVITE FRIENDS", skin)
     private val createBtn = TextButton("CREATE LOBBY", skin)
+    private var size: Int = 6
 
     private val btns = arrayOf(
         inviteLinkBtn to null, //TODO: Link screen
@@ -61,10 +69,51 @@ class LobbyInitiationState(gsm: GameStateManager) : State(gsm) {
             btn.first.width = (screenWidth*80/100).toFloat()
             btn.first.height = buttonHeight.toFloat()
             btn.first.setPosition(screenWidth / 2 - btn.first.width / 2, pos - (buttonHeight + 30) * counter)
-            btn.first.addListener(ButtonClickListener(gsm,btn.second))
             stage.addActor(btn.first)
             counter++
         }
+
+
+        inviteLinkBtn.addListener(object : ClickListener() {
+            override fun clicked(event: InputEvent?, x: Float, y: Float) {
+                // TODO: Implement function to copy an invite link to the user's phone and show "Invite link copied" at the bottom
+            }
+        })
+        inviteBtn.addListener(ButtonClickListener(gsm,null)) // TODO: Implement invite friends screen and link it here
+        createBtn.addListener(object : ClickListener() {
+            override fun clicked(event: InputEvent?, x: Float, y: Float) {
+                if (sizeInput.text != "") {
+                    size = sizeInput.text.toInt()
+                }
+
+                val client = OkHttpClient()
+                val mediaType = "application/json".toMediaType()
+                val body = ("{" +
+                        "\r\n  \"name\": \"$code\"," + //
+                        "\r\n  \"admin\": \"398315ed-3e05-47dd-ac50-37d1fbe441d9\"," + // TODO: Implement function to get user's id
+                        "\r\n  \"options\": " +
+                        "{\r\n    \"maxNumOfPlayers\": \"$size\"," +
+                        "\r\n    \"numberOfQuestions\": 10," +
+                        "\r\n    \"showAnswers\": true," +
+                        "\r\n    \"gameMode\": \"GuessingFlags\"," +
+                        "\r\n    \"level\": \"Europe\"," +
+                        "\r\n    \"isPrivate\": false" +
+                        "\r\n  }\r\n" +
+                        "}").toRequestBody(mediaType)
+                val request = Request.Builder()
+                    .url("http://flagquest.leotm.de:3000/lobby/")
+                    .post(body)
+                    .addHeader("Content-Type", "application/json")
+                    .addHeader("X-API-Key", "{{token}}")
+                    .build()
+                val response = client.newCall(request).execute()
+
+                println("Lobby created: ${response.body?.string()}")
+                gsm.push(GameLobbyState(gsm,isAdmin = true))
+            }
+        })
+
+
 
         titleFont.data.setScale(1.5f)
     }
