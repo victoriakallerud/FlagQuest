@@ -12,6 +12,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.viewport.ScreenViewport
+import com.flagquest.game.utils.UIManager.addBackButton
+import com.flagquest.game.utils.UIManager.addHeading
 import com.flagquest.game.utils.ButtonClickListener
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
@@ -26,11 +28,10 @@ class LobbyInitiationState(gsm: GameStateManager) : State(gsm) {
     private val screenHeight = Gdx.graphics.height
     private val buttonHeight = screenHeight / 11
     private var pos: Float = ((screenHeight / 2) + 50).toFloat()
-    private val stage = Stage(ScreenViewport())
     private val code = (10000..99999).random() // TODO: write function to get code
     private val codeIsFree = false
+    override val stage = Stage(ScreenViewport())
 
-    private val heading = Label("CREATE GAME\nLOBBY", skin)
     private val codeText = Label("Lobby Code: $code", skin)
     private val sizeInput = TextField("", skin).apply{ messageText="  How many players?"}
     private val inviteLinkBtn = TextButton("GET INVITE LINK", skin)
@@ -48,18 +49,8 @@ class LobbyInitiationState(gsm: GameStateManager) : State(gsm) {
         Gdx.input.inputProcessor = stage
         textFieldStyle.font.data.setScale(5f)
 
-        /*
-        while (!codeIsFree) { //TODO: Implement function to check if code is free
-
-        }
-         */
-
-        heading.setStyle(Label.LabelStyle(titleFont, heading.style.fontColor))
-        heading.setFontScale(2.8f)
-        heading.setAlignment(Align.center)
-        heading.pack()
-        heading.setPosition((screenWidth - heading.prefWidth) / 2, screenHeight - 500f)
-        stage.addActor(heading)
+        addHeading(stage,"CREATE GAME\nLOBBY", 2.8f)
+        addBackButton(stage,gsm, backNavType)
 
         codeText.setStyle(Label.LabelStyle(titleFont, codeText.style.fontColor))
         codeText.setFontScale(1.5f)
