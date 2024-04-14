@@ -35,13 +35,6 @@ class MainMenuState(gsm: GameStateManager) : State(gsm) {
         addHeading(stage, "FLAGQUEST", fontScale = 3.5f)
         addNavButtonArray(stage, gsm, buttons, buttonStartingPos)
         titleFont.data.setScale(1.5f)
-        for (button in buttons) {
-            button.first.setSize((screenWidth*80/100).toFloat(), buttonHeight.toFloat())
-            button.first.setPosition(screenWidth / 2 - button.first.width / 2, pos)
-            button.first.addListener(ButtonClickListener(gsm,button.second))
-            stage.addActor(button.first)
-            pos -= button.first.height + 30
-        }
 
         // Test get request, get Lunitik user with id 398315ed-3e05-47dd-ac50-37d1fbe441d9
         val client = OkHttpClient()
