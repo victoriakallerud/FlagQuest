@@ -40,7 +40,7 @@ export class DatabaseService {
             let userDocs = await this.db.collection('user').where('userName', '==', userName).get();
             if (userDocs.empty) {
                 this.logger.error(`User with username ${userName} does not exist`);
-                return null;
+                throw new Error(`User does not exist`);
             } else {
                 return userDocs.docs[0].id;
             }
