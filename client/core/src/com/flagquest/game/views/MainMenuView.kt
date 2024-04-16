@@ -36,11 +36,11 @@ class MainMenuView(private val gsm: GameStateManager, private val stage: Stage) 
             button.style = buttonStyle
 
             // Set button size and position
-            button.setSize(UIManager.buttonWidth.toFloat(), UIManager.buttonHeight.toFloat())
-            button.setPosition((UIManager.screenWidth - UIManager.buttonWidth) / 2f, buttonStartingPos)
+            button.setSize(UIManager.elementWidth.toFloat(), UIManager.elementHeight.toFloat())
+            button.setPosition((UIManager.screenWidth - UIManager.elementWidth) / 2f, buttonStartingPos)
 
             stage.addActor(button)
-            buttonStartingPos -= (UIManager.buttonHeight + UIManager.buttonSpacing)
+            buttonStartingPos -= (UIManager.elementHeight + UIManager.elementSpacing)
         }
     }
 

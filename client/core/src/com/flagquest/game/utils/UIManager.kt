@@ -21,14 +21,14 @@ object UIManager {
     val screenHeight = Gdx.graphics.height
 
     // Button parameters
-    val buttonHeight = screenHeight / 11
-    val buttonWidth = screenWidth * 8 / 10
-    val buttonSpacing = 20
-    var buttonPos: Float = ((screenHeight / 2) + 150).toFloat()
+    val elementHeight = screenHeight / 11
+    val elementWidth = screenWidth * 8 / 10
+    val elementSpacing = 20
+    var elementPos: Float = ((screenHeight / 2) + 150).toFloat()
     val buttonTextScale = 1.5f
 
     // Backbutton parameters
-    private val backButtonHeight = buttonHeight
+    private val backButtonHeight = elementHeight
     private val backButtonWidth = backButtonHeight
 
 
@@ -45,17 +45,17 @@ object UIManager {
         stage.addActor(backButton) // Add the back button to the stage
     }
     fun addNavButtonArray (stage: Stage, gsm: GameStateManager, buttons: Array<Pair<TextButton, Lazy<State>>>, yTop: Float) {
-        buttonPos = yTop
+        elementPos = yTop
         for (button in buttons) {
-            addNavButton(stage,gsm,button, buttonPos)
-            buttonPos -= button.first.height + 30 // Adjust inter-button distance here
+            addNavButton(stage,gsm,button, elementPos)
+            elementPos -= button.first.height + 30 // Adjust inter-button distance here
         }
     }
     fun addInstructButtonArray (stage: Stage, gsm: GameStateManager, buttons: Array<Pair<TextButton, String>>, yTop: Float) {
-        buttonPos = yTop
+        elementPos = yTop
         for (button in buttons) {
-            addInstructButton(stage,gsm,button, buttonPos)
-            buttonPos -= button.first.height + 30 // Adjust inter-button distance here
+            addInstructButton(stage,gsm,button, elementPos)
+            elementPos -= button.first.height + 30 // Adjust inter-button distance here
         }
     }
 
@@ -63,7 +63,7 @@ object UIManager {
      * Adds a button that pushes the associated state.
      */
     fun addNavButton (stage: Stage, gsm: GameStateManager, button: Pair<TextButton,Lazy<State>>, yTop: Float){
-        button.first.setSize((screenWidth*80/100).toFloat(), buttonHeight.toFloat())
+        button.first.setSize((screenWidth*80/100).toFloat(), elementHeight.toFloat())
         button.first.setPosition(screenWidth / 2 - button.first.width / 2, yTop)
         button.first.addListener(ButtonClickListener(gsm,button.second))
         stage.addActor(button.first)
@@ -74,7 +74,7 @@ object UIManager {
      * Carried out as documented in ButtonClickListener.kt
      */
     fun addInstructButton (stage: Stage, gsm: GameStateManager, button: Pair<TextButton, String>, yTop: Float){
-        button.first.setSize((screenWidth*80/100).toFloat(), buttonHeight.toFloat())
+        button.first.setSize((screenWidth*80/100).toFloat(), elementHeight.toFloat())
         button.first.setPosition(screenWidth / 2 - button.first.width / 2, yTop)
         button.first.addListener(ButtonClickListener(gsm,button.second))
         stage.addActor(button.first)
