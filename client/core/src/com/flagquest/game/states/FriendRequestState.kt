@@ -22,6 +22,7 @@ class FriendRequestState(gsm: GameStateManager) : State(gsm) {
     private val screenHeight = Gdx.graphics.height
     private val imgBtnHeight = screenHeight / 19
     override val stage = Stage(ScreenViewport())
+    val titleFont: BitmapFont = skin.getFont("title")
 
     init {
         // Heading
@@ -29,9 +30,10 @@ class FriendRequestState(gsm: GameStateManager) : State(gsm) {
         addBackButton(stage, gsm, backNavType)
 
         // Friend list
-        var friends = arrayOf(
+        val friends = arrayOf(
             "Tina Brynislen",
-            "Markus Rosenhav",
+            "Wimma Wem Wimmam",
+            "Markus Rosenhave",
             "Magnus Hegdahl",
             "Amel, Ruler of the first and second world and beyond",
             "Johan Store",
@@ -45,11 +47,11 @@ class FriendRequestState(gsm: GameStateManager) : State(gsm) {
             defaults().pad(30f)
         }
 
-        val maxNameLength = 18 // Max nr. characters in name before it gets truncated.
+        val maxNameLength = 15 // Max nr. characters in name before it gets truncated.
         friends.forEach { name -> //Create a row for each name.
 
-            val nameLabel = Label(truncateString(name,maxNameLength), skin).apply {// Only show truncated names.
-                setFontScale(3.5f) // Set the font scale to make the text bigger
+            val nameLabel = Label(truncateString(name,maxNameLength), skin, "title").apply {// Only show truncated names.
+                setFontScale(1.1f) // Smaller font to display more of name
             }
             // AcceptButton
             val acceptTexture = Texture(Gdx.files.internal("skins/raw/checkbox-pressed.png"))
@@ -73,7 +75,7 @@ class FriendRequestState(gsm: GameStateManager) : State(gsm) {
 
             val item = Table().apply {
                 add(nameLabel).expandX().fillX().padRight(10f)
-                add(acceptButton)
+                add(acceptButton).padRight(10f) //Added padding
                 add(rejectButton)
                 row()
             }

@@ -25,14 +25,11 @@ import com.flagquest.game.utils.UIManager.addNavButton
 class ManageFriendsState(gsm: GameStateManager) : State(gsm) {
     private val skin: Skin = Skin(Gdx.files.internal("skins/skin/flat-earth-ui.json"))
     private val titleFont: BitmapFont = skin.getFont("title")
-    private val defaultFont: BitmapFont = skin.getFont("font")
     private var screenWidth = Gdx.graphics.width
     private val screenHeight = Gdx.graphics.height
     private val buttonHeight = screenHeight / 11
     override val stage = Stage(ScreenViewport())
 
-    // Heading
-    private val heading = Label("MANAGE\nFRIENDS", skin)
 
     // Friend list
     private val friends = arrayOf( // TODO: Implement function to retrieve friends
@@ -80,8 +77,8 @@ class ManageFriendsState(gsm: GameStateManager) : State(gsm) {
 
 
         // Friend list styling
-        friendsLabel.setStyle(Label.LabelStyle(defaultFont, friendsLabel.style.fontColor))
-        friendsLabel.setFontScale(3.5f)
+        friendsLabel.setStyle(Label.LabelStyle(titleFont, friendsLabel.style.fontColor))
+        friendsLabel.setFontScale(1.3f)
 
         // Pane Size and positions
         scrollPane.setSize((screenWidth/100*80).toFloat(), 700f)
