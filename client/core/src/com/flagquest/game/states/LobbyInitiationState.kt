@@ -6,24 +6,22 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.Label
-import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.ui.TextField
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
-import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.viewport.ScreenViewport
 import com.flagquest.game.utils.UIManager.addBackButton
 import com.flagquest.game.utils.UIManager.addHeading
 import com.flagquest.game.utils.ButtonClickListener
+import com.flagquest.game.utils.UIManager
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.RequestBody.Companion.toRequestBody
 
 class LobbyInitiationState(gsm: GameStateManager) : State(gsm) {
-    private val skin: Skin = Skin(Gdx.files.internal("skins/skin/flat-earth-ui.json"))
-    private val textFieldStyle: TextField.TextFieldStyle = skin.get(TextField.TextFieldStyle::class.java)
-    private val titleFont: BitmapFont = skin.getFont("title")
+    private val textFieldStyle: TextField.TextFieldStyle = UIManager.skin.get(TextField.TextFieldStyle::class.java)
+    private val titleFont: BitmapFont = UIManager.skin.getFont("title")
     private var screenWidth = Gdx.graphics.width
     private val screenHeight = Gdx.graphics.height
     private val buttonHeight = screenHeight / 11

@@ -9,8 +9,7 @@ import com.flagquest.game.utils.UIManager
 import com.flagquest.game.utils.UIManager.addHeading
 
 class MainMenuView(private val gsm: GameStateManager, private val stage: Stage) {
-    private val skin: Skin = Skin(Gdx.files.internal("skins/skin/flat-earth-ui.json"))
-    private val screenHeight = Gdx.graphics.height
+    val skin: Skin = UIManager.skin
     val buttons: Array<TextButton> = arrayOf(
         TextButton("CREATE GAME", skin),
         TextButton("JOIN GAME", skin),
@@ -18,7 +17,7 @@ class MainMenuView(private val gsm: GameStateManager, private val stage: Stage) 
         TextButton("HIGHSCORE BOARD", skin),
         TextButton("MANAGE FRIENDS", skin)
     )
-    private var buttonStartingPos = ((screenHeight / 2) + 150).toFloat()
+    private var buttonStartingPos = ((UIManager.screenHeight / 2) + 150).toFloat()
 
     init {
         addHeading(stage, "MAIN MENU")

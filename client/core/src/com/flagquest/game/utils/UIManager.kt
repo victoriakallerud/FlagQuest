@@ -14,7 +14,7 @@ import com.flagquest.game.states.State
 import com.flagquest.game.utils.NavManager.backButtonFunc
 
 object UIManager {
-    private val skin: Skin = Skin(Gdx.files.internal("skins/skin/flat-earth-ui.json"))
+    val skin: Skin = Skin(Gdx.files.internal("skins/skin/flat-earth-ui.json"))
     val titleFont: BitmapFont = skin.getFont("title")
 
     val screenWidth = Gdx.graphics.width
