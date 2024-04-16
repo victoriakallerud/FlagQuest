@@ -14,6 +14,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.viewport.ScreenViewport
+import okhttp3.OkHttpClient
+import okhttp3.Request
 import com.flagquest.game.utils.UIManager.addBackButton
 import com.flagquest.game.utils.UIManager.addHeading
 
