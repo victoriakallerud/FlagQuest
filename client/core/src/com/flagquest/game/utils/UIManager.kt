@@ -15,14 +15,17 @@ import com.flagquest.game.utils.NavManager.backButtonFunc
 
 object UIManager {
     private val skin: Skin = Skin(Gdx.files.internal("skins/skin/flat-earth-ui.json"))
-    private val titleFont: BitmapFont = skin.getFont("title")
+    val titleFont: BitmapFont = skin.getFont("title")
 
-    private var screenWidth = Gdx.graphics.width
-    private val screenHeight = Gdx.graphics.height
+    val screenWidth = Gdx.graphics.width
+    val screenHeight = Gdx.graphics.height
 
     // Button parameters
-    private val buttonHeight = screenHeight / 11
-    private var buttonPos: Float = ((screenHeight / 2) + 150).toFloat()
+    val buttonHeight = screenHeight / 11
+    val buttonWidth = screenWidth * 8 / 10
+    val buttonSpacing = 20
+    var buttonPos: Float = ((screenHeight / 2) + 150).toFloat()
+    val buttonTextScale = 1.5f
 
     // Backbutton parameters
     private val backButtonHeight = buttonHeight
