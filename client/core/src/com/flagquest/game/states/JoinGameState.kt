@@ -4,11 +4,9 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.scenes.scene2d.Stage
-import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.ui.TextField
-import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.viewport.ScreenViewport
 import com.flagquest.game.utils.ButtonClickListener
 import com.flagquest.game.utils.UIManager.addBackButton
@@ -27,9 +25,11 @@ class JoinGameState(gsm: GameStateManager) : State(gsm) {
     private val codeBtn = TextButton("JOIN WITH CODE", skin)
     private val randomBtn = TextButton("JOIN RANDOM GAME", skin)
 
+    private val lobbyCode = 10049 //TODO: LOGIC TO RETRIEVE CODE
+
     private val btns = arrayOf(
-        codeBtn to lazy { GameLobbyState(gsm, isAdmin = false) }, //TODO: Add backend logic
-        randomBtn to lazy { GameLobbyState(gsm, isAdmin = false) } ) //TODO: Add backend logic
+        codeBtn to lazy { GameLobbyState(gsm, isAdmin = false, lobbyCode) }, //TODO: Add backend logic
+        randomBtn to lazy { GameLobbyState(gsm, isAdmin = false, lobbyCode) } ) //TODO: Add backend logic
     private var counter: Int = 1
 
     init {

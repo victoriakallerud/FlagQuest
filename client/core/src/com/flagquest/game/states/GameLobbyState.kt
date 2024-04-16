@@ -9,13 +9,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.ui.TextField
-import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.viewport.ScreenViewport
 import com.flagquest.game.utils.ButtonClickListener
 import com.flagquest.game.utils.UIManager.addBackButton
 import com.flagquest.game.utils.UIManager.addHeading
 
-class GameLobbyState(gsm: GameStateManager, isAdmin: Boolean) : State(gsm) {
+class GameLobbyState(gsm: GameStateManager, isAdmin: Boolean, lobbyCode: Int) : State(gsm) {
     private val skin: Skin = Skin(Gdx.files.internal("skins/skin/flat-earth-ui.json"))
     private val textFieldStyle: TextField.TextFieldStyle = skin.get(TextField.TextFieldStyle::class.java)
     private val titleFont: BitmapFont = skin.getFont("title")
@@ -30,21 +29,25 @@ class GameLobbyState(gsm: GameStateManager, isAdmin: Boolean) : State(gsm) {
     private val totalParticipants: Int = 6 // TODO: Implement way of getting total participants number
 
     private val heading = Label("GAME LOBBY", skin)
-    private val codeText = Label("$currParticipants/$totalParticipants has joined", skin)
+    private val joinedText = "$currParticipants/$totalParticipants has joined"
     private val names = arrayOf("Amel De Kok", "Felix Kuhn", "Leo Laisé", "Victoria Kallerud") // TODO: Implement way of getting participants
 
+    private val lobbyCodeText = "Lobby Code: $lobbyCode" //Displays code with leading zeroes
     init {
         textFieldStyle.font.data.setScale(5f)
 
         addHeading(stage, "GAME LOBBY", 2.8f)
         addBackButton(stage,gsm, backNavType)
 
-        codeText.setStyle(Label.LabelStyle(titleFont, codeText.style.fontColor))
-        codeText.setFontScale(1.5f)
-        codeText.pack()
-        codeText.setPosition((screenWidth - codeText.prefWidth) / 2, pos + 250f)
-        stage.addActor(codeText)
+        // Display lobby number
+        val lobbyTextY = pos + 400f
+        addHeading(stage,lobbyCodeText,1.5f, lobbyTextY)
 
+        // Display number of people joined
+        val joinedTextY = pos + 250f
+        addHeading(stage,joinedText, 1.5f, joinedTextY)
+
+        // Display players that have joined
         val table = Table()
         table.setFillParent(true)
 

@@ -5,12 +5,10 @@ import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.Stage
-import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.ui.TextField
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
-import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.viewport.ScreenViewport
 import com.flagquest.game.utils.UIManager.addBackButton
 import com.flagquest.game.utils.UIManager.addHeading
@@ -27,12 +25,11 @@ class LobbyInitiationState(gsm: GameStateManager) : State(gsm) {
     private var screenWidth = Gdx.graphics.width
     private val screenHeight = Gdx.graphics.height
     private val buttonHeight = screenHeight / 11
-    private var pos: Float = ((screenHeight / 2) + 50).toFloat()
-    private val code = (10000..99999).random() // TODO: write function to get code
-    private val codeIsFree = false
+    private var pos: Float = ((screenHeight / 2) + 150).toFloat()
+    private val lobbyCode = (10000..99999).random() // TODO: write function to get code
+    private val lobbyCodeIsFree = false // TODO: use this in code generation above (? @Hanna)
     override val stage = Stage(ScreenViewport())
 
-    private val codeText = Label("Lobby Code: $code", skin)
     private val sizeInput = TextField("", skin).apply{ messageText="  How many players?"}
     private val inviteLinkBtn = TextButton("GET INVITE LINK", skin)
     private val inviteBtn = TextButton("INVITE FRIENDS", skin)
@@ -42,7 +39,7 @@ class LobbyInitiationState(gsm: GameStateManager) : State(gsm) {
     private val btns = arrayOf(
         inviteLinkBtn to null, //TODO: Link screen
         inviteBtn to null, //TODO: Invite screen
-        createBtn to lazy { GameLobbyState(gsm,isAdmin = true) })
+        createBtn to lazy { GameLobbyState(gsm,isAdmin = true, lobbyCode) })
     private var counter: Int = 1
 
     init {
@@ -51,12 +48,6 @@ class LobbyInitiationState(gsm: GameStateManager) : State(gsm) {
 
         addHeading(stage,"CREATE GAME\nLOBBY", 2.8f)
         addBackButton(stage,gsm, backNavType)
-
-        codeText.setStyle(Label.LabelStyle(titleFont, codeText.style.fontColor))
-        codeText.setFontScale(1.5f)
-        codeText.pack()
-        codeText.setPosition((screenWidth - codeText.prefWidth) / 2, pos + 250f)
-        stage.addActor(codeText)
 
         sizeInput.width = (screenWidth*80/100).toFloat()
         sizeInput.height = buttonHeight.toFloat()
@@ -89,7 +80,7 @@ class LobbyInitiationState(gsm: GameStateManager) : State(gsm) {
                 val client = OkHttpClient()
                 val mediaType = "application/json".toMediaType()
                 val body = ("{" +
-                        "\r\n  \"name\": \"$code\"," + //
+                        "\r\n  \"name\": \"$lobbyCode\"," + //
                         "\r\n  \"admin\": \"398315ed-3e05-47dd-ac50-37d1fbe441d9\"," + // TODO: Implement function to get user's id
                         "\r\n  \"options\": " +
                         "{\r\n    \"maxNumOfPlayers\": \"$size\"," +
@@ -109,7 +100,7 @@ class LobbyInitiationState(gsm: GameStateManager) : State(gsm) {
                 val response = client.newCall(request).execute()
 
                 println("Lobby created: ${response.body?.string()}")
-                gsm.push(GameLobbyState(gsm,isAdmin = true))
+                gsm.push(GameLobbyState(gsm,isAdmin = true, lobbyCode))
             }
         })
 

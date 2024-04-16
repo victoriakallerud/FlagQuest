@@ -77,13 +77,13 @@ object UIManager {
         stage.addActor(button.first)
     }
 
-     fun addHeading(stage: Stage, title: String, fontScale: Float = 2.8f){
+     fun addHeading(stage: Stage, title: String, fontScale: Float = 2.8f, posY : Float = screenHeight - 500f){
         val heading = Label(title, skin)
         heading.style = Label.LabelStyle(titleFont, heading.style.fontColor)
         heading.setFontScale(fontScale)
         heading.setAlignment(Align.center)
         heading.pack()
-        heading.setPosition((screenWidth - heading.prefWidth) / 2, screenHeight - 500f)
+        heading.setPosition((screenWidth - heading.prefWidth) / 2, posY)
         stage.addActor(heading)
     }
 }
