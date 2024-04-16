@@ -32,7 +32,7 @@ abstract class State(protected val gsm: GameStateManager) {
             // Check if the back button is pressed
             if (keycode == Input.Keys.BACK) {
                 // Handle back button press here
-                backButtonFunc(stage,gsm,backNavType)
+                backButtonFunc(gsm, backNavType)
                 return true
             }
             return super.keyDown(event, keycode)

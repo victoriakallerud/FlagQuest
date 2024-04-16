@@ -15,7 +15,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable
 import com.badlogic.gdx.utils.Align
 import com.flagquest.game.states.GameStateManager
-import com.flagquest.game.states.PauseState
 import com.flagquest.game.states.State
 import com.flagquest.game.utils.NavManager.backButtonFunc
 
@@ -42,7 +41,7 @@ object UIManager {
         backButton.setPosition((screenWidth / 11).toFloat(), (screenWidth / 11).toFloat())
         backButton.addListener(object : ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
-                backButtonFunc(stage,gsm, backNavType) // Pop the current state
+                backButtonFunc(gsm, backNavType) // Pop the current state
             }
         })
         stage.addActor(backButton) // Add the back button to the stage
@@ -96,7 +95,7 @@ object UIManager {
             setPosition(((screenWidth - width) / 2), (screenWidth / 13).toFloat())
             addListener(object : ClickListener() {
                 override fun clicked(event: InputEvent?, x: Float, y: Float) {
-                    gsm.push(PauseState(gsm)) // Pop the current state
+                    backButtonFunc(gsm, "pause") // Go to pause screen
                 }
             })
         }
