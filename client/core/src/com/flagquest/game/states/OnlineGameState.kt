@@ -1,18 +1,23 @@
 package com.flagquest.game.states
 
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.BitmapFont
+import com.badlogic.gdx.graphics.g2d.Sprite
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.Image
-import com.badlogic.gdx.scenes.scene2d.ui.Label
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
+import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable
 import com.badlogic.gdx.utils.viewport.ScreenViewport
-import com.flagquest.game.utils.UIManager.addBackButton
+import com.flagquest.game.utils.UIManager.addHeading
+import com.flagquest.game.utils.UIManager.addPauseButton
+
 
 // Use without arguments when first presenting the quiz. Load with chosen and correct answer to reveal.
 class OnlineGameState(gsm: GameStateManager, chosen: String? = null, correct: String? = null) : State(gsm) {
@@ -29,18 +34,17 @@ class OnlineGameState(gsm: GameStateManager, chosen: String? = null, correct: St
     private val correctCountry = "SLOVENIA" //TODO: Retrieve from backend
     private val flagTex = Texture(Gdx.files.internal("slovenia.svg"))
 
-    private val heading = Label("FLAGQUEST", skin)
 
     init {
         titleFont.data.setScale(1.5f)
         //Heading
-        heading.setStyle(Label.LabelStyle(titleFont, heading.style.fontColor))
-        heading.setFontScale(3.5f)
-        heading.pack()
-        heading.setPosition((screenWidth - heading.prefWidth) / 2, screenHeight - 300f)
-        stage.addActor(heading)
+        val headingY = screenHeight - 300f
+        addHeading(stage,"FLAGQUEST", 3.5f, posY = headingY)
 
-        addBackButton(stage,gsm, backNavType)
+        //Pause button
+        val pauseBtnColor = Color(0.0235f, 0.24705f, 0.39607f, 1f)
+        val pauseButtonSize = (screenHeight/11).toFloat()
+        addPauseButton(stage, gsm, pauseBtnColor, pauseButtonSize)
 
         //Flag
         val flagImg = Image(flagTex)
