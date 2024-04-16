@@ -1,5 +1,4 @@
 package com.flagquest.game.models
-/*
 class AndroidFirebaseAuth : FirebaseAuthInterface {
     private val firebaseAuth: FirebaseAuth
 
@@ -29,4 +28,4 @@ class AndroidFirebaseAuth : FirebaseAuthInterface {
             }
     }
 }
-*/
+
