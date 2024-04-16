@@ -19,8 +19,8 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.RequestBody.Companion.toRequestBody
 
-class LobbyInitiationView(gsm: GameStateManager, private val stage: Stage, private val listener: LobbyRedirectionListener) {
-    val controller: LobbyInitiationController = LobbyInitiationController(LobbyApiModel(), this, gsm)
+class LobbyInitiationView(gsm: GameStateManager, private val stage: Stage, listener: LobbyRedirectionListener) {
+    val controller: LobbyInitiationController = LobbyInitiationController(LobbyApiModel())
 
     private val skin: Skin = UIManager.skin
     private val textFieldStyle: TextField.TextFieldStyle = skin.get(TextField.TextFieldStyle::class.java)

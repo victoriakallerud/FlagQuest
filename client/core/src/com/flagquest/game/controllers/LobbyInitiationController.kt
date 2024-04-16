@@ -6,7 +6,7 @@ import com.flagquest.game.states.GameStateManager
 import com.flagquest.game.states.LobbyInitiationState
 import com.flagquest.game.views.LobbyInitiationView
 
-class LobbyInitiationController(private val model: LobbyApiModel, private val view: LobbyInitiationView, private val gsm: GameStateManager) {
+class LobbyInitiationController(private val model: LobbyApiModel) {
     var redirectionListener: LobbyRedirectionListener? = null
     fun onCreateGameClicked(size: Int) {
         val lobby: String? = model.postLobby(size)
