@@ -15,4 +15,5 @@ dependencies {
         exclude group: 'org.json', module: 'json'
     }
     implementation("com.squareup.okhttp3:okhttp:4.10.0")
+    //implementation 'com.google.firebase:firebase-auth-ktx:22.3.1'
 }
