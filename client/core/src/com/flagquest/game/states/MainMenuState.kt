@@ -37,10 +37,10 @@ class MainMenuState(gsm: GameStateManager) : State(gsm) {
         addNavButtonArray(stage, gsm, buttons, buttonStartingPos)
         titleFont.data.setScale(1.5f)
 
-        // Test get request, get Lunitik user with id 398315ed-3e05-47dd-ac50-37d1fbe441d9
+        // Test get request, get test1 user with id 873194ce-5f36-4e0c-8c9c-ce2bdedeb3f0
         val client = OkHttpClient()
         val request = Request.Builder()
-            .url("http://flagquest.leotm.de:3000/user/398315ed-3e05-47dd-ac50-37d1fbe441d9")
+            .url("http://flagquest.leotm.de:3000/user/873194ce-5f36-4e0c-8c9c-ce2bdedeb3f0")
             .addHeader("X-API-Key", "{{token}}")
             .build()
         val response = client.newCall(request).execute()
