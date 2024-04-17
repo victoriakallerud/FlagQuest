@@ -26,13 +26,12 @@ class GameLobbyState(gsm: GameStateManager, isAdmin: Boolean, lobbyId: String) :
     private val screenHeight = Gdx.graphics.height
     private val buttonHeight = screenHeight / 11
     private var pos: Float = ((screenHeight / 2) + 50).toFloat()
+    override var backNavType = "menu"
     override val stage = Stage(ScreenViewport())
     private var currParticipants: Int = 0
     private var totalParticipants: Int = 0
     private val heading = Label("GAME LOBBY", skin)
     private var names: MutableList<String> = mutableListOf()
-
-    private val lobbyCodeText = "Lobby Code: $lobbyId"
     init {
         val client = OkHttpClient()
         val request = Request.Builder()
@@ -42,6 +41,7 @@ class GameLobbyState(gsm: GameStateManager, isAdmin: Boolean, lobbyId: String) :
 
         val response = client.newCall(request).execute()
         val responseBodyString = response.body?.string()
+        var lobbyInviteCode: Int = -1
 
         println("Response Body: $responseBodyString")
         try {
@@ -52,7 +52,7 @@ class GameLobbyState(gsm: GameStateManager, isAdmin: Boolean, lobbyId: String) :
                 val optionsObject = jsonObject.getJSONObject("options")
 
                 val playerIdsJson = jsonObject.getJSONArray("players")
-
+                lobbyInviteCode = JSONObject(it).getString("inviteCode").toInt()
                 val playerIds = mutableListOf<String>()
 
                 for (i in 0 until playerIdsJson.length()) {
@@ -88,8 +88,12 @@ class GameLobbyState(gsm: GameStateManager, isAdmin: Boolean, lobbyId: String) :
         addBackButton(stage,gsm, backNavType)
 
         // Display lobby number
+        val lobbyCodeText = "Lobby Code: $lobbyInviteCode"
         val lobbyTextY = pos + 400f
-        addHeading(stage,lobbyCodeText,1.5f, lobbyTextY)
+        if(lobbyInviteCode == -1)
+            addHeading(stage,"ERROR PARSING LOBBY", 1.5f, lobbyTextY) // If lobby code not parsed
+        else
+            addHeading(stage,lobbyCodeText,1.5f, lobbyTextY)
 
         // Display number of people joined
         val joinedTextY = pos + 250f

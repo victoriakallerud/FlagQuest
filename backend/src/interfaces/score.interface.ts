@@ -1,3 +1,6 @@
+import { GameModeEnum } from "src/enums/gamemode.enum";
+import { LevelEnum } from "src/enums/level.enum";
+
 /**
  * 
  * @export
@@ -9,7 +12,15 @@ export interface Score {
      * @type {string}
      * @memberof Score
      */
-    title?: string;
+    gameMode?: GameModeEnum;
+
+    /**
+     * 
+     * @type {string}
+     * @memberof Score
+     */
+    level?: LevelEnum;
+    
     /**
      * 
      * @type {number}

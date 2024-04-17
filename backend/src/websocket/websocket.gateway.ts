@@ -66,7 +66,7 @@ export class WebsocketGateway implements OnGatewayInit, OnGatewayConnection, OnG
   async handleStartGame(@ConnectedSocket() client: Socket, @MessageBody() joinLobbyDto: JoinLobbyDTO) {
     const res: Lobby = await this.websocketService.handleStartGame(client, joinLobbyDto.userId, joinLobbyDto.lobbyId);
     this.pushUpdatedLobby(joinLobbyDto.lobbyId, res);
-    const quiz: Quiz = await this.quizService.generateQuiz(res.options.numberOfQuestions);
+    const quiz: Quiz = await this.quizService.generateQuiz(res.options.level, res.options.numberOfQuestions);
     this.pushQuizToLobby(res.id, quiz);
     this.gameService.createGame(res);
   }
