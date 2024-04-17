@@ -40,6 +40,7 @@ class LobbyApiModel {
             .addHeader("X-API-Key", "{{token}}")
             .build()
         val response = client.newCall(request).execute()
+        println(response.body?.string())
         return response.body?.string()
     }
 
