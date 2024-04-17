@@ -9,7 +9,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.ui.TextField
-import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.viewport.ScreenViewport
 import com.flagquest.game.utils.ButtonClickListener
 import okhttp3.OkHttpClient
@@ -18,13 +17,9 @@ import org.json.JSONException
 import org.json.JSONObject
 import com.flagquest.game.utils.UIManager.addBackButton
 import com.flagquest.game.utils.UIManager.addHeading
-import okhttp3.OkHttpClient
-import okhttp3.Request
-import org.json.JSONException
 import com.flagquest.game.utils.SocketHandler
 import io.socket.client.Socket
 import org.json.JSONArray
-import org.json.JSONObject
 
 class GameLobbyState(gsm: GameStateManager, isAdmin: Boolean, lobbyId: String) : State(gsm) {
     private val skin: Skin = Skin(Gdx.files.internal("skins/skin/flat-earth-ui.json"))

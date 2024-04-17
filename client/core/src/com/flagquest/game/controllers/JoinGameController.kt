@@ -12,12 +12,10 @@ class JoinGameController(private val model: LobbyApiModel) {
     }
 
     fun onRandomButtonClicked() {
-        println("onRandomButtonClicked() function run")
         val allLobbies: String? = model.getAllLobbies()
         val firstLobby: String? = model.getFirstLobby(allLobbies!!)
         val lobbyId: String = model.getIdFromResponse(firstLobby!!)
         model.putLobbyWithId(lobbyId)
         redirectionListener?.redirectToGameState(lobbyId)
-        println("Controller -> State should be done")
     }
 }

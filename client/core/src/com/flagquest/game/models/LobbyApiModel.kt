@@ -82,6 +82,7 @@ class LobbyApiModel {
 
     /**
      * Function sends GET request to retrieve all lobbies
+     * @return Server's response as string
      */
     fun getAllLobbies(): String? {
         val client = OkHttpClient()
@@ -118,4 +119,23 @@ class LobbyApiModel {
         }
         return null
     }
+
+    /**
+     * Function takes in list of highscores and creates list with pairs of username and score
+     * @return List with pairs of username and score
+     */
+    fun parseHighscores(highscoreString: String?): List<Pair<String, Int>> {
+        val highscoreArray = JSONArray(highscoreString!!)
+        val highscores = mutableListOf<Pair<String, Int>>()
+
+        for (i in 0 until highscoreArray.length()) {
+            val jsonObject = highscoreArray.getJSONObject(i)
+            val userName = jsonObject.getString("userName")
+            val score = jsonObject.getInt("score")
+            highscores.add(userName to score)
+        }
+
+        return highscores
+    }
 }
+
