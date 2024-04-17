@@ -107,6 +107,7 @@ export class DatabaseService {
     }
 
     async updateUserScore(userId: string, level: LevelEnum, gameMode: GameModeEnum, score: number){
+        // only updates the score if the new score is higher than the previous one
         if (this.userExistsById(userId)){
                 try {
                 let user = await this.getUserById(userId);
@@ -114,7 +115,9 @@ export class DatabaseService {
                 if (scoreIndex === -1) {
                   user.highScores.push({level: level, gameMode: gameMode, value: score});
                 } else {
-                    user.highScores[scoreIndex].value = score;
+                    if (user.highScores[scoreIndex].value < score) {
+                        user.highScores[scoreIndex].value = score;
+                    }
                 }
                 await this.updateUser(userId, user);
             } catch (error) {
