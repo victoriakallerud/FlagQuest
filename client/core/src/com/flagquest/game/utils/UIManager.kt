@@ -19,8 +19,6 @@ object UIManager {
 
     val screenWidth = Gdx.graphics.width
     val screenHeight = Gdx.graphics.height
-
-    // Button parameters
     val elementHeight = screenHeight / 11
     val elementWidth = screenWidth * 8 / 10
     val elementSpacing = 20
