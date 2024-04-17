@@ -2,9 +2,6 @@ package com.flagquest.game.controllers
 
 import com.flagquest.game.models.LobbyApiModel
 import com.flagquest.game.navigation.LobbyRedirectionListener
-import com.flagquest.game.states.GameStateManager
-import com.flagquest.game.states.LobbyInitiationState
-import com.flagquest.game.views.LobbyInitiationView
 
 class LobbyInitiationController(private val model: LobbyApiModel) {
     var redirectionListener: LobbyRedirectionListener? = null

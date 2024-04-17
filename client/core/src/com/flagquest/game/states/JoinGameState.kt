@@ -12,6 +12,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.viewport.ScreenViewport
+import com.flagquest.game.navigation.GameRedirectionListener
+import com.flagquest.game.navigation.LobbyRedirectionListener
 import com.flagquest.game.utils.ButtonClickListener
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
@@ -24,9 +26,9 @@ import com.flagquest.game.utils.UIManager.addHeading
 import com.flagquest.game.views.JoinGameView
 import com.flagquest.game.views.MainMenuView
 
-class JoinGameState(gsm: GameStateManager) : State(gsm) {
+class JoinGameState(gsm: GameStateManager) : State(gsm), GameRedirectionListener {
     override val stage = Stage(ScreenViewport())
-    private val view = JoinGameView(gsm, stage)
+    private val view = JoinGameView(gsm, stage, this)
 
     init {
         Gdx.input.inputProcessor = stage
@@ -43,5 +45,11 @@ class JoinGameState(gsm: GameStateManager) : State(gsm) {
         Gdx.gl.glClearColor(0.92f, 0.88f, 0.84f, 1f)
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
         stage.draw()
+    }
+
+    override fun redirectToGameState(lobbyId: String) {
+        println("GameLobby should be pushed 1")
+        gsm.push(GameLobbyState(gsm, isAdmin = false, lobbyId))
+        println("GameLobby should be pushed 2")
     }
 }
