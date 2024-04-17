@@ -20,7 +20,7 @@ class MainMenuState(gsm: GameStateManager) : State(gsm) {
     private fun setUpButtonListeners() {
         view.buttons[0].addListener(ButtonClickListener(gsm, lazy { LobbyInitiationState(gsm) }))
         view.buttons[1].addListener(ButtonClickListener(gsm, lazy { JoinGameState(gsm) }))
-        view.buttons[2].addListener(ButtonClickListener(gsm, lazy { OnlineGameState(gsm) }))
+        view.buttons[2].addListener(ButtonClickListener(gsm, lazy { OfflineGameState(gsm) }))
         view.buttons[3].addListener(ButtonClickListener(gsm, lazy { HighscoreState(gsm) }))
         view.buttons[4].addListener(ButtonClickListener(gsm, lazy { ManageFriendsState(gsm) }))
     }

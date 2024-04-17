@@ -17,7 +17,7 @@ import com.flagquest.game.utils.UIManager.addPauseButton
 import com.flagquest.game.utils.SocketHandler
 
 // Use without arguments when first presenting the quiz. Load with chosen and correct answer to reveal.
-class OnlineGameState(gsm: GameStateManager, chosen: String? = null, correct: String? = null) : State(gsm) {
+class OfflineGameState(gsm: GameStateManager, chosen: String? = null, correct: String? = null) : State(gsm) {
     private val skin: Skin = Skin(Gdx.files.internal("skins/skin/flat-earth-ui.json"))
     private val titleFont: BitmapFont = skin.getFont("title")
     private var screenWidth = Gdx.graphics.width
@@ -56,7 +56,7 @@ class OnlineGameState(gsm: GameStateManager, chosen: String? = null, correct: St
             if (chosen == null){ // Only let the person guess if they haven't before.
                 button.addListener(object: ClickListener(){
                     override fun clicked(event: InputEvent?, x: Float, y: Float) {
-                        gsm.push(OnlineGameState(gsm, chosen = country, correct=correctCountry))
+                        gsm.push(OfflineGameState(gsm, chosen = country, correct=correctCountry))
                     }
                 })
             }
@@ -68,12 +68,6 @@ class OnlineGameState(gsm: GameStateManager, chosen: String? = null, correct: St
 
             stage.addActor(button)
             pos -= button.height + 30
-        }
-        val mSocket = SocketHandler.getSocket()
-
-        mSocket.on("nextRound") { args ->
-            val roundNumber = args[0] as Int
-            // TODO: switch to next round
         }
     }
 

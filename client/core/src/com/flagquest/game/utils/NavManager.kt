@@ -1,13 +1,12 @@
 package com.flagquest.game.utils
 
-import com.badlogic.gdx.scenes.scene2d.Stage
 import com.flagquest.game.states.GameStateManager
 import com.flagquest.game.states.MainMenuState
 import com.flagquest.game.states.PauseState
 
 object NavManager {
 
-    fun backButtonFunc (stage: Stage, gsm: GameStateManager, backNavType: String) {
+    fun backButtonFunc (gsm: GameStateManager, backNavType: String) {
         when(backNavType) {
             "menu" -> {
                 gsm.clear()
