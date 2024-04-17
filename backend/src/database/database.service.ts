@@ -7,6 +7,10 @@ import { LobbyService } from 'src/lobby/lobby.service';
 import { Question } from 'src/interfaces/question.interface';
 import { Country } from 'src/interfaces/country.interface';
 import { LobbyStateEnum } from 'src/enums/lobbyState.enum';
+import { Score } from 'src/interfaces/score.interface';
+import { LevelEnum } from 'src/enums/level.enum';
+import { GameModeEnum } from 'src/enums/gamemode.enum';
+import { RequestUserScoresDTO } from 'src/user/dto/requestUserScores.dto';
 
 @Injectable()
 export class DatabaseService {
@@ -46,6 +50,26 @@ export class DatabaseService {
             }
         } catch (error) {
             this.logger.error('Error getting user ID by username', error);
+            throw error;
+        }
+    }
+
+    async getBestScores(number: number, level: LevelEnum, gameMode: GameModeEnum): Promise<RequestUserScoresDTO[]> {
+        //gets the top k scores based on level and mode and returns a list of RequestUserScoresDTO which contains the username and score
+        try {
+            let userDocs = await this.db.collection('user').get();
+            let userScores: RequestUserScoresDTO[] = [];
+            userDocs.forEach(userDoc => {
+                let user = userDoc.data() as User;
+                let userScore = user.highScores.find(score => score.level === level && score.gameMode === gameMode);
+                if (userScore) {
+                    userScores.push({userName: user.userName, score: userScore.value});
+                }
+            });
+            userScores.sort((a, b) => b.score - a.score);
+            return userScores.slice(0, number);
+        } catch (error) {
+            this.logger.error('Error getting best scores', error);
             throw error;
         }
     }
