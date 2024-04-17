@@ -1,5 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsNotEmpty, IsNumber, IsPositive, IsUUID } from "class-validator";
+import { IsBoolean, IsNotEmpty, IsNumber, IsPositive, IsUUID } from "class-validator";
 
 export class submittedAnswerDto {
 
@@ -14,6 +14,7 @@ export class submittedAnswerDto {
     playerId: string;
 
     @ApiProperty()
+    @IsBoolean()
     @IsNotEmpty()
     isAnswerRight: boolean;
 
