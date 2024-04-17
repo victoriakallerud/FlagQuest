@@ -24,6 +24,7 @@ import okhttp3.Request
 import okhttp3.RequestBody.Companion.toRequestBody
 import com.flagquest.game.utils.UIManager.addBackButton
 import com.flagquest.game.utils.UIManager.addHeading
+import com.flagquest.game.utils.UIManager.addNavButton
 
 class ManageFriendsState(gsm: GameStateManager) : State(gsm) {
     private val skin: Skin = Skin(Gdx.files.internal("skins/skin/flat-earth-ui.json"))
@@ -33,8 +34,6 @@ class ManageFriendsState(gsm: GameStateManager) : State(gsm) {
     private val buttonHeight = screenHeight / 11
     override val stage = Stage(ScreenViewport())
 
-    // Heading
-    private val heading = Label("MANAGE\nFRIENDS", skin)
 
     // Friend list
     private val friends = arrayOf( // TODO: Implement function to retrieve friends
@@ -70,6 +69,7 @@ class ManageFriendsState(gsm: GameStateManager) : State(gsm) {
 
     // Add friend button
     private val addFriendBtn = TextButton("+ ADD FRIEND", skin)
+    private val friendRequestButton = TextButton("FRIEND REQUESTS", skin) to lazy { FriendRequestState(gsm) }
 
     init {
         // Color of title bar on popup window
@@ -79,18 +79,26 @@ class ManageFriendsState(gsm: GameStateManager) : State(gsm) {
         addHeading(stage,"MANAGE\nFRIENDS", 2.8f)
         addBackButton(stage,gsm, backNavType)
 
+
         // Friend list styling
         friendsLabel.setStyle(Label.LabelStyle(titleFont, friendsLabel.style.fontColor))
         friendsLabel.setFontScale(1.3f)
+
+        // Pane Size and positions
         scrollPane.setSize((screenWidth/100*80).toFloat(), 700f)
-        scrollPane.setPosition((screenWidth - scrollPane.width)/2f, (screenHeight - scrollPane.height)/2f)
+        val panePosY = (screenHeight - scrollPane.height)/2f + 100f
+        scrollPane.setPosition((screenWidth - scrollPane.width)/2f, panePosY)
         scrollPane.setColor(0.92f, 0.88f, 0.84f, 1f)
         stage.addActor(scrollPane)
 
         // Add friend button styling
+        val friendBtnPosY = panePosY - buttonHeight - 30
         addFriendBtn.setSize((screenWidth*80/100).toFloat(), buttonHeight.toFloat())
-        addFriendBtn.setPosition(screenWidth / 2 - addFriendBtn.width / 2, (screenHeight - scrollPane.height)/2f - buttonHeight - 30)
+        addFriendBtn.setPosition(screenWidth / 2 - addFriendBtn.width / 2, friendBtnPosY)
         stage.addActor(addFriendBtn)
+
+        // Add Friend Request Button
+        addNavButton(stage,gsm,friendRequestButton,friendBtnPosY - buttonHeight - 30)
 
         // Listener that opens popup when add friend button is clicked
         addFriendBtn.addListener(object : ClickListener() {
