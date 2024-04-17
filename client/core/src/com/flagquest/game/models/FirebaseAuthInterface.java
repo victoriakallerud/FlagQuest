@@ -1,3 +1,5 @@
+/*
+
 package com.flagquest.game.models;
 
 public interface FirebaseAuthInterface {
@@ -5,3 +7,6 @@ public interface FirebaseAuthInterface {
     void signUp(String email, String password);
 
 }
+
+*
+ */

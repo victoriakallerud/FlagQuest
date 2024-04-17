@@ -1,3 +1,5 @@
+
+/*
 package com.flagquest.game.controllers
 
 import com.flagquest.game.models.FirebaseAuthInterface
@@ -16,3 +18,5 @@ class AuthController(private val authModel: FirebaseAuthInterface, private val v
         })
     } // Similar for signUp...
 }
+
+*/
