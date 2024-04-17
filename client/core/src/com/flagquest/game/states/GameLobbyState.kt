@@ -16,6 +16,8 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import org.json.JSONException
 import org.json.JSONObject
+import com.flagquest.game.utils.UIManager.addBackButton
+import com.flagquest.game.utils.UIManager.addHeading
 
 class GameLobbyState(gsm: GameStateManager, isAdmin: Boolean, lobbyId: String) : State(gsm) {
     private val skin: Skin = Skin(Gdx.files.internal("skins/skin/flat-earth-ui.json"))
@@ -80,13 +82,10 @@ class GameLobbyState(gsm: GameStateManager, isAdmin: Boolean, lobbyId: String) :
         textFieldStyle.font.data.setScale(5f)
 
         val codeText = Label("$currParticipants/$totalParticipants has joined", skin)
+        textFieldStyle.font.data.setScale(5f)
 
-        heading.setStyle(Label.LabelStyle(titleFont, heading.style.fontColor))
-        heading.setFontScale(2.8f)
-        heading.setAlignment(Align.center)
-        heading.pack()
-        heading.setPosition((screenWidth - heading.prefWidth) / 2, screenHeight - 500f)
-        stage.addActor(heading)
+        addHeading(stage, "GAME LOBBY", 2.8f)
+        addBackButton(stage,gsm, backNavType)
 
         codeText.setStyle(Label.LabelStyle(titleFont, codeText.style.fontColor))
         codeText.setFontScale(1.5f)
@@ -114,7 +113,6 @@ class GameLobbyState(gsm: GameStateManager, isAdmin: Boolean, lobbyId: String) :
         }
 
         stage.addActor(table)
-
         titleFont.data.setScale(1.5f)
 
     }
