@@ -12,8 +12,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField
 import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.viewport.ScreenViewport
 import com.flagquest.game.utils.ButtonClickListener
+import com.flagquest.game.utils.SocketHandler
 import com.flagquest.game.utils.UIManager.addBackButton
 import com.flagquest.game.utils.UIManager.addHeading
+import io.socket.client.Socket
+import org.json.JSONArray
+import org.json.JSONObject
 
 class GameLobbyState(gsm: GameStateManager, isAdmin: Boolean) : State(gsm) {
     private val skin: Skin = Skin(Gdx.files.internal("skins/skin/flat-earth-ui.json"))
@@ -34,6 +38,43 @@ class GameLobbyState(gsm: GameStateManager, isAdmin: Boolean) : State(gsm) {
     private val names = arrayOf("Amel De Kok", "Felix Kuhn", "Leo Laisé", "Victoria Kallerud") // TODO: Implement way of getting participants
 
     init {
+        val lobbyId = "51bdfbe3-88b7-4ed5-8c71-079adc346026" // TODO: Implement way of getting code
+        val userId = "97586711-7473-4e21-867a-41dd65faaec1" // TODO: Implement way of getting user id
+
+        SocketHandler.setSocket()
+        SocketHandler.establishConnection()
+
+        val mSocket = SocketHandler.getSocket()
+
+        mSocket.on(Socket.EVENT_CONNECT) {
+            println("Connected to server")
+        }
+
+        joinLobby(mSocket, userId, lobbyId)
+
+        mSocket.on("updateLobby") { args ->
+            val message = args[0] as JSONObject
+            println("Lobby updated: ${message.getString("name")} - ${message.getString("state")} - ${message.getString("id")}")
+        }
+
+        mSocket.on("status") { args ->
+            val message = if (args[0] is String) JSONObject(args[0] as String) else args[0] as JSONObject
+            val status = message.getString("status")
+            val statusMessage = if (message.get("message") is JSONArray) {
+                val messageArray = message.getJSONArray("message")
+                messageArray.joinToString(", ")
+            } else {
+                message.getString("message")
+            }
+            if (status == "ERROR") {
+                println("Status [ERROR]: $statusMessage")
+                // joinLobby(socket)
+            } else {
+                println("Status [SUCCESS]: $statusMessage")
+                // startGame(socket)
+            }
+        }
+
         textFieldStyle.font.data.setScale(5f)
 
         addHeading(stage, "GAME LOBBY", 2.8f)
@@ -81,4 +122,13 @@ class GameLobbyState(gsm: GameStateManager, isAdmin: Boolean) : State(gsm) {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
         stage.draw()
     }
+
+    private fun joinLobby(socket: Socket, userId: String, lobbyId: String) {
+        val joinBody = JSONObject()
+        joinBody.put("userId", userId)
+        joinBody.put("lobbyId", lobbyId)
+        println("Joining lobby with object: ${joinBody.toString()}")
+        socket.emit("joinLobby", joinBody)
+    }
+
 }
