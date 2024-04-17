@@ -21,6 +21,9 @@ import com.flagquest.game.utils.UIManager.addHeading
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import org.json.JSONException
+import com.flagquest.game.utils.SocketHandler
+import io.socket.client.Socket
+import org.json.JSONArray
 import org.json.JSONObject
 
 class GameLobbyState(gsm: GameStateManager, isAdmin: Boolean, lobbyId: String) : State(gsm) {
@@ -39,6 +42,7 @@ class GameLobbyState(gsm: GameStateManager, isAdmin: Boolean, lobbyId: String) :
     private var names: MutableList<String> = mutableListOf()
 
     init {
+
         val client = OkHttpClient()
         val request = Request.Builder()
             .url("http://flagquest.leotm.de:3000/lobby/${lobbyId}")
@@ -87,6 +91,44 @@ class GameLobbyState(gsm: GameStateManager, isAdmin: Boolean, lobbyId: String) :
         textFieldStyle.font.data.setScale(5f)
 
         val codeText = Label("$currParticipants/$totalParticipants has joined", skin)
+
+        val lobbyId = "51bdfbe3-88b7-4ed5-8c71-079adc346026" // TODO: Implement way of getting code
+        val userId = "97586711-7473-4e21-867a-41dd65faaec1" // TODO: Implement way of getting user id
+
+        SocketHandler.setSocket()
+        SocketHandler.establishConnection()
+
+        val mSocket = SocketHandler.getSocket()
+
+        mSocket.on(Socket.EVENT_CONNECT) {
+            println("Connected to server")
+        }
+
+        joinLobby(mSocket, userId, lobbyId)
+
+        mSocket.on("updateLobby") { args ->
+            val message = args[0] as JSONObject
+            println("Lobby updated: ${message.getString("name")} - ${message.getString("state")} - ${message.getString("id")}")
+        }
+
+        mSocket.on("status") { args ->
+            val message = if (args[0] is String) JSONObject(args[0] as String) else args[0] as JSONObject
+            val status = message.getString("status")
+            val statusMessage = if (message.get("message") is JSONArray) {
+                val messageArray = message.getJSONArray("message")
+                messageArray.joinToString(", ")
+            } else {
+                message.getString("message")
+            }
+            if (status == "ERROR") {
+                println("Status [ERROR]: $statusMessage")
+                // joinLobby(socket)
+            } else {
+                println("Status [SUCCESS]: $statusMessage")
+                // startGame(socket)
+            }
+        }
+
         textFieldStyle.font.data.setScale(5f)
 
         addHeading(stage, "GAME LOBBY", 2.8f)
@@ -189,4 +231,13 @@ class GameLobbyState(gsm: GameStateManager, isAdmin: Boolean, lobbyId: String) :
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
         stage.draw()
     }
+
+    private fun joinLobby(socket: Socket, userId: String, lobbyId: String) {
+        val joinBody = JSONObject()
+        joinBody.put("userId", userId)
+        joinBody.put("lobbyId", lobbyId)
+        println("Joining lobby with object: ${joinBody.toString()}")
+        socket.emit("joinLobby", joinBody)
+    }
+
 }
