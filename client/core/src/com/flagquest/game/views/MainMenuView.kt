@@ -35,6 +35,7 @@ class MainMenuView(private val gsm: GameStateManager, private val stage: Stage) 
             buttonStyle.font = buttonFont
             button.style = buttonStyle
 
+            // Set button size and position
             button.setSize(UIManager.elementWidth.toFloat(), UIManager.elementHeight.toFloat())
             button.setPosition((UIManager.screenWidth - UIManager.elementWidth) / 2f, buttonStartingPos)
 
