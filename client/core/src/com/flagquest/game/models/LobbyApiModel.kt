@@ -56,7 +56,23 @@ class LobbyApiModel {
         val mediaType = "text/plain".toMediaType()
         val body = "".toRequestBody(mediaType)
         val request = Request.Builder()
-            .url("http://flagquest.leotm.de:3000/lobby/invite/$inviteCode/87a56b6f-31e5-42d1-9f55-a3ee8c2fe5c0") // lobbyId/userId TODO: Add functionality to use the device's user's ID
+            .url("http://flagquest.leotm.de:3000/lobby/invite/$inviteCode/$userId") // lobbyId/userId TODO: Add functionality to use the device's user's ID
+            .put(body)
+            .addHeader("X-API-Key", "{{token}}")
+            .build()
+        val response = client.newCall(request).execute()
+        return response.body?.string()
+    }
+
+    /**
+     * Function sends PUT request to join a lobby with a lobbyId
+     */
+    fun putLobbyWithId(id: String): String? {
+        val client = OkHttpClient()
+        val mediaType = "text/plain".toMediaType()
+        val body = "".toRequestBody(mediaType)
+        val request = Request.Builder()
+            .url("http://flagquest.leotm.de:3000/lobby/$id/$userId" )// lobbyId/userId TODO: Add functionality to use the device's user's ID
             .put(body)
             .addHeader("X-API-Key", "{{token}}")
             .build()
@@ -84,6 +100,8 @@ class LobbyApiModel {
      */
     fun getIdFromResponse(responseBody: String): String {
         val jsonObject = JSONObject(responseBody)
+        println("JsonObject: $jsonObject")
+        println("ID: ${jsonObject.getString("id")}")
         return jsonObject.getString("id")
     }
 
