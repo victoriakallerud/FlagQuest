@@ -7,6 +7,10 @@ import { LobbyService } from 'src/lobby/lobby.service';
 import { Question } from 'src/interfaces/question.interface';
 import { Country } from 'src/interfaces/country.interface';
 import { LobbyStateEnum } from 'src/enums/lobbyState.enum';
+import { Score } from 'src/interfaces/score.interface';
+import { LevelEnum } from 'src/enums/level.enum';
+import { GameModeEnum } from 'src/enums/gamemode.enum';
+import { RequestUserScoresDTO } from 'src/user/dto/requestUserScores.dto';
 
 @Injectable()
 export class DatabaseService {
@@ -40,12 +44,32 @@ export class DatabaseService {
             let userDocs = await this.db.collection('user').where('userName', '==', userName).get();
             if (userDocs.empty) {
                 this.logger.error(`User with username ${userName} does not exist`);
-                return null;
+                throw new Error(`User does not exist`);
             } else {
                 return userDocs.docs[0].id;
             }
         } catch (error) {
             this.logger.error('Error getting user ID by username', error);
+            throw error;
+        }
+    }
+
+    async getBestScores(number: number, level: LevelEnum, gameMode: GameModeEnum): Promise<RequestUserScoresDTO[]> {
+        //gets the top k scores based on level and mode and returns a list of RequestUserScoresDTO which contains the username and score
+        try {
+            let userDocs = await this.db.collection('user').get();
+            let userScores: RequestUserScoresDTO[] = [];
+            userDocs.forEach(userDoc => {
+                let user = userDoc.data() as User;
+                let userScore = user.highScores.find(score => score.level === level && score.gameMode === gameMode);
+                if (userScore) {
+                    userScores.push({userName: user.userName, score: userScore.value});
+                }
+            });
+            userScores.sort((a, b) => b.score - a.score);
+            return userScores.slice(0, number);
+        } catch (error) {
+            this.logger.error('Error getting best scores', error);
             throw error;
         }
     }
@@ -79,6 +103,29 @@ export class DatabaseService {
         } catch (error) {
             this.logger.error('Error updating user', error);
             throw error;
+        }
+    }
+
+    async updateUserScore(userId: string, level: LevelEnum, gameMode: GameModeEnum, score: number){
+        // only updates the score if the new score is higher than the previous one
+        if (this.userExistsById(userId)){
+                try {
+                let user = await this.getUserById(userId);
+                let scoreIndex = user.highScores.findIndex(s => s.level === level && s.gameMode === gameMode);
+                if (scoreIndex === -1) {
+                  user.highScores.push({level: level, gameMode: gameMode, value: score});
+                } else {
+                    if (user.highScores[scoreIndex].value < score) {
+                        user.highScores[scoreIndex].value = score;
+                    }
+                }
+                await this.updateUser(userId, user);
+            } catch (error) {
+                this.logger.error('Error updating user score', error);
+                throw error;
+            }
+        } else {
+            throw new Error(`User with ID ${userId} does not exist`);
         }
     }
 

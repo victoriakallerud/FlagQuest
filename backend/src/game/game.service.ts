@@ -7,6 +7,8 @@ import { User } from 'src/interfaces/user.interface';
 import { Socket } from 'socket.io';
 import { PlayerDto } from 'src/websocket/dto/player.dto';
 import { LobbyStateEnum } from 'src/enums/lobbyState.enum';
+import { LevelEnum } from 'src/enums/level.enum';
+import { GameModeEnum } from 'src/enums/gamemode.enum';
 
 @Injectable()
 export class GameService {
@@ -131,7 +133,7 @@ export class GameService {
     }
 
     
-    async updatePlayerScore(client: Socket, playerId: string, lobbyId: string, isAnswerRight: boolean, answerTimeMs: number, ) {
+    updatePlayerScore(client: Socket, playerId: string, lobbyId: string, isAnswerRight: boolean, answerTimeMs: number) {
         // get Player by Id
         // add points to player
         const questionTimeMs = 10000;
@@ -140,14 +142,17 @@ export class GameService {
         const scoreRatio = 1 - (timeRatio / 2);
         const rawScore = maxPoints * scoreRatio;
         const roundedScore = Math.round(rawScore);
-
         const player: Player = this.getPlayerById(playerId, lobbyId);
         if (player) {
-            if (isAnswerRight){
+            if(isAnswerRight){
+                this.logger.log(`Player ${playerId} answered correctly in lobby ${lobbyId}`);
                 player.currentScore += roundedScore;
-            }   
+                this.logger.log(`Player ${playerId}`)
+            } else {
+                this.logger.log(`Player ${playerId} answered incorrectly in lobby ${lobbyId}`);
+            }
         } 
-            this.logger.log(`Client ${client.id} Score was updated for player ${playerId} in lobby ${lobbyId}`);
+        this.logger.log(`Client ${client.id} Score was updated for player ${playerId} in lobby ${lobbyId}`);
     }
 
     getListOfAllPlayers(gameId: string): PlayerDto[] {
@@ -163,9 +168,29 @@ export class GameService {
     }
 
     async endGame(gameId: string): Promise<Lobby> {
+        try{
+        this.updateScores(gameId);
         this.runningGames.delete(gameId);
         this.logger.log(`Game ${gameId} was deleted`);
         this.logger.log(`Currently running games: ${this.runningGames.size}`);
         return await this.databaseService.updateLobbyState(gameId, LobbyStateEnum.WaitingForPlayers);
+        } catch (error) {
+            this.logger.error(`Error ending game ${gameId}: ${error}`);
+        }
+    }
+
+    async updateScores(gameId: string) {
+        try{
+            const game: Game = this.getGameById(gameId);
+            const lobby: Lobby = await this.databaseService.getLobbyById(gameId);
+            const level: LevelEnum = lobby.options.level;
+            const gameMode: GameModeEnum = lobby.options.gameMode;
+            for(const player of game.players) {
+                await this.databaseService.updateUserScore(player.id, level, gameMode, player.currentScore);
+            }
+        } catch(error) {
+            this.logger.error(`Error updating scores for game ${gameId}: ${error}`);
+        }
+
     }
 }
