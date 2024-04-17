@@ -9,7 +9,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.ui.TextField
-import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.viewport.ScreenViewport
 import com.flagquest.game.utils.ButtonClickListener
 import okhttp3.OkHttpClient
@@ -18,13 +17,9 @@ import org.json.JSONException
 import org.json.JSONObject
 import com.flagquest.game.utils.UIManager.addBackButton
 import com.flagquest.game.utils.UIManager.addHeading
-import okhttp3.OkHttpClient
-import okhttp3.Request
-import org.json.JSONException
 import com.flagquest.game.utils.SocketHandler
 import io.socket.client.Socket
 import org.json.JSONArray
-import org.json.JSONObject
 
 class GameLobbyState(gsm: GameStateManager, isAdmin: Boolean, lobbyId: String) : State(gsm) {
     private val skin: Skin = Skin(Gdx.files.internal("skins/skin/flat-earth-ui.json"))
@@ -40,7 +35,6 @@ class GameLobbyState(gsm: GameStateManager, isAdmin: Boolean, lobbyId: String) :
     private var totalParticipants: Int = 0
     private val heading = Label("GAME LOBBY", skin)
     private var names: MutableList<String> = mutableListOf()
-
     init {
 
         val client = OkHttpClient()
@@ -51,6 +45,7 @@ class GameLobbyState(gsm: GameStateManager, isAdmin: Boolean, lobbyId: String) :
 
         val response = client.newCall(request).execute()
         val responseBodyString = response.body?.string()
+        var lobbyInviteCode: Int = -1
 
         println("Response Body: $responseBodyString")
         try {
@@ -61,7 +56,7 @@ class GameLobbyState(gsm: GameStateManager, isAdmin: Boolean, lobbyId: String) :
                 val optionsObject = jsonObject.getJSONObject("options")
 
                 val playerIdsJson = jsonObject.getJSONArray("players")
-
+                lobbyInviteCode = JSONObject(it).getString("inviteCode").toInt()
                 val playerIds = mutableListOf<String>()
 
                 for (i in 0 until playerIdsJson.length()) {
@@ -90,7 +85,7 @@ class GameLobbyState(gsm: GameStateManager, isAdmin: Boolean, lobbyId: String) :
         Gdx.input.inputProcessor = stage
         textFieldStyle.font.data.setScale(5f)
 
-        val codeText = Label("$currParticipants/$totalParticipants has joined", skin)
+        val joinedText = "$currParticipants/$totalParticipants has joined"
 
         val lobbyId = "51bdfbe3-88b7-4ed5-8c71-079adc346026" // TODO: Implement way of getting code
         val userId = "97586711-7473-4e21-867a-41dd65faaec1" // TODO: Implement way of getting user id
@@ -134,12 +129,19 @@ class GameLobbyState(gsm: GameStateManager, isAdmin: Boolean, lobbyId: String) :
         addHeading(stage, "GAME LOBBY", 2.8f)
         addBackButton(stage,gsm, backNavType)
 
-        codeText.setStyle(Label.LabelStyle(titleFont, codeText.style.fontColor))
-        codeText.setFontScale(1.5f)
-        codeText.pack()
-        codeText.setPosition((screenWidth - codeText.prefWidth) / 2, pos + 250f)
-        stage.addActor(codeText)
+        // Display lobby number
+        val lobbyCodeText = "Lobby Code: $lobbyInviteCode"
+        val lobbyTextY = pos + 400f
+        if(lobbyInviteCode == -1)
+            addHeading(stage,"ERROR PARSING LOBBY", 1.5f, lobbyTextY) // If lobby code not parsed
+        else
+            addHeading(stage,lobbyCodeText,1.5f, lobbyTextY)
 
+        // Display number of people joined
+        val joinedTextY = pos + 250f
+        addHeading(stage,joinedText, 1.5f, joinedTextY)
+
+        // Display players that have joined
         val table = Table()
         table.setFillParent(true)
 
