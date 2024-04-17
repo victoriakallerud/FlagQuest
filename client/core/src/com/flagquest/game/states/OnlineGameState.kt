@@ -1,7 +1,6 @@
 package com.flagquest.game.states
 
 import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.BitmapFont
@@ -13,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.badlogic.gdx.utils.viewport.ScreenViewport
+import com.flagquest.game.utils.UIManager.addBackButton
 
 // Use without arguments when first presenting the quiz. Load with chosen and correct answer to reveal.
 class OnlineGameState(gsm: GameStateManager, chosen: String? = null, correct: String? = null) : State(gsm) {
@@ -21,8 +21,9 @@ class OnlineGameState(gsm: GameStateManager, chosen: String? = null, correct: St
     private var screenWidth = Gdx.graphics.width
     private val screenHeight = Gdx.graphics.height
     private val buttonHeight = screenHeight / 11
-    private var pos: Float = ((screenHeight / 2) - 150).toFloat()
-    private val stage = Stage(ScreenViewport())
+    private var pos: Float = ((screenHeight / 2) - 50).toFloat()
+    override val stage = Stage(ScreenViewport())
+    override var backNavType = "pause"
 
     private val countries = arrayOf("SLOVAKIA", "RUSSIA", "SLOVENIA", "CROATIA") //TODO: Retrieve from backend
     private val correctCountry = "SLOVENIA" //TODO: Retrieve from backend
@@ -31,15 +32,15 @@ class OnlineGameState(gsm: GameStateManager, chosen: String? = null, correct: St
     private val heading = Label("FLAGQUEST", skin)
 
     init {
-        Gdx.input.inputProcessor = stage
-
+        titleFont.data.setScale(1.5f)
         //Heading
         heading.setStyle(Label.LabelStyle(titleFont, heading.style.fontColor))
         heading.setFontScale(3.5f)
         heading.pack()
         heading.setPosition((screenWidth - heading.prefWidth) / 2, screenHeight - 300f)
         stage.addActor(heading)
-        titleFont.data.setScale(1.5f)
+
+        addBackButton(stage,gsm, backNavType)
 
         //Flag
         val flagImg = Image(flagTex)
@@ -60,7 +61,7 @@ class OnlineGameState(gsm: GameStateManager, chosen: String? = null, correct: St
             }
 
             if (country == chosen && country != correct)
-                button.setColor(0.286F, 0.612F, 0.384F,1.0f)
+                button.setColor(.892f,.393f,.37f,1f)
             if (country == correct)
                 button.setColor(0.286F, 0.612F, 0.384F,1f)
 

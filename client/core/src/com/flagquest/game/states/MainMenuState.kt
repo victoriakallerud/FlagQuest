@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.scenes.scene2d.Stage
-import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.utils.viewport.ScreenViewport
@@ -12,46 +11,31 @@ import com.flagquest.game.utils.ButtonClickListener
 
 import okhttp3.OkHttpClient
 import okhttp3.Request
+import com.flagquest.game.utils.UIManager.addNavButtonArray
+import com.flagquest.game.utils.UIManager.addHeading
 
 class MainMenuState(gsm: GameStateManager) : State(gsm) {
     private val skin: Skin = Skin(Gdx.files.internal("skins/skin/flat-earth-ui.json"))
     private val titleFont: BitmapFont = skin.getFont("title")
     private var screenWidth = Gdx.graphics.width
     private val screenHeight = Gdx.graphics.height
-    private val buttonHeight = screenHeight / 11
-    private var pos: Float = ((screenHeight / 2) + 50).toFloat()
-    private val stage = Stage(ScreenViewport())
-
-    private val heading = Label("FLAGQUEST", skin)
-    private val createBtn = TextButton("CREATE GAME", skin)
-    private val joinBtn = TextButton("JOIN GAME", skin)
-    private val trainingBtn = TextButton("TRAINING MODE", skin)
-    private val highscoreBtn = TextButton("HIGHSCORE BOARD", skin)
-    private val friendsBtn = TextButton("MANAGE FRIENDS", skin)
+    override val stage = Stage(ScreenViewport())
+    private val buttonStartingPos = ((screenHeight / 2) + 150).toFloat()
+    override var backNavType = "nothing"
 
     private val buttons = arrayOf(
-        createBtn to lazy { LobbyInitiationState(gsm) },
-        joinBtn to lazy { JoinGameState(gsm) },
-        trainingBtn to lazy { OnlineGameState(gsm) }, //TODO: Link to OFFLINE state upon implementation
-        highscoreBtn to lazy { HighscoreState(gsm) },
-        friendsBtn to lazy { ManageFriendsState(gsm) }
+        TextButton("CREATE GAME", skin) to lazy { LobbyInitiationState(gsm) },
+        TextButton("JOIN GAME", skin) to lazy { JoinGameState(gsm) },
+        TextButton("TRAINING MODE", skin) to lazy { OnlineGameState(gsm) }, //TODO: Link to OFFLINE state upon implementation
+        TextButton("HIGHSCORE BOARD", skin) to lazy { HighscoreState(gsm) },
+        TextButton("MANAGE FRIENDS", skin) to lazy { ManageFriendsState(gsm) }
     )
 
     init {
         Gdx.input.inputProcessor = stage
-        heading.setStyle(Label.LabelStyle(titleFont, heading.style.fontColor))
-        heading.setFontScale(3.5f)
-        heading.pack()
-        heading.setPosition((screenWidth - heading.prefWidth) / 2, screenHeight - 500f)
-        stage.addActor(heading)
+        addHeading(stage, "FLAGQUEST", fontScale = 3.5f)
+        addNavButtonArray(stage, gsm, buttons, buttonStartingPos)
         titleFont.data.setScale(1.5f)
-        for (button in buttons) {
-            button.first.setSize((screenWidth*80/100).toFloat(), buttonHeight.toFloat())
-            button.first.setPosition(screenWidth / 2 - button.first.width / 2, pos)
-            button.first.addListener(ButtonClickListener(gsm,button.second))
-            stage.addActor(button.first)
-            pos -= button.first.height + 30
-        }
 
         // Test get request, get Lunitik user with id 398315ed-3e05-47dd-ac50-37d1fbe441d9
         val client = OkHttpClient()
@@ -75,4 +59,5 @@ class MainMenuState(gsm: GameStateManager) : State(gsm) {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
         stage.draw()
     }
+
 }
