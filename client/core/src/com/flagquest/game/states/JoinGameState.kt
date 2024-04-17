@@ -28,8 +28,8 @@ class JoinGameState(gsm: GameStateManager) : State(gsm) {
     private val lobbyCode = 10049 //TODO: LOGIC TO RETRIEVE CODE
 
     private val btns = arrayOf(
-        codeBtn to lazy { GameLobbyState(gsm, isAdmin = false, lobbyCode) }, //TODO: Add backend logic
-        randomBtn to lazy { GameLobbyState(gsm, isAdmin = false, lobbyCode) } ) //TODO: Add backend logic
+        codeBtn to lazy { GameLobbyState(gsm, isAdmin = false, "14d29155-82ef-4d11-9c36-7214d1a8e4b7") }, //TODO: Add backend logic
+        randomBtn to lazy { GameLobbyState(gsm, isAdmin = false, "14d29155-82ef-4d11-9c36-7214d1a8e4b7") } ) //TODO: Add backend logic
     private var counter: Int = 1
 
     init {
