@@ -12,14 +12,21 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField
 import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.viewport.ScreenViewport
 import com.flagquest.game.utils.ButtonClickListener
-import com.flagquest.game.utils.SocketHandler
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import org.json.JSONException
+import org.json.JSONObject
 import com.flagquest.game.utils.UIManager.addBackButton
 import com.flagquest.game.utils.UIManager.addHeading
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import org.json.JSONException
+import com.flagquest.game.utils.SocketHandler
 import io.socket.client.Socket
 import org.json.JSONArray
 import org.json.JSONObject
 
-class GameLobbyState(gsm: GameStateManager, isAdmin: Boolean) : State(gsm) {
+class GameLobbyState(gsm: GameStateManager, isAdmin: Boolean, lobbyId: String) : State(gsm) {
     private val skin: Skin = Skin(Gdx.files.internal("skins/skin/flat-earth-ui.json"))
     private val textFieldStyle: TextField.TextFieldStyle = skin.get(TextField.TextFieldStyle::class.java)
     private val titleFont: BitmapFont = skin.getFont("title")
@@ -27,17 +34,64 @@ class GameLobbyState(gsm: GameStateManager, isAdmin: Boolean) : State(gsm) {
     private val screenHeight = Gdx.graphics.height
     private val buttonHeight = screenHeight / 11
     private var pos: Float = ((screenHeight / 2) + 50).toFloat()
-    override val stage = Stage(ScreenViewport())
     override var backNavType = "menu"
-
-    private val currParticipants: Int = 4 // TODO: Implement way of getting current participants number
-    private val totalParticipants: Int = 6 // TODO: Implement way of getting total participants number
-
+    override val stage = Stage(ScreenViewport())
+    private var currParticipants: Int = 0
+    private var totalParticipants: Int = 0
     private val heading = Label("GAME LOBBY", skin)
-    private val codeText = Label("$currParticipants/$totalParticipants has joined", skin)
-    private val names = arrayOf("Amel De Kok", "Felix Kuhn", "Leo Laisé", "Victoria Kallerud") // TODO: Implement way of getting participants
+    private var names: MutableList<String> = mutableListOf()
 
     init {
+
+        val client = OkHttpClient()
+        val request = Request.Builder()
+            .url("http://flagquest.leotm.de:3000/lobby/${lobbyId}")
+            .addHeader("X-API-Key", "{{token}}")
+            .build()
+
+        val response = client.newCall(request).execute()
+        val responseBodyString = response.body?.string()
+
+        println("Response Body: $responseBodyString")
+        try {
+            responseBodyString?.let {
+                val lobbyId = JSONObject(it).getString("id")
+                println("Lobby ID: $lobbyId")
+                val jsonObject = JSONObject(it)
+                val optionsObject = jsonObject.getJSONObject("options")
+
+                val playerIdsJson = jsonObject.getJSONArray("players")
+
+                val playerIds = mutableListOf<String>()
+
+                for (i in 0 until playerIdsJson.length()) {
+                    playerIds.add(playerIdsJson.getString(i))
+                }
+
+                for (id in playerIds) {
+                    val playerRequest = Request.Builder()
+                        .url("http://flagquest.leotm.de:3000/user/$id")
+                        .addHeader("X-API-Key", "{{token}}")
+                        .build()
+                    val playerResponse = client.newCall(playerRequest).execute()
+                    val playerResponseBodyString = playerResponse.body?.string()
+                    val playerJsonObject = JSONObject(playerResponseBodyString)
+                    val playerName = playerJsonObject.getString("userName")
+                    names.add(playerName)
+                }
+                currParticipants = playerIds.size
+                totalParticipants = optionsObject.getInt("maxNumOfPlayers")
+                println("Total Participants: $totalParticipants")
+            }
+        } catch (e: JSONException) {
+            println("Failed to parse the response JSON: ${e.message}")
+        }
+
+        Gdx.input.inputProcessor = stage
+        textFieldStyle.font.data.setScale(5f)
+
+        val codeText = Label("$currParticipants/$totalParticipants has joined", skin)
+
         val lobbyId = "51bdfbe3-88b7-4ed5-8c71-079adc346026" // TODO: Implement way of getting code
         val userId = "97586711-7473-4e21-867a-41dd65faaec1" // TODO: Implement way of getting user id
 
@@ -79,6 +133,61 @@ class GameLobbyState(gsm: GameStateManager, isAdmin: Boolean) : State(gsm) {
 
         addHeading(stage, "GAME LOBBY", 2.8f)
         addBackButton(stage,gsm, backNavType)
+        val client = OkHttpClient()
+        val request = Request.Builder()
+            .url("http://flagquest.leotm.de:3000/lobby/${lobbyId}")
+            .addHeader("X-API-Key", "{{token}}")
+            .build()
+
+        val response = client.newCall(request).execute()
+        val responseBodyString = response.body?.string()
+
+        println("Response Body: $responseBodyString")
+        try {
+            responseBodyString?.let {
+                val lobbyId = JSONObject(it).getString("id")
+                println("Lobby ID: $lobbyId")
+                val jsonObject = JSONObject(it)
+                val optionsObject = jsonObject.getJSONObject("options")
+
+                val playerIdsJson = jsonObject.getJSONArray("players")
+
+                val playerIds = mutableListOf<String>()
+
+                for (i in 0 until playerIdsJson.length()) {
+                    playerIds.add(playerIdsJson.getString(i))
+                }
+
+                for (id in playerIds) {
+                    val playerRequest = Request.Builder()
+                        .url("http://flagquest.leotm.de:3000/user/$id")
+                        .addHeader("X-API-Key", "{{token}}")
+                        .build()
+                    val playerResponse = client.newCall(playerRequest).execute()
+                    val playerResponseBodyString = playerResponse.body?.string()
+                    val playerJsonObject = JSONObject(playerResponseBodyString)
+                    val playerName = playerJsonObject.getString("userName")
+                    names.add(playerName)
+                }
+                currParticipants = playerIds.size
+                totalParticipants = optionsObject.getInt("maxNumOfPlayers")
+                println("Total Participants: $totalParticipants")
+            }
+        } catch (e: JSONException) {
+            println("Failed to parse the response JSON: ${e.message}")
+        }
+
+        Gdx.input.inputProcessor = stage
+        textFieldStyle.font.data.setScale(5f)
+
+        val codeText = Label("$currParticipants/$totalParticipants has joined", skin)
+
+        heading.setStyle(Label.LabelStyle(titleFont, heading.style.fontColor))
+        heading.setFontScale(2.8f)
+        heading.setAlignment(Align.center)
+        heading.pack()
+        heading.setPosition((screenWidth - heading.prefWidth) / 2, screenHeight - 500f)
+        stage.addActor(heading)
 
         codeText.setStyle(Label.LabelStyle(titleFont, codeText.style.fontColor))
         codeText.setFontScale(1.5f)

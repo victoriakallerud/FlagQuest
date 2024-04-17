@@ -2,61 +2,41 @@ package com.flagquest.game.states
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.GL20
-import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.scenes.scene2d.Stage
-import com.badlogic.gdx.scenes.scene2d.ui.Skin
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.utils.viewport.ScreenViewport
 import com.flagquest.game.utils.ButtonClickListener
-import okhttp3.OkHttpClient
-import okhttp3.Request
-import com.flagquest.game.utils.UIManager.addNavButtonArray
-import com.flagquest.game.utils.UIManager.addHeading
+import com.flagquest.game.views.MainMenuView
 
 class MainMenuState(gsm: GameStateManager) : State(gsm) {
-    private val skin: Skin = Skin(Gdx.files.internal("skins/skin/flat-earth-ui.json"))
-    private val titleFont: BitmapFont = skin.getFont("title")
-    private var screenWidth = Gdx.graphics.width
-    private val screenHeight = Gdx.graphics.height
     override val stage = Stage(ScreenViewport())
-    private val buttonStartingPos = ((screenHeight / 2) + 150).toFloat()
-    override var backNavType = "nothing"
-
-    private val buttons = arrayOf(
-        TextButton("CREATE GAME", skin) to lazy { LobbyInitiationState(gsm) },
-        TextButton("JOIN GAME", skin) to lazy { JoinGameState(gsm) },
-        TextButton("TRAINING MODE", skin) to lazy { OnlineGameState(gsm) }, //TODO: Link to OFFLINE state upon implementation
-        TextButton("HIGHSCORE BOARD", skin) to lazy { HighscoreState(gsm) },
-        TextButton("MANAGE FRIENDS", skin) to lazy { ManageFriendsState(gsm) }
-    )
+    private val view = MainMenuView(gsm, stage)
 
     init {
         Gdx.input.inputProcessor = stage
-        addHeading(stage, "FLAGQUEST", fontScale = 3.5f)
-        addNavButtonArray(stage, gsm, buttons, buttonStartingPos)
-        titleFont.data.setScale(1.5f)
+        setUpButtonListeners()
+    }
 
-        // Test get request, get Lunitik user with id 398315ed-3e05-47dd-ac50-37d1fbe441d9
-        val client = OkHttpClient()
-        val request = Request.Builder()
-            .url("http://flagquest.leotm.de:3000/user/398315ed-3e05-47dd-ac50-37d1fbe441d9")
-            .addHeader("X-API-Key", "{{token}}")
-            .build()
-        val response = client.newCall(request).execute()
-        println(response.body?.string())
+    // Set up button listeners - in State, because it needs access to gsm and handles state transitions
+    private fun setUpButtonListeners() {
+        view.buttons[0].addListener(ButtonClickListener(gsm, lazy { LobbyInitiationState(gsm) }))
+        view.buttons[1].addListener(ButtonClickListener(gsm, lazy { JoinGameState(gsm) }))
+        view.buttons[2].addListener(ButtonClickListener(gsm, lazy { OnlineGameState(gsm) }))
+        view.buttons[3].addListener(ButtonClickListener(gsm, lazy { HighscoreState(gsm) }))
+        view.buttons[4].addListener(ButtonClickListener(gsm, lazy { ManageFriendsState(gsm) }))
     }
 
     override fun handleInput() {
-        screenWidth = screenWidth // Just placeholder code to make the code compile
+        TODO("Not yet implemented")
     }
+
     override fun update(dt: Float) {
-        handleInput()
-        stage.act(dt)
+        view.update(dt)
     }
+
     override fun render() {
         Gdx.gl.glClearColor(0.92f, 0.88f, 0.84f, 1f)
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
-        stage.draw()
+        view.render()
     }
-
 }
+
