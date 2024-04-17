@@ -7,6 +7,8 @@ import { User } from 'src/interfaces/user.interface';
 import { Socket } from 'socket.io';
 import { PlayerDto } from 'src/websocket/dto/player.dto';
 import { LobbyStateEnum } from 'src/enums/lobbyState.enum';
+import { LevelEnum } from 'src/enums/level.enum';
+import { GameModeEnum } from 'src/enums/gamemode.enum';
 
 @Injectable()
 export class GameService {
@@ -164,8 +166,19 @@ export class GameService {
 
     async endGame(gameId: string): Promise<Lobby> {
         this.runningGames.delete(gameId);
+        this.updateScores(gameId);
         this.logger.log(`Game ${gameId} was deleted`);
         this.logger.log(`Currently running games: ${this.runningGames.size}`);
         return await this.databaseService.updateLobbyState(gameId, LobbyStateEnum.WaitingForPlayers);
+    }
+
+    async updateScores(gameId: string) {
+        const game: Game = this.getGameById(gameId);
+        const lobby: Lobby = await this.databaseService.getLobbyById(gameId);
+        const level: LevelEnum = lobby.options.level;
+        const gameMode: GameModeEnum = lobby.options.gameMode;
+        for(const player of game.players) {
+            await this.databaseService.updateUserScore(player.id, level, gameMode, player.currentScore);
+        }
     }
 }

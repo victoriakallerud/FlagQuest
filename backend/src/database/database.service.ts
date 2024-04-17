@@ -106,6 +106,26 @@ export class DatabaseService {
         }
     }
 
+    async updateUserScore(userId: string, level: LevelEnum, gameMode: GameModeEnum, score: number){
+        if (this.userExistsById(userId)){
+                try {
+                let user = await this.getUserById(userId);
+                let scoreIndex = user.highScores.findIndex(s => s.level === level && s.gameMode === gameMode);
+                if (scoreIndex === -1) {
+                  user.highScores.push({level: level, gameMode: gameMode, value: score});
+                } else {
+                    user.highScores[scoreIndex].value = score;
+                }
+                await this.updateUser(userId, user);
+            } catch (error) {
+                this.logger.error('Error updating user score', error);
+                throw error;
+            }
+        } else {
+            throw new Error(`User with ID ${userId} does not exist`);
+        }
+    }
+
     async deleteUser(userId: string): Promise<void> {
         try {
             let userDoc = this.db.collection('user').doc(userId);
