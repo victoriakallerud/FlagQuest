@@ -27,7 +27,7 @@ class GameLobbyState(gsm: GameStateManager, isAdmin: Boolean, lobbyId: String) :
     private val screenHeight = Gdx.graphics.height
     private val buttonHeight = screenHeight / 11
     private var pos: Float = ((screenHeight / 2) + 50).toFloat()
-    private val stage = Stage(ScreenViewport())
+    override val stage = Stage(ScreenViewport())
     private var currParticipants: Int = 0
     private var totalParticipants: Int = 0
     private val heading = Label("GAME LOBBY", skin)
