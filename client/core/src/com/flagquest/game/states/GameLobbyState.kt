@@ -26,13 +26,13 @@ class GameLobbyState(gsm: GameStateManager, isAdmin: Boolean, lobbyId: String) :
     private val screenHeight = Gdx.graphics.height
     private val buttonHeight = screenHeight / 11
     private var pos: Float = ((screenHeight / 2) + 50).toFloat()
-    private val stage = Stage(ScreenViewport())
+    override val stage = Stage(ScreenViewport())
     private var currParticipants: Int = 0
     private var totalParticipants: Int = 0
     private val heading = Label("GAME LOBBY", skin)
     private var names: MutableList<String> = mutableListOf()
 
-    private val lobbyCodeText = "Lobby Code: $lobbyCode" //Displays code with leading zeroes
+    private val lobbyCodeText = "Lobby Code: $lobbyId"
     init {
         val client = OkHttpClient()
         val request = Request.Builder()
@@ -81,7 +81,7 @@ class GameLobbyState(gsm: GameStateManager, isAdmin: Boolean, lobbyId: String) :
         Gdx.input.inputProcessor = stage
         textFieldStyle.font.data.setScale(5f)
 
-        val codeText = Label("$currParticipants/$totalParticipants has joined", skin)
+        val joinedText = "$currParticipants/$totalParticipants has joined"
         textFieldStyle.font.data.setScale(5f)
 
         addHeading(stage, "GAME LOBBY", 2.8f)
