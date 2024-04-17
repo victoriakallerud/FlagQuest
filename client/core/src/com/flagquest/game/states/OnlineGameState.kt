@@ -14,7 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.badlogic.gdx.utils.viewport.ScreenViewport
 import com.flagquest.game.utils.UIManager.addHeading
 import com.flagquest.game.utils.UIManager.addPauseButton
-
+import com.flagquest.game.utils.SocketHandler
 
 // Use without arguments when first presenting the quiz. Load with chosen and correct answer to reveal.
 class OnlineGameState(gsm: GameStateManager, chosen: String? = null, correct: String? = null) : State(gsm) {
@@ -68,6 +68,12 @@ class OnlineGameState(gsm: GameStateManager, chosen: String? = null, correct: St
 
             stage.addActor(button)
             pos -= button.height + 30
+        }
+        val mSocket = SocketHandler.getSocket()
+
+        mSocket.on("nextRound") { args ->
+            val roundNumber = args[0] as Int
+            // TODO: switch to next round
         }
     }
 

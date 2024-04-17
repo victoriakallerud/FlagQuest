@@ -5,6 +5,10 @@ import { RequestUserDTO } from './dto/requestUser.dto';
 import { IUserService } from './userService.interface';
 import { DatabaseService } from '../database/database.service';
 import* as moment from 'moment-timezone';
+import { Score } from 'src/interfaces/score.interface';
+import { LevelEnum } from 'src/enums/level.enum';
+import { GameModeEnum } from 'src/enums/gamemode.enum';
+import { RequestUserScoresDTO } from './dto/requestUserScores.dto';
 
 @Injectable()
 export class UserService implements IUserService {
@@ -77,6 +81,31 @@ export class UserService implements IUserService {
             } else {
                 this.logger.error('Error getting user', error);
                 throw new HttpException('Error getting user', 500);
+            }
+        }
+    }
+
+    async getBestScores(number: number, level: LevelEnum, gameMode: GameModeEnum): Promise<RequestUserScoresDTO[]> {
+        try {
+            if(!Object.values(LevelEnum).includes(level)){
+                throw new Error('Invalid level');
+            }
+            if(!Object.values(GameModeEnum).includes(gameMode)){
+                throw new Error('Invalid gamemode');
+            }
+            let scores = await this.databaseService.getBestScores(number, level, gameMode);
+            this.logger.log('Best scores found');
+            return scores;
+        } catch (error) {
+            if(error.message === 'Invalid level'){
+                this.logger.error('Invalid level', error);
+                throw new HttpException('Invalid level', 400);
+            } else if(error.message === 'Invalid gamemode'){
+                this.logger.error('Invalid gamemode', error);
+                throw new HttpException('Invalid gamemode', 400);
+            } else {
+            this.logger.error('Error getting best scores', error);
+            throw new HttpException('Error getting best scores', 500);
             }
         }
     }

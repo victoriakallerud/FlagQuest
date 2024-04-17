@@ -7,6 +7,7 @@ export const LevelEnum = {
     Africa: 'Africa',
     NorthAmerica: 'NorthAmerica',
     SouthAmerica: 'SouthAmerica',
-    Oceania: 'Oceania'
+    Oceania: 'Oceania',
+    All: 'All'
 } as const;
 export type LevelEnum = typeof LevelEnum[keyof typeof LevelEnum];

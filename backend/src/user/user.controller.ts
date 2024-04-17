@@ -3,6 +3,8 @@ import { UserService } from './user.service';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { User } from '../interfaces/user.interface';
 import { RequestUserDTO } from './dto/requestUser.dto';
+import { LevelEnum } from 'src/enums/level.enum';
+import { GameModeEnum } from 'src/enums/gamemode.enum';
 
 @ApiTags('user')
 @Controller('user')
@@ -25,6 +27,12 @@ export class UserController {
     @Get('byName/:userName')
     async getUserIdByName(@Param('userName') userName: string) {
       return await this.userService.getUserIdByName(userName);
+    }
+
+    @ApiOperation({ summary: 'Get the best top k scores based on level and mode' })
+    @Get('highScores/:level/:gameMode')
+    async getBestScoresByRegionAndLevel(@Body('number') number: number, @Param('level') level: LevelEnum, @Param('gameMode') gameMode: GameModeEnum) {
+      return await this.userService.getBestScores(number, level, gameMode);
     }
 
     @ApiOperation({ summary: 'Update a user by id' })

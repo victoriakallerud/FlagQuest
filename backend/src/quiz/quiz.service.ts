@@ -18,7 +18,7 @@ export class QuizService {
         this.databaseService.uploadQuestions(countries);
     }
 
-    async generateQuestion(region?: LevelEnum): Promise<Question> {
+    async generateQuestion(region: LevelEnum): Promise<Question> {
         let generatedAnswers: string[] = [];
         if (region) {
             generatedAnswers = await this.databaseService.getAnwserOptionsByRegion(region);
@@ -52,11 +52,11 @@ export class QuizService {
         return questions;
     }
 
-    async generateQuiz(numberOfQuestions: number): Promise<Quiz> {
+    async generateQuiz(region: LevelEnum ,numberOfQuestions: number): Promise<Quiz> {
         this.logger.log('Generated Quiz');
         const questions: Question[] = [];
         for (let i = 0; i < numberOfQuestions; i++) {
-            questions.push(await this.generateQuestion());
+            questions.push(await this.generateQuestion(region));
         }
         const quiz: Quiz = {
             questions: questions
