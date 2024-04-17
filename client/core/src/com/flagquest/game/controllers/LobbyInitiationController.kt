@@ -7,7 +7,6 @@ class LobbyInitiationController(private val model: LobbyApiModel) {
     var redirectionListener: LobbyRedirectionListener? = null
     fun onCreateGameClicked(size: Int) {
         val lobby: String? = model.postLobby(size)
-        println("Lobby: $lobby")
         val lobbyId: String = model.getIdFromResponse(lobby!!)
         redirectionListener?.redirectToLobbyState(lobbyId)
     }
