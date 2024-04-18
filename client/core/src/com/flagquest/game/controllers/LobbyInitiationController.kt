@@ -18,7 +18,6 @@ class LobbyInitiationController(private val model: LobbyApiModel) {
             false
         }
 
-
     }
 
 }
