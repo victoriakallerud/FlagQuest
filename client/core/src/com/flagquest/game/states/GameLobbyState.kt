@@ -132,6 +132,7 @@ class GameLobbyState(gsm: GameStateManager, isAdmin: Boolean, lobbyId: String) :
         addHeading(stage, "GAME LOBBY", 2.8f)
         addBackButton(stage,gsm, backNavType)
 
+
         // Display lobby number
         val lobbyCodeText = "Lobby Code: $lobbyInviteCode"
         val lobbyTextY = pos + 400f
