@@ -18,7 +18,7 @@ class FlagQuest(private val authHandler: AuthHandler) : ApplicationAdapter() {
     override fun create() {
         batch = SpriteBatch()
         img = Texture("badlogic.jpg")
-        Gdx.input.isCatchBackKey = true; // Ensures that app is not exited upon back button press
+        Gdx.input.isCatchBackKey = true
         if (isLoggedIn) gsm.push(MainMenuState(gsm)) else gsm.push(LoginMenuState(gsm, authHandler))
     }
 
