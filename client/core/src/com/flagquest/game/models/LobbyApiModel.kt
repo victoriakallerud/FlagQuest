@@ -1,12 +1,10 @@
 package com.flagquest.game.models
 
-import com.flagquest.game.states.GameLobbyState
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.RequestBody.Companion.toRequestBody
 import org.json.JSONArray
-import org.json.JSONException
 import org.json.JSONObject
 
 
@@ -15,6 +13,19 @@ import org.json.JSONObject
  */
 class LobbyApiModel {
     private val userId: String = "0e7cb4e7-c8db-41e7-b536-bf94c66c9e50" // TODO: Implement function to get user's id
+
+    /**
+     * Function sends GET request to retrieve lobby with lobbyId
+     */
+    fun getLobby(lobbyId: String): String? {
+        val client = OkHttpClient()
+        val request = Request.Builder()
+            .url("http://flagquest.leotm.de:3000/lobby/${lobbyId}")
+            .addHeader("X-API-Key", "{{token}}")
+            .build()
+        val response = client.newCall(request).execute()
+        return response.body?.string()
+    }
 
     /**
      * Function sends POST request to create a new lobby
