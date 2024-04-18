@@ -9,6 +9,12 @@ data class  Country (val name: String, val region: String)
 data class Question (val description: String, val answerOptions: List<AnswerOption>)
 data class AnswerOption (val description: String, val isCorrect: Boolean)
 data class Quiz (val questions: List<Question>)
+
+/**
+* Class accesses JSON file in application to play training/offline games
+* Generally works a lot like the API requests, just to a local JSON file
+* Generates questions
+*/
 class LocalApiModel {
 
     fun getFlagFilePathByCountryName(countryName: String): String {
