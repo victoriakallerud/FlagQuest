@@ -13,13 +13,14 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.badlogic.gdx.utils.Align
 import com.flagquest.game.controllers.HighscoreController
 import com.flagquest.game.models.LobbyApiModel
+import com.flagquest.game.models.UserApiModel
 import com.flagquest.game.states.GameStateManager
 import com.flagquest.game.utils.UIManager
 import com.flagquest.game.utils.UIManager.addBackButton
 import com.flagquest.game.utils.UIManager.addHeading
 
 class HighscoreView(gsm: GameStateManager, private val stage: Stage/*, listener: LobbyRedirectionListener*/) {
-    val controller: HighscoreController = HighscoreController(LobbyApiModel())
+    val controller: HighscoreController = HighscoreController(UserApiModel())
 
     private val skin: Skin = UIManager.skin
     private val textFieldStyle: TextField.TextFieldStyle = skin.get(TextField.TextFieldStyle::class.java)
