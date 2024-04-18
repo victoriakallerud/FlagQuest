@@ -45,12 +45,6 @@ class GameLobbyState(gsm: GameStateManager, isAdmin: Boolean, lobbyId: String) :
         stage.draw()
     }
 
-    private fun joinLobby(socket: Socket, userId: String, lobbyId: String) {
-        val joinBody = JSONObject()
-        joinBody.put("userId", userId)
-        joinBody.put("lobbyId", lobbyId)
-        println("Joining lobby with object: ${joinBody.toString()}")
-        socket.emit("joinLobby", joinBody)
-    }
+
 
 }

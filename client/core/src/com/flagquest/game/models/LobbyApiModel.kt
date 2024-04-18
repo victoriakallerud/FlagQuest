@@ -30,7 +30,8 @@ class LobbyApiModel {
     /**
      * Function sends POST request to create a new lobby
      * @param size Maximum number of players allowed in the lobby
-     * @return Server's response as string
+     * @return Server's response as string in JSON format
+     * @see getIdFromResponse
      */
     fun postLobby(size: Int): String? {
         val client = OkHttpClient()
@@ -54,8 +55,17 @@ class LobbyApiModel {
             .addHeader("X-API-Key", "{{token}}")
             .build()
         val response = client.newCall(request).execute()
-        println(response.body?.string())
-        return response.body?.string()
+        val responseBodyString = response.body?.string() // Store the response body
+        println(responseBodyString)
+
+        // Return lobby JSON response if successful, otherwise return null
+        return if (response.isSuccessful) {
+            responseBodyString
+        } else {
+            println("Error: ${response.code} - ${response.message}")
+            null
+        }
+
     }
 
     /**

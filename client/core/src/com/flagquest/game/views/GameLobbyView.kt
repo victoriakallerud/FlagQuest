@@ -23,7 +23,7 @@ import org.json.JSONArray
 import org.json.JSONObject
 
 class GameLobbyView(gsm: GameStateManager, isAdmin: Boolean, lobbyId: String, private val stage: Stage/*, listener: LobbyRedirectionListener*/) {
-    val controller: GameLobbyController = GameLobbyController(UserApiModel(), LobbyApiModel())
+    private val controller: GameLobbyController = GameLobbyController(UserApiModel(), LobbyApiModel())
 
     private val skin: Skin = UIManager.skin
     private val textFieldStyle: TextField.TextFieldStyle = skin.get(TextField.TextFieldStyle::class.java)
@@ -43,15 +43,12 @@ class GameLobbyView(gsm: GameStateManager, isAdmin: Boolean, lobbyId: String, pr
         val lobby = controller.onLoadLobby(lobbyId)
         textFieldStyle.font.data.setScale(5f)
 
-        val jsonLobby = JSONObject(lobby)
-        val options = jsonLobby.getJSONObject("options")
-        totalParticipants = options.getInt("maxNumOfPlayers")
-
-        val playerIdsJson = jsonLobby.getJSONArray("players")
-        lobbyInviteCode = jsonLobby.getString("inviteCode").toInt()
+        totalParticipants = controller.getMaxPlayers(lobby!!)
+        lobbyInviteCode = controller.getLobbyCode(lobby!!)
+        val playerIdsJson = controller.getPlayerIdsJson(lobby!!)
         val playerIds = mutableListOf<String>()
 
-        for (i in 0 until playerIdsJson.length()) {
+        for (i in 0 until playerIdsJson!!.length()) {
             playerIds.add(playerIdsJson.getString(i))
         }
 
@@ -63,32 +60,13 @@ class GameLobbyView(gsm: GameStateManager, isAdmin: Boolean, lobbyId: String, pr
         currParticipants = playerIds.size
         val joinedText = "$currParticipants/$totalParticipants has joined"
 
-        val lobbyId = DataManager.getData("lobbyId") as String
-        val userId = DataManager.getData("userId") as String
+        // val lobbyId = DataManager.getData("lobbyId") as String
+        // val userId = DataManager.getData("userId") as String
+        val userId = "0e7cb4e7-c8db-41e7-b536-bf94c66c9e50"
 
         val socket = controller.connectToSocket()
         controller.joinLobby(socket, lobbyId, userId)
-        socket.on("updateLobby") { args ->
-            val message = args[0] as JSONObject
-            println("Lobby updated: ${message.getString("name")} - ${message.getString("state")} - ${message.getString("id")}")
-        }
-        socket.on("status") { args ->
-            val message = if (args[0] is String) JSONObject(args[0] as String) else args[0] as JSONObject
-            val status = message.getString("status")
-            val statusMessage = if (message.get("message") is JSONArray) {
-                val messageArray = message.getJSONArray("message")
-                messageArray.joinToString(", ")
-            } else {
-                message.getString("message")
-            }
-            if (status == "ERROR") {
-                println("Status [ERROR]: $statusMessage")
-                // joinLobby(socket)
-            } else {
-                println("Status [SUCCESS]: $statusMessage")
-                // startGame(socket)
-            }
-        }
+
 
         UIManager.addHeading(stage, "GAME LOBBY", 2.8f)
         UIManager.addBackButton(stage, gsm, backNavType)
@@ -113,6 +91,8 @@ class GameLobbyView(gsm: GameStateManager, isAdmin: Boolean, lobbyId: String, pr
         // Display players that have joined
         val table = Table()
         table.setFillParent(true)
+
+        println("Names: $names")
 
         for (name in names) {
             val nameLabel = Label(name, skin)

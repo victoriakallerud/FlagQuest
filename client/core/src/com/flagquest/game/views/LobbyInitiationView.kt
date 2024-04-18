@@ -67,10 +67,16 @@ class LobbyInitiationView(gsm: GameStateManager, private val stage: Stage, liste
                 if (sizeInput.text != "") {
                     size = sizeInput.text.toInt()
                 }
-                controller.onCreateGameClicked(size)
+                if(!controller.onCreateGameClicked(size)) {
+                    showError("Failed to create lobby")
+                }
             }
         })
         titleFont.data.setScale(1.5f)
+    }
+
+    fun showError(error: String) {
+        UIManager.addError(stage, error)
     }
 
     fun render() {
