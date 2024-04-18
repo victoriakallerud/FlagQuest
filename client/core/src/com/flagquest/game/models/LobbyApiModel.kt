@@ -1,6 +1,7 @@
 package com.flagquest.game.models
 
 import com.flagquest.game.states.GameLobbyState
+import com.flagquest.game.views.LobbyInitiationView
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.Request
