@@ -10,14 +10,9 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.flagquest.game.controllers.LobbyInitiationController
 import com.flagquest.game.models.LobbyApiModel
 import com.flagquest.game.navigation.LobbyRedirectionListener
-import com.flagquest.game.states.GameLobbyState
 import com.flagquest.game.states.GameStateManager
 import com.flagquest.game.utils.ButtonClickListener
 import com.flagquest.game.utils.UIManager
-import okhttp3.MediaType.Companion.toMediaType
-import okhttp3.OkHttpClient
-import okhttp3.Request
-import okhttp3.RequestBody.Companion.toRequestBody
 
 class LobbyInitiationView(gsm: GameStateManager, private val stage: Stage, listener: LobbyRedirectionListener) {
     val controller: LobbyInitiationController = LobbyInitiationController(LobbyApiModel())
@@ -35,6 +30,8 @@ class LobbyInitiationView(gsm: GameStateManager, private val stage: Stage, liste
     private val btns = arrayOf( inviteLinkBtn, inviteBtn, createBtn )
     private var counter: Int = 1
     val backNavType = "menu"
+
+
 
     init {
         controller.redirectionListener = listener

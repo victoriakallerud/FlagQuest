@@ -1,13 +1,18 @@
 package com.flagquest.game.utils
 
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.graphics.Color
+import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.BitmapFont
+import com.badlogic.gdx.graphics.g2d.Sprite
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.Stage
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton
 import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
+import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable
 import com.badlogic.gdx.utils.Align
 import com.flagquest.game.states.GameStateManager
 import com.flagquest.game.states.State
@@ -39,7 +44,7 @@ object UIManager {
         backButton.setPosition((screenWidth / 11).toFloat(), (screenWidth / 11).toFloat())
         backButton.addListener(object : ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
-                backButtonFunc(stage,gsm, backNavType) // Pop the current state
+                backButtonFunc(gsm, backNavType) // Pop the current state
             }
         })
         stage.addActor(backButton) // Add the back button to the stage
@@ -79,14 +84,34 @@ object UIManager {
         button.first.addListener(ButtonClickListener(gsm,button.second))
         stage.addActor(button.first)
     }
+    fun addPauseButton(stage: Stage, gsm: GameStateManager, color: Color, size: Float){
+        val pauseTexture = Texture(Gdx.files.internal("skins/raw/button-pause.png"))
+        val pauseSprite = Sprite(pauseTexture)
+        pauseSprite.setSize(size, size)
 
-     fun addHeading(stage: Stage, title: String, fontScale: Float = 2.8f){
+        // Set the tint color of the sprite
+        pauseSprite.color = color
+
+        val pauseDrawable = SpriteDrawable(pauseSprite)
+
+        val pauseButton = ImageButton(pauseDrawable).apply {
+            setPosition(((screenWidth - width) / 2), (screenWidth / 13).toFloat())
+            addListener(object : ClickListener() {
+                override fun clicked(event: InputEvent?, x: Float, y: Float) {
+                    backButtonFunc(gsm, "pause") // Go to pause screen
+                }
+            })
+        }
+        stage.addActor(pauseButton)
+    }
+
+    fun addHeading(stage: Stage, title: String, fontScale: Float = 2.8f, posY : Float = screenHeight - 500f){
         val heading = Label(title, skin)
         heading.style = Label.LabelStyle(titleFont, heading.style.fontColor)
         heading.setFontScale(fontScale)
         heading.setAlignment(Align.center)
         heading.pack()
-        heading.setPosition((screenWidth - heading.prefWidth) / 2, screenHeight - 500f)
+        heading.setPosition((screenWidth - heading.prefWidth) / 2, posY)
         stage.addActor(heading)
     }
 }

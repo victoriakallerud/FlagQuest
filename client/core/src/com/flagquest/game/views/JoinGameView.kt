@@ -8,23 +8,13 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.ui.TextField
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
-import com.badlogic.gdx.utils.viewport.ScreenViewport
 import com.flagquest.game.controllers.JoinGameController
 import com.flagquest.game.models.LobbyApiModel
 import com.flagquest.game.navigation.GameRedirectionListener
-import com.flagquest.game.navigation.LobbyRedirectionListener
-import com.flagquest.game.states.GameLobbyState
 import com.flagquest.game.states.GameStateManager
-import com.flagquest.game.utils.ButtonClickListener
 import com.flagquest.game.utils.UIManager
 import com.flagquest.game.utils.UIManager.addBackButton
 import com.flagquest.game.utils.UIManager.addHeading
-import okhttp3.MediaType.Companion.toMediaType
-import okhttp3.OkHttpClient
-import okhttp3.Request
-import okhttp3.RequestBody.Companion.toRequestBody
-import org.json.JSONException
-import org.json.JSONObject
 
 class JoinGameView(private val gsm: GameStateManager, private val stage: Stage, listener: GameRedirectionListener) {
     val controller: JoinGameController = JoinGameController(LobbyApiModel())
