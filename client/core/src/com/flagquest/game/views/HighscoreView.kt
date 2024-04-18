@@ -19,7 +19,7 @@ import com.flagquest.game.utils.UIManager
 import com.flagquest.game.utils.UIManager.addBackButton
 import com.flagquest.game.utils.UIManager.addHeading
 
-class HighscoreView(gsm: GameStateManager, private val stage: Stage/*, listener: LobbyRedirectionListener*/) {
+class HighscoreView(gsm: GameStateManager, private val stage: Stage) {
     val controller: HighscoreController = HighscoreController(UserApiModel())
 
     private val skin: Skin = UIManager.skin
@@ -40,8 +40,6 @@ class HighscoreView(gsm: GameStateManager, private val stage: Stage/*, listener:
     private val backNavType = "menu"
 
     init {
-        // controller.redirectionListener = listener
-
         textFieldStyle.font.data.setScale(5f)
 
         addHeading(stage, "HIGHSCORE", 2.8f)
@@ -57,9 +55,9 @@ class HighscoreView(gsm: GameStateManager, private val stage: Stage/*, listener:
         stage.addActor(btnTable)
 
         scoreTable.setFillParent(true)
-
         players = controller.addGlobalHighscores().toMutableList()
-        friends = controller.addGlobalHighscores().toMutableList()
+        friends = controller.addFriendsHighscores()
+        controller.addFriendsHighscores()
 
         for (player in players) {
             val labels = listOf(Label(player.first, skin), Label(player.second.toString(), skin))

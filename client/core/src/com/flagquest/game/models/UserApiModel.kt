@@ -12,6 +12,7 @@ import org.json.JSONObject
  */
 class UserApiModel {
     private val userId: String = "0e7cb4e7-c8db-41e7-b536-bf94c66c9e50" // TODO: Implement function to get user's id
+    private val level: String = "Europe" // TODO Decide if we want to have Europe or All as our level
 
     fun postUser(name: String, username: String, nationality: String, password: String): String? {
         val client = OkHttpClient()
@@ -41,7 +42,7 @@ class UserApiModel {
 
     /**
      * Function sends GET request to retrieve User with provided userId
-     * @param userId of user
+     * @param id of user
      * @return Server's response as a string
      */
     fun getUserById(id: String): String? {
@@ -51,7 +52,6 @@ class UserApiModel {
             .addHeader("X-API-Key", "{{token}}")
             .build()
         val response = client.newCall(request).execute()
-        println(response.body?.string())
         return response.body?.string()
     }
 
@@ -63,7 +63,7 @@ class UserApiModel {
     fun getTopTenUsers(): String? {
         val client = OkHttpClient()
         val request = Request.Builder()
-            .url("http://flagquest.leotm.de:3000/user/highScores/Europe/GuessingFlags")
+            .url("http://flagquest.leotm.de:3000/user/highScores/$level/GuessingFlags")
             .addHeader("Content-Type", "application/json")
             .addHeader("X-API-Key", "{{token}}")
             .build()
@@ -78,6 +78,7 @@ class UserApiModel {
     fun parseHighscores(highscoreString: String?): List<Pair<String, Int>> {
         val highscoreArray = JSONArray(highscoreString!!)
         val highscores = mutableListOf<Pair<String, Int>>()
+        println(highscoreArray)
 
         for (i in 0 until highscoreArray.length()) {
             val jsonObject = highscoreArray.getJSONObject(i)
@@ -89,8 +90,31 @@ class UserApiModel {
         return highscores
     }
 
-    fun getAllFriends() {
-        val friends = mutableListOf<Unit>()
+    /**
+     * Function retrieves highscores of top 10 friends
+     * @return List with pairs of username and score
+     */
+    fun getFriendHighscores(): MutableList<Pair<String, Int>> {
+        val friendsScore = mutableListOf<Pair<String, Int>>()
+        val user = getUserById(userId)
+        val friendUuidList = extractFriendUuidList(user!!)
+
+        for (friendUuid in friendUuidList) {
+            val friend = JSONObject(getUserById(friendUuid))
+            val highScoresArray = friend.optJSONArray("highScores")
+            if (highScoresArray != null) {
+                for (i in 0 until highScoresArray.length()) {
+                    val scoreObject = highScoresArray.getJSONObject(i)
+                    val scoreLevel = scoreObject.optString("level")
+                    if (scoreLevel == level) {
+                        val username: String = friend.optString("userName")
+                        val userscore: Int = scoreObject.optInt("value")
+                        friendsScore.add(username to userscore)
+                    }
+                }
+            }
+        }
+        return friendsScore
     }
 
     fun getIdFromResponse(responseBody: String): String {
@@ -98,5 +122,15 @@ class UserApiModel {
         return jsonObject.getString("id")
     }
 
+    fun extractFriendUuidList(jsonString: String): List<String> {
+        val jsonObject = JSONObject(jsonString)
+        val friendUuidJsonArray = jsonObject.getJSONArray("friendUuidList")
+        val friendUuidList = mutableListOf<String>()
 
+        for (i in 0 until friendUuidJsonArray.length()) {
+            friendUuidList.add(friendUuidJsonArray.getString(i))
+        }
+
+        return friendUuidList
+    }
 }

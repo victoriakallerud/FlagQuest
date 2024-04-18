@@ -24,7 +24,7 @@ import com.flagquest.game.views.LobbyInitiationView
 
 class HighscoreState(gsm: GameStateManager) : State(gsm) {
     override val stage = Stage(ScreenViewport())
-    private val view = HighscoreView(gsm, stage/*, this*/)
+    private val view = HighscoreView(gsm, stage)
 
     init {
         Gdx.input.inputProcessor = stage
