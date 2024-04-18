@@ -13,6 +13,12 @@ export interface User {
      * @memberof User
      */
     id?: string;
+     /**
+     * 
+     * @type {string}
+     * @memberof User
+     */
+    firebaseId?: string;
     /**
      * 
      * @type {string}
