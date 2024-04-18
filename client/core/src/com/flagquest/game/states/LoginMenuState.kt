@@ -21,13 +21,14 @@ class LoginMenuState(gsm: GameStateManager, private val authHandler: AuthHandler
 
     val loginBtn = TextButton("LOGIN", skin)
     val registerBtn = TextButton("REGISTER", skin)
-    val buttons = arrayOf(Pair(loginBtn, lazy { LoginState(gsm) }),Pair(registerBtn, lazy { RegistrationState(gsm, authHandler) }))
+    val buttons = arrayOf(Pair(loginBtn, lazy { LoginState(gsm, authHandler) }),Pair(registerBtn, lazy { RegistrationState(gsm, authHandler) }))
 
     init {
         titleFont.data.setScale(1.5f)
         addHeading(stage,"FLAGQUEST",3.5f)
         addNavButtonArray(stage,gsm,buttons,pos)
     }
+
 
     override fun handleInput() {
         screenWidth = screenWidth // Just placeholder code to make the code compile

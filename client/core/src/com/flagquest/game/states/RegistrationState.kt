@@ -58,17 +58,21 @@ class RegistrationState(gsm: GameStateManager, private val authHandler: AuthHand
         stage.addActor(regBtn)
     }
 
+
     private fun registerUser(email: String, password: String) {
-        if (email.isNotEmpty() && password.isNotEmpty()) {
-            authHandler.signUp(email, password) { success, message ->
-                if (success) {
-                    updateUI(success)
-                } else {
-                    Gdx.app.log("Registration", "Failed: $message")
-                }
+        if (email.isEmpty() || password.isEmpty()) {
+            Gdx.app.log("RegistrationState", "Email or password cannot be empty")
+            return
+        }
+        Gdx.app.log("RegistrationState", "Attempting to register with email: $email")
+        authHandler.signUp(email, password) { success, message ->
+            if (success) {
+                Gdx.app.log("RegistrationState", "Registration successful")
+                updateUI(true)
+            } else {
+                Gdx.app.log("RegistrationState", "Registration failed: $message")
+                updateUI(false)
             }
-        } else {
-            Gdx.app.log("Registration", "Email or password cannot be empty")
         }
     }
 
@@ -78,7 +82,7 @@ class RegistrationState(gsm: GameStateManager, private val authHandler: AuthHand
             if (isLoggedIn) {
                 gsm.set(MainMenuState(gsm))
             } else {
-                // TODO: Handle failed login, show error message
+                // TODO: Handle failed registration. Show error message
             }
         }
     }
