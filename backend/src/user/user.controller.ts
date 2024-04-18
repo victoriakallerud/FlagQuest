@@ -1,7 +1,6 @@
 import { Body, Controller, Get, Param, Post, Put, Delete } from '@nestjs/common';
 import { UserService } from './user.service';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
-import { User } from '../interfaces/user.interface';
 import { RequestUserDTO } from './dto/requestUser.dto';
 import { LevelEnum } from 'src/enums/level.enum';
 import { GameModeEnum } from 'src/enums/gamemode.enum';
@@ -21,6 +20,12 @@ export class UserController {
     @Get(':userId')
     async getUserById(@Param('userId') userId: string) {
       return await this.userService.getUserById(userId);
+    }
+
+    @ApiOperation({ summary: 'Get a user by firebase id' })
+    @Get('/byFirebaseId/:firebaseId')
+    async getUserByFirebaseId(@Param('firebaseId') firebaseId: string) {
+      return await this.userService.getUserByFirebaseId(firebaseId);
     }
 
     @ApiOperation({ summary: 'Get a userId by name' })
