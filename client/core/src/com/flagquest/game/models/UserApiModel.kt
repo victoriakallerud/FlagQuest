@@ -40,6 +40,7 @@ class UserApiModel {
         return response.body?.string()
     }
 
+
     /**
      * Function sends GET request to retrieve User with provided userId
      * @param id of user
@@ -117,10 +118,12 @@ class UserApiModel {
         return friendsScore
     }
 
+
     fun getIdFromResponse(responseBody: String): String {
         val jsonObject = JSONObject(responseBody)
         return jsonObject.getString("id")
     }
+
 
     fun extractFriendUuidList(jsonString: String): List<String> {
         val jsonObject = JSONObject(jsonString)
