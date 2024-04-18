@@ -43,6 +43,7 @@ class LobbyApiModel {
             .addHeader("X-API-Key", "{{token}}")
             .build()
         val response = client.newCall(request).execute()
+        println(response.body?.string())
         return response.body?.string()
     }
 
@@ -82,6 +83,7 @@ class LobbyApiModel {
 
     /**
      * Function sends GET request to retrieve all lobbies
+     * @return Server's response as string
      */
     fun getAllLobbies(): String? {
         val client = OkHttpClient()
@@ -119,3 +121,4 @@ class LobbyApiModel {
         return null
     }
 }
+

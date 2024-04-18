@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.ui.TextField
 import com.badlogic.gdx.utils.viewport.ScreenViewport
 import com.flagquest.game.utils.ButtonClickListener
+import com.flagquest.game.utils.DataManager
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import org.json.JSONException
@@ -87,8 +88,10 @@ class GameLobbyState(gsm: GameStateManager, isAdmin: Boolean, lobbyId: String) :
 
         val joinedText = "$currParticipants/$totalParticipants has joined"
 
-        val lobbyId = "51bdfbe3-88b7-4ed5-8c71-079adc346026" // TODO: Implement way of getting code
-        val userId = "97586711-7473-4e21-867a-41dd65faaec1" // TODO: Implement way of getting user id
+        val lobbyId = DataManager.getData("lobbyId") as String
+        val userId = DataManager.getData("userId") as String
+        // val lobbyId = "51bdfbe3-88b7-4ed5-8c71-079adc346026" // TODO: Implement way of getting code
+        // val userId = "97586711-7473-4e21-867a-41dd65faaec1" // TODO: Implement way of getting user id
 
         SocketHandler.setSocket()
         SocketHandler.establishConnection()
