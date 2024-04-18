@@ -1,5 +1,6 @@
 package com.flagquest.game.models
 
+import com.flagquest.game.utils.DataManager
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -12,7 +13,7 @@ import org.json.JSONObject
  * Class handles API requests associated with Lobby
  */
 class LobbyApiModel {
-    private val userId: String = "0e7cb4e7-c8db-41e7-b536-bf94c66c9e50" // TODO: Implement function to get user's id
+    private val userId: String = DataManager.getData("userId") as String
 
     /**
      * Function sends GET request to retrieve lobby with lobbyId
