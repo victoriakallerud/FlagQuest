@@ -397,4 +397,25 @@ class UserApiModel {
             null
         }
     }
+
+    fun getResults(): MutableList<Pair<String, Int>> {
+        // TODO: Should return a list of scores from players in the game
+        return listOf(
+            "amelmd" to 170,
+            "BABA" to 240,
+            "Cecilia" to 110,
+            "Donald" to 190,
+            "Emilie" to 40,
+            "amelmd" to 170,
+            "BABA" to 240,
+            "Cecilia" to 110,
+            "Donald" to 190,
+            "Emilie" to 40,
+            "amelmd" to 170,
+            "BABA" to 240,
+            "Cecilia" to 110,
+            "Donald" to 190,
+            "Emilie" to 40
+        ) as MutableList<Pair<String, Int>>
+    }
 }
