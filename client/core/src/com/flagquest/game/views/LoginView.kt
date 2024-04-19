@@ -14,7 +14,6 @@ import com.flagquest.game.models.UserApiModel
 import com.flagquest.game.navigation.MainMenuRedirectionListener
 import com.flagquest.game.states.GameStateManager
 import com.flagquest.game.utils.UIManager
-val backNavType = "back"
 
 class LoginView(gsm: GameStateManager, private val stage: Stage, listener: MainMenuRedirectionListener, authHandler: AuthHandler) {
     val controller: LoginController = LoginController(UserApiModel())
@@ -24,6 +23,8 @@ class LoginView(gsm: GameStateManager, private val stage: Stage, listener: MainM
     private var screenWidth = Gdx.graphics.width
     private val screenHeight = Gdx.graphics.height
     private val buttonHeight = screenHeight / 11
+
+    val backNavType = "back"
 
     private val emailField = TextField("", skin).apply{ messageText="E-mail"}
     private val passwordField = TextField("", skin).apply{
