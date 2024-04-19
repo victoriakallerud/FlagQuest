@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.ui.TextField
 import com.badlogic.gdx.utils.viewport.ScreenViewport
+import com.flagquest.game.navigation.OnlineGameRedirectionListener
 import com.flagquest.game.utils.ButtonClickListener
 import com.flagquest.game.utils.DataManager
 import okhttp3.OkHttpClient
@@ -24,14 +25,18 @@ import com.flagquest.game.views.LobbyInitiationView
 import io.socket.client.Socket
 import org.json.JSONArray
 
-class GameLobbyState(gsm: GameStateManager, isAdmin: Boolean, lobbyId: String) : State(gsm) {
+class GameLobbyState(gsm: GameStateManager, isAdmin: Boolean, lobbyId: String) : State(gsm), OnlineGameRedirectionListener {
     override val stage = Stage(ScreenViewport())
-    private val view = GameLobbyView(gsm, isAdmin, lobbyId, stage/*, this*/)
+    private val view = GameLobbyView(gsm, isAdmin, lobbyId, stage, this)
 
     init {
         Gdx.input.inputProcessor = stage
     }
 
+    override fun redirectToOnlineGameState() {
+        Gdx.app.log("GameLobbyState", "redirectToOnlineGameState")
+        gsm.push(OnlineGameState(gsm))
+    }
     override fun handleInput() {
         // TODO: Implement handleInput
     }
