@@ -15,6 +15,8 @@ import com.flagquest.game.models.UserApiModel
 import com.flagquest.game.navigation.MainMenuRedirectionListener
 import com.flagquest.game.states.GameStateManager
 import com.flagquest.game.utils.UIManager
+import java.awt.SystemColor.text
+
 
 class RegistrationView (gsm: GameStateManager, private val stage: Stage, listener: MainMenuRedirectionListener, authHandler: AuthHandler) {
 
@@ -39,6 +41,10 @@ class RegistrationView (gsm: GameStateManager, private val stage: Stage, listene
 
     init {
         controller.redirectionListener = listener
+        controller.regErrorListener = { error ->
+            showError(error)
+        }
+
         titleFont.data.setScale(1.5f)
 
         UIManager.addHeading(stage, "REGISTRATION", 2.8f)
@@ -87,13 +93,8 @@ class RegistrationView (gsm: GameStateManager, private val stage: Stage, listene
         regBtn.setPosition(screenWidth / 2 - regBtn.width / 2, posFirstTextField)
         regBtn.addListener(object : ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
-
-                val nationality = countrySelectBox.selected.substring(2)
-                println(nationality)
-                if (!controller.onRegisterClicked(authHandler, emailField.text, passwordField.text, usernameField.text, nationality)) {
-                    Gdx.app.log("RegistrationState", "Registration failed")
-                    showError("Registration failed")
-                }
+                val nationality = countrySelectBox.selected.substring(2).trim()
+                controller.onRegisterClicked(authHandler, emailField.text, passwordField.text, usernameField.text, nationality)
             }
         })
         stage.addActor(regBtn)
