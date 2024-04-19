@@ -43,20 +43,7 @@ class LobbyInitiationView(gsm: GameStateManager, private val stage: Stage, liste
         UIManager.addHeading(stage, "CREATE GAME\nLOBBY", 2.8f)
         UIManager.addBackButton(stage, gsm, backNavType)
 
-        sizeInput.textFieldFilter = TextField.TextFieldFilter { textField, c ->
-            Character.isDigit(c)
-        }
-        sizeInput.width = (screenWidth*80/100).toFloat()
-        sizeInput.height = UIManager.elementHeight.toFloat()
-        sizeInput.setPosition(screenWidth / 2 - sizeInput.width / 2, pos)
-        stage.addActor(sizeInput)
-
         createBtn.setColor(0.349f, 0.631f, 0.541f, 1f)
-
-        inviteLinkBtn.width = (screenWidth*80/100).toFloat()
-        inviteLinkBtn.height = UIManager.elementHeight.toFloat()
-        inviteLinkBtn.setPosition(screenWidth / 2 - inviteLinkBtn.width / 2, pos - (UIManager.elementHeight + 30))
-        stage.addActor(inviteLinkBtn)
 
         var table = Table()
         table.width = screenWidth.toFloat()
@@ -77,9 +64,23 @@ class LobbyInitiationView(gsm: GameStateManager, private val stage: Stage, liste
             )
         }
 
+        sizeInput.textFieldFilter = TextField.TextFieldFilter { textField, c ->
+            Character.isDigit(c)
+        }
+
+        sizeInput.width = (screenWidth*80/100).toFloat()
+        sizeInput.height = UIManager.elementHeight.toFloat()
+        sizeInput.setPosition(screenWidth / 2 - sizeInput.width / 2, UIManager.screenHeight - 600f - table.height - UIManager.elementHeight - UIManager.elementSpacing)
+        stage.addActor(sizeInput)
+
+        inviteLinkBtn.width = (screenWidth*80/100).toFloat()
+        inviteLinkBtn.height = UIManager.elementHeight.toFloat()
+        inviteLinkBtn.setPosition(screenWidth / 2 - inviteLinkBtn.width / 2, UIManager.screenHeight - 600f - table.height - (UIManager.elementHeight + UIManager.elementSpacing) * 2)
+        stage.addActor(inviteLinkBtn)
+
         createBtn.width = (screenWidth*80/100).toFloat()
         createBtn.height = UIManager.elementHeight.toFloat()
-        createBtn.setPosition(screenWidth / 2 - createBtn.width / 2, pos - table.height - (UIManager.elementHeight + 30 * 2.2f) * 1.8f)
+        createBtn.setPosition(screenWidth / 2 - createBtn.width / 2, UIManager.screenHeight - 600f - table.height - (UIManager.elementHeight + UIManager.elementSpacing) * 3)
         stage.addActor(createBtn)
 
 
@@ -125,7 +126,7 @@ class LobbyInitiationView(gsm: GameStateManager, private val stage: Stage, liste
         table.defaults().pad(5f)
         table.pack() // This is important to size the table according to its contents
         //table.setPosition((stage.width - table.prefWidth) / 2, 180f)
-        table.setPosition((stage.width - table.prefWidth) / 2, pos - (UIManager.elementHeight + 30 * 2.2f) * 3)
+        table.setPosition((stage.width - table.prefWidth) / 2, UIManager.screenHeight - 600f - table.height)
     }
 
     fun showError(error: String) {
