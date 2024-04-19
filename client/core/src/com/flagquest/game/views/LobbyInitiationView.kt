@@ -1,5 +1,6 @@
 package com.flagquest.game.views
 
+import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.Stage
@@ -68,6 +69,7 @@ class LobbyInitiationView(gsm: GameStateManager, private val stage: Stage, liste
                     size = sizeInput.text.toInt()
                 }
                 if(!controller.onCreateGameClicked(size)) {
+                    Gdx.app.log("LobbyInitiationView", "Failed to create lobby")
                     showError("Failed to create lobby")
                 }
             }

@@ -65,9 +65,10 @@ class RegistrationState(gsm: GameStateManager, private val authHandler: AuthHand
             return
         }
         Gdx.app.log("RegistrationState", "Attempting to register with email: $email")
-        authHandler.signUp(email, password) { success, message ->
+        authHandler.signUp(email, password) { success, uid, message ->
             if (success) {
                 Gdx.app.log("RegistrationState", "Registration successful")
+                Gdx.app.log("RegistrationState", "Firebase User ID: $uid")
                 updateUI(true)
             } else {
                 Gdx.app.log("RegistrationState", "Registration failed: $message")
