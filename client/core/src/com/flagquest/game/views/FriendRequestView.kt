@@ -23,7 +23,7 @@ class FriendRequestView(gsm: GameStateManager, stage: Stage) {
     private var screenWidth = UIManager.screenWidth
     private val screenHeight = UIManager.screenHeight
     private val imgBtnHeight = UIManager.elementHeight
-    private val backNavType = "menu"
+    private val backNavType = "back" // Should refer back to friends state
     private val list = Table().apply {
         defaults().pad(30f)
     }

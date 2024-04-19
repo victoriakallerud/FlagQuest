@@ -20,6 +20,7 @@ class RegistrationView (gsm: GameStateManager, private val stage: Stage, listene
 
     val controller: RegistrationController = RegistrationController(UserApiModel())
 
+    private val backNavType = "back"
     private val skin: Skin = Skin(Gdx.files.internal("skins/skin/flat-earth-ui.json"))
     private val titleFont: BitmapFont = skin.getFont("title")
     private var screenWidth = Gdx.graphics.width
