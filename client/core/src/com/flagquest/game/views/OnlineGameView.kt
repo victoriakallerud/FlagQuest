@@ -35,6 +35,7 @@ class OnlineGameView(gsm: GameStateManager, private val stage: Stage, listener: 
 
     init {
         onlineGameController.redirectionListener = listener
+        onlineGameController.attachNextRoundListener()
         // val quiz: Quiz = controller.handleCreateOfflineGame(10, "Europe")
         currentQuestion = onlineGameController.getSingleQuestion()
 
@@ -78,14 +79,6 @@ class OnlineGameView(gsm: GameStateManager, private val stage: Stage, listener: 
                             answerButton.color = Color.GREEN
                         }
                     }
-                    // Wait for 2 seconds before moving to the next question
-                    Timer.schedule(object: Timer.Task() {
-                        override fun run() {
-                            onlineGameController.redirectionListener?.redirectToOnlineGameState()
-                        }
-                    }, 2f)
-                    // Move to the next question
-                    currentQuestion = onlineGameController.getSingleQuestion()
                 }
             })
             stage.addActor(button)

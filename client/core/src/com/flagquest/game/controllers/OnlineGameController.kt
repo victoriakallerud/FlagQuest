@@ -17,6 +17,23 @@ class OnlineGameController(private val gameModel: GameApiModel, private val loca
         return gameModel.getCurrentQuestion()
     }
 
+    fun attachNextRoundListener() {
+        SocketHandler.getSocket().on("nextRound") { args ->
+            var message = args[0] as Int
+            message -= 1
+            DataManager.setData("currentQuestionIndex", message)
+            Gdx.app.log("GameApiModel", "nextRound: $message")
+            Gdx.app.postRunnable {
+                detachNextRoundListener()
+                redirectionListener?.redirectToOnlineGameState()
+            }
+        }
+    }
+
+    private fun detachNextRoundListener() {
+        SocketHandler.getSocket().off("nextRound")
+    }
+
     fun submitAnswer(isAnswerRight: Boolean, answerTime: Int) {
         val data = JSONObject()
         data.put("lobbyId", DataManager.getData("lobbyId"))
