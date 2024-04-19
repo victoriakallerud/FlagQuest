@@ -113,14 +113,15 @@ class UserApiModel {
         val mediaType = "application/json".toMediaType()
         val body = "{\r\n    \"userName\": \"$username\",\r\n    \"nationality\": \"$nationality\",\r\n    \"firebaseId\": \"$firebaseId\"\r\n}".toRequestBody(mediaType)
         val request = Request.Builder()
-            .url("http://flagquest.leotm.de:3000/user/USER_ID")
+            .url("http://flagquest.leotm.de:3000/user/")
             .post(body)
             .addHeader("Content-Type", "application/json")
             .addHeader("X-API-Key", "{{token}}")
             .build()
         val response = client.newCall(request).execute()
-        println(response.body?.string())
-        return response.body?.string()
+        val responseBodyString = response.body?.string() // Store the response body
+        println(responseBodyString)
+        return responseBodyString
     }
 
     fun getUserByName(username: String): String? {
