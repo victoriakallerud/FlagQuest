@@ -24,52 +24,28 @@ class FriendRequestView(gsm: GameStateManager, stage: Stage) {
     private val screenHeight = UIManager.screenHeight
     private val imgBtnHeight = UIManager.elementHeight
     private val backNavType = "menu"
+    private val list = Table().apply {
+        defaults().pad(30f)
+    }
 
     init {
         // Heading
         UIManager.addHeading(stage, "FRIEND\nREQUESTS", 2.8f)
         UIManager.addBackButton(stage, gsm, backNavType)
 
-        // Friend list
         val friends = controller.onGetFriendRequests()
-
-
-        val list = Table().apply {
-            defaults().pad(30f)
-        }
 
         friends.forEach { name -> //Create a row for each name.
 
             val nameLabel = Label(truncateString(name.first), skin, "title").apply {// Only show truncated names.
                 setFontScale(1.1f) // Smaller font to display more of name
             }
+
             // AcceptButton
-            val acceptTexture = Texture(Gdx.files.internal("skins/raw/checkbox-pressed.png"))
-            val acceptDrawable = TextureRegionDrawable(TextureRegion(acceptTexture)).apply {
-                minWidth = imgBtnHeight.toFloat()
-                minHeight = imgBtnHeight.toFloat()
-            }
-            val acceptButton = ImageButton(acceptDrawable).apply {
-                addListener(object : ClickListener() {
-                    override fun clicked(event: InputEvent?, x: Float, y: Float) {
-                        controller.onAcceptFriendRequest(name.second)
-                    }
-                })
-            }
+            val acceptButton = createButtons(true, name)
 
             // RejectButton
-            val rejectTexture = Texture(Gdx.files.internal("skins/raw/button-close.png"))
-            val rejectDrawable = TextureRegionDrawable(TextureRegion(rejectTexture)).apply {
-                minWidth = imgBtnHeight.toFloat()
-                minHeight = imgBtnHeight.toFloat()
-            }
-            val rejectButton = ImageButton(rejectDrawable).apply {
-                addListener(object : ClickListener() {
-                    override fun clicked(event: InputEvent?, x: Float, y: Float) {
-                        controller.onRejectFriendRequest(name.second)
-                    }
-                })
-            }
+            val rejectButton = createButtons(false, name)
 
             val item = Table().apply {
                 add(nameLabel).expandX().fillX().padRight(10f)
@@ -82,6 +58,53 @@ class FriendRequestView(gsm: GameStateManager, stage: Stage) {
             list.row()
         }
 
+        val scrollPane = createScrollpane()
+
+        // Add scroll pane to stage
+        stage.addActor(scrollPane)
+    }
+
+    private fun truncateString(input: String): String {
+        val maxLength = 15
+        return if (input.length <= maxLength) {
+            input // Return the original string if it's within the maxLength
+        } else {
+            // Otherwise, truncate the string and append an ellipsis
+            input.substring(0, maxLength - 3) + "..."
+        }
+    }
+
+    private fun updateList(stage: Stage) {
+        list.clearChildren()
+        val newFriends = controller.onGetFriendRequests()
+        newFriends.forEach { name -> //Create a row for each name.
+            val nameLabel = Label(truncateString(name.first), skin, "title").apply {// Only show truncated names.
+                setFontScale(1.1f) // Smaller font to display more of name
+            }
+            // AcceptButton
+            val acceptButton = createButtons(true, name)
+
+            // RejectButton
+            val rejectButton = createButtons(false, name)
+
+            val item = Table().apply {
+                add(nameLabel).expandX().fillX().padRight(10f)
+                add(acceptButton).padRight(10f) //Added padding
+                add(rejectButton)
+                row()
+            }
+
+            list.add(item).expandX().fillX()
+            list.row()
+        }
+
+        val newScrollPane = createScrollpane()
+
+        // Add scroll pane to stage
+        stage.addActor(newScrollPane)
+    }
+
+    private fun createScrollpane(): ScrollPane {
         val scrollPane = ScrollPane(list, skin).apply {
             setScrollingDisabled(true, false)
             setFadeScrollBars(false)
@@ -96,18 +119,40 @@ class FriendRequestView(gsm: GameStateManager, stage: Stage) {
             setPosition(xPos, yPos)
             setSize(scrollPaneWidth, scrollPaneHeight)
         }
-
-        // Add scroll pane to stage
-        stage.addActor(scrollPane)
+        return scrollPane
     }
 
-    private fun truncateString(input: String): String {
-        val maxLength = 15
-        return if (input.length <= maxLength) {
-            input // Return the original string if it's within the maxLength
+    private fun createButtons(isAccept: Boolean, name: Pair<String, String>): ImageButton {
+        if (isAccept) {
+            val acceptTexture = Texture(Gdx.files.internal("skins/raw/checkbox-pressed.png"))
+            val acceptDrawable = TextureRegionDrawable(TextureRegion(acceptTexture)).apply {
+                minWidth = imgBtnHeight.toFloat()
+                minHeight = imgBtnHeight.toFloat()
+            }
+            val acceptButton = ImageButton(acceptDrawable).apply {
+                addListener(object : ClickListener() {
+                    override fun clicked(event: InputEvent?, x: Float, y: Float) {
+                        controller.onAcceptFriendRequest(name.second)
+                        updateList(stage)
+                    }
+                })
+            }
+            return acceptButton
         } else {
-            // Otherwise, truncate the string and append an ellipsis
-            input.substring(0, maxLength - 3) + "..."
+            val rejectTexture = Texture(Gdx.files.internal("skins/raw/button-close.png"))
+            val rejectDrawable = TextureRegionDrawable(TextureRegion(rejectTexture)).apply {
+                minWidth = imgBtnHeight.toFloat()
+                minHeight = imgBtnHeight.toFloat()
+            }
+            val rejectButton = ImageButton(rejectDrawable).apply {
+                addListener(object : ClickListener() {
+                    override fun clicked(event: InputEvent?, x: Float, y: Float) {
+                        controller.onRejectFriendRequest(name.second)
+                        updateList(stage)
+                    }
+                })
+            }
+            return rejectButton
         }
     }
 }
