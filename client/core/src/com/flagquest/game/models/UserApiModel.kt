@@ -21,6 +21,7 @@ import org.json.JSONObject
  */
 class UserApiModel {
     private val level: String = "Europe" // TODO Decide if we want to have Europe or All as our level
+    private val userId: String = DataManager.getData("userId") as String
 
 /** Function verifies the users credentials using the firebase auth module and retrieves a matching user from the database
      * @param authHandler: AuthHandler object
