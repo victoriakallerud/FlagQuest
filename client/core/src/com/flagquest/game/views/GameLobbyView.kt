@@ -46,6 +46,7 @@ class GameLobbyView(gsm: GameStateManager, isAdmin: Boolean, lobbyId: String, pr
 
     init {
         controller.redirectionListener = listener
+        controller.attachQuizListener()
 
         val lobby = controller.onLoadLobby(lobbyId)
         textFieldStyle.font.data.setScale(5f)
@@ -108,7 +109,6 @@ class GameLobbyView(gsm: GameStateManager, isAdmin: Boolean, lobbyId: String, pr
             startButton.setPosition(screenWidth / 2 - startButton.width / 2, 300f)
             startButton.addListener(object: ClickListener() {
                 override fun clicked(event: InputEvent?, x: Float, y: Float) {
-                    controller.attachQuizListener()
                     controller.onGameStartButtonClicked(lobbyId)
                 }
 
