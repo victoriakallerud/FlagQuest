@@ -5,11 +5,9 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
-import com.flagquest.game.models.AuthHandler
-import com.flagquest.game.states.GameStateManager
 import com.flagquest.game.utils.UIManager
 
-class LoginMenuView(gsm: GameStateManager, private val stage: Stage, private val authHandler: AuthHandler) {
+class LoginMenuView(private val stage: Stage) {
     private val skin: Skin = UIManager.skin
     val titleFont: BitmapFont = skin.getFont("title")
     var screenWidth = Gdx.graphics.width
@@ -27,17 +25,14 @@ class LoginMenuView(gsm: GameStateManager, private val stage: Stage, private val
     }
 
     private fun layoutButtons() {
-        // Set button font scale
         val buttonFont = UIManager.titleFont
         buttonFont.data.setScale(UIManager.buttonTextScale)
 
         buttons.forEach { button ->
-            // Set and apply button style
             val buttonStyle = TextButton.TextButtonStyle(button.style)
             buttonStyle.font = buttonFont
             button.style = buttonStyle
 
-            // Set button size and position
             button.setSize(UIManager.elementWidth.toFloat(), UIManager.elementHeight.toFloat())
             button.setPosition((UIManager.screenWidth - UIManager.elementWidth) / 2f, pos)
 

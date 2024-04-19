@@ -8,16 +8,16 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.ui.TextField
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
-import com.flagquest.game.controllers.LoginController
+import com.flagquest.game.controllers.RegistrationController
 import com.flagquest.game.models.AuthHandler
 import com.flagquest.game.models.UserApiModel
 import com.flagquest.game.navigation.MainMenuRedirectionListener
 import com.flagquest.game.states.GameStateManager
 import com.flagquest.game.utils.UIManager
-val backNavType = "menu"
 
-class LoginView(gsm: GameStateManager, private val stage: Stage, listener: MainMenuRedirectionListener, authHandler: AuthHandler) {
-    val controller: LoginController = LoginController(UserApiModel())
+class RegistrationView (gsm: GameStateManager, private val stage: Stage, listener: MainMenuRedirectionListener, authHandler: AuthHandler) {
+
+    val controller: RegistrationController = RegistrationController(UserApiModel())
 
     private val skin: Skin = Skin(Gdx.files.internal("skins/skin/flat-earth-ui.json"))
     private val titleFont: BitmapFont = skin.getFont("title")
@@ -25,29 +25,23 @@ class LoginView(gsm: GameStateManager, private val stage: Stage, listener: MainM
     private val screenHeight = Gdx.graphics.height
     private val buttonHeight = screenHeight / 11
 
-    private val emailField = TextField("", skin).apply{ messageText="  E-mail"}
+    private val emailField = TextField("", skin).apply{ messageText="  Username"}
     private val passwordField = TextField("", skin).apply{
-        messageText = "  Password"
+        messageText="  Password"
         isPasswordMode = true
         setPasswordCharacter('*')
     }
-
-    private val loginBtn = TextButton("LOGIN", skin)
+    private val regBtn = TextButton("REGISTER", skin)
     private val inputFields = arrayOf(emailField, passwordField)
-
 
     init {
         controller.redirectionListener = listener
-        controller.loginErrorListener = { error ->
-            showError(error)
-        }
-
         titleFont.data.setScale(1.5f)
 
-        UIManager.addHeading(stage, "LOGIN", 2.8f)
+        UIManager.addHeading(stage, "REGISTRATION", 2.8f)
+        UIManager.addBackButton(stage, gsm, backNavType)
 
         var posY = screenHeight / 2 + 50f
-
         for (input in inputFields) {
             input.width = (screenWidth*80/100).toFloat()
             input.height = buttonHeight.toFloat()
@@ -56,23 +50,21 @@ class LoginView(gsm: GameStateManager, private val stage: Stage, listener: MainM
             posY -= (buttonHeight + 30)
         }
 
-
-        loginBtn.addListener(object : ClickListener() {
+        regBtn.setSize((screenWidth*80/100).toFloat(), buttonHeight.toFloat())
+        regBtn.setPosition(screenWidth / 2 - regBtn.width / 2, posY)
+        regBtn.addListener(object : ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
-                controller.onLoginClicked(authHandler, emailField.text, passwordField.text)
+                if (!controller.onRegisterClicked(authHandler, emailField.text, passwordField.text, "BABA")) {
+                    Gdx.app.log("RegistrationState", "Registration failed")
+                    showError("Registration failed")
+                }
             }
         })
-        loginBtn.setSize((screenWidth*80/100).toFloat(), buttonHeight.toFloat())
-        loginBtn.setPosition(screenWidth / 2 - loginBtn.width / 2, posY)
-        stage.addActor(loginBtn)
-
-        UIManager.addBackButton(stage, gsm, backNavType)
+        stage.addActor(regBtn)
     }
-
     fun showError(error: String) {
         UIManager.addError(stage, error)
     }
-
     fun render() {
         stage.draw()
     }
@@ -80,4 +72,6 @@ class LoginView(gsm: GameStateManager, private val stage: Stage, listener: MainM
     fun update(dt: Float) {
         stage.act(dt)
     }
+
+
 }
