@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
+import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.ui.TextField
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
@@ -29,8 +30,14 @@ class LobbyInitiationView(gsm: GameStateManager, private val stage: Stage, liste
     private val btns = arrayOf( inviteLinkBtn, inviteBtn, createBtn )
     private var counter: Int = 1
     val backNavType = "menu"
-
-
+    private val europe: TextButton = TextButton("Europe", skin)
+    private val asia: TextButton = TextButton("Asia", skin)
+    private val africa: TextButton = TextButton("Africa", skin)
+    private val northamerica: TextButton = TextButton("NorthAmerica", skin)
+    private val southamerica: TextButton = TextButton("SouthAmerica", skin)
+    private val oceania: TextButton = TextButton("Oceania", skin)
+    private val all: TextButton = TextButton("All", skin)
+    private val levels = arrayOf(europe, asia, africa, northamerica, southamerica, oceania, all)
 
     init {
         controller.redirectionListener = listener
@@ -54,6 +61,24 @@ class LobbyInitiationView(gsm: GameStateManager, private val stage: Stage, liste
             stage.addActor(btn)
             counter++
         }
+
+        var table = Table()
+        table.setFillParent(true)
+        stage.addActor(table)
+
+        var index = 0
+        for (row in 0 until 4) {
+            for (col in 0 until 2) {
+                if (index < levels.size) {
+                    table.add(levels[index]).expand().fill().pad(10f)
+                    index++
+                }
+                table.add().expand().fill().pad(10f)
+            }
+            table.row()
+        }
+        table.pad(10f)
+        table.defaults().pad(5f)
 
         inviteLinkBtn.addListener(object : ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
