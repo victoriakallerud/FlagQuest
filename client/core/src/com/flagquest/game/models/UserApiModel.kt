@@ -82,7 +82,8 @@ class UserApiModel {
                     Gdx.app.log("RegistrationState", "Registration successful")
                     Gdx.app.log("RegistrationState", "Firebase User ID: $uid")
                     GlobalScope.launch(Dispatchers.IO) {
-                        val user = withContext(Dispatchers.Default) {
+                        val user: String? = withContext(Dispatchers.Default) {
+                            // TODO: Remove hardcoded nationality and get it from the form
                             postUser(userName, "German", uid!!)
                         }
                         val registered = if (user != null) {
@@ -122,7 +123,12 @@ class UserApiModel {
 
         val responseBodyString = response.body?.string() // Store the response body
         println(responseBodyString)
-        return responseBodyString
+        return if(response.isSuccessful) {
+            responseBodyString
+        } else {
+            println("Error: ${response.code} - ${response.message}")
+            null
+        }
     }
 
     /**
@@ -137,7 +143,14 @@ class UserApiModel {
             .addHeader("X-API-Key", "{{token}}")
             .build()
         val response = client.newCall(request).execute()
-        return response.body?.string()
+        val responseBodyString = response.body?.string() // Store the response body
+        println(responseBodyString)
+        return if(response.isSuccessful) {
+            responseBodyString
+        } else {
+            println("Error: ${response.code} - ${response.message}")
+            null
+        }
     }
 
     fun getUserByFirebaseId(firebaseId: String): String? {
@@ -173,7 +186,14 @@ class UserApiModel {
             .addHeader("X-API-Key", "{{token}}")
             .build()
         val response = client.newCall(request).execute()
-        return response.body?.string()
+        val responseBodyString = response.body?.string() // Store the response body
+        println(responseBodyString)
+        return if(response.isSuccessful) {
+            responseBodyString
+        } else {
+            println("Error: ${response.code} - ${response.message}")
+            null
+        }
     }
 
 
@@ -189,7 +209,14 @@ class UserApiModel {
             .addHeader("X-API-Key", "{{token}}")
             .build()
         val response = client.newCall(request).execute()
-        return response.body?.string()
+        val responseBodyString = response.body?.string() // Store the response body
+        println(responseBodyString)
+        return if(response.isSuccessful) {
+            responseBodyString
+        } else {
+            println("Error: ${response.code} - ${response.message}")
+            null
+        }
     }
 
     /**
@@ -201,13 +228,21 @@ class UserApiModel {
         val client = OkHttpClient()
         val mediaType = "text/plain".toMediaType()
         val body = "".toRequestBody(mediaType)
+        val userId = DataManager.getData("userId") as String
         val request = Request.Builder()
-            .url("http://flagquest.leotm.de:3000/user/0e7cb4e7-c8db-41e7-b536-bf94c66c9e50/friends/$friendId")
+            .url("http://flagquest.leotm.de:3000/user/$userId/friends/$friendId")
             .put(body)
             .addHeader("X-API-Key", "{{token}}")
             .build()
         val response = client.newCall(request).execute()
-        return response.body?.string()
+        val responseBodyString = response.body?.string() // Store the response body
+        println(responseBodyString)
+        return if(response.isSuccessful) {
+            responseBodyString
+        } else {
+            println("Error: ${response.code} - ${response.message}")
+            null
+        }
     }
 
     /**
@@ -332,7 +367,14 @@ class UserApiModel {
         println("5")
         val response = client.newCall(request).execute()
         println("6")
-        return response.body?.string()
+        val responseBodyString = response.body?.string() // Store the response body
+        println(responseBodyString)
+        return if(response.isSuccessful) {
+            responseBodyString
+        } else {
+            println("Error: ${response.code} - ${response.message}")
+            null
+        }
     }
 
     fun delRejectRequest(friendId: String): String? {
@@ -346,6 +388,13 @@ class UserApiModel {
             .addHeader("X-API-Key", "{{token}}")
             .build()
         val response = client.newCall(request).execute()
-        return response.body?.string()
+        val responseBodyString = response.body?.string() // Store the response body
+        println(responseBodyString)
+        return if(response.isSuccessful) {
+            responseBodyString
+        } else {
+            println("Error: ${response.code} - ${response.message}")
+            null
+        }
     }
 }

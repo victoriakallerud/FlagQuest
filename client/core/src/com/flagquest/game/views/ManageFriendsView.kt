@@ -1,5 +1,6 @@
 package com.flagquest.game.views
 
+import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.Pixmap
 import com.badlogic.gdx.graphics.Texture
@@ -98,7 +99,17 @@ class ManageFriendsView (gsm: GameStateManager, private val stage: Stage) {
             addBtn.addListener(object : ClickListener() {
                 override fun clicked(event: InputEvent?, x: Float, y: Float) {
                     // Send friend request
-                    println("Send friend request ${controller.onSendFriendRequest(usernameField.text)}")
+                    Gdx.app.log("ManageFriendsView", "Trying to send friend reqeuest to ${usernameField.text}")
+                    val res = controller.onSendFriendRequest(usernameField.text)
+                    if(res != null) {
+                        Gdx.app.log("ManageFriendsView", "Friend request sent to ${usernameField.text}")
+                        // Hide error if it is shown because of previous failed request
+                        hideError()
+                    } else {
+                        Gdx.app.log("ManageFriendsView", "Friend request failed")
+                        // Add error label to ManageFriendsView
+                        showError("Friend request failed.")
+                    }
                     remove()
                 }
             })
@@ -107,7 +118,7 @@ class ManageFriendsView (gsm: GameStateManager, private val stage: Stage) {
             pack()
 
             // Set size and position
-            setSize(800f, 600f)
+            setSize(800f, 700f)
             setPosition(screenWidth / 2 - width / 2, screenHeight / 2 - height / 2)
 
             // Edit title bar styling
@@ -127,5 +138,13 @@ class ManageFriendsView (gsm: GameStateManager, private val stage: Stage) {
         popupWindow.titleTable.background = TextureRegionDrawable(TextureRegion(popupTexture))
 
         stage.addActor(popupWindow)
+    }
+
+    fun showError(error: String) {
+        UIManager.addError(stage, error)
+    }
+
+    fun hideError() {
+        UIManager.removeErrors(stage)
     }
 }
