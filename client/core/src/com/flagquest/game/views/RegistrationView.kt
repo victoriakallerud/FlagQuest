@@ -55,7 +55,7 @@ class RegistrationView (gsm: GameStateManager, private val stage: Stage, listene
         regBtn.setPosition(screenWidth / 2 - regBtn.width / 2, posY)
         regBtn.addListener(object : ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
-                if (!controller.onRegisterClicked(authHandler, emailField.text, passwordField.text, "BABA")) {
+                if (!controller.onRegisterClicked(authHandler, emailField.text, passwordField.text, "testi")) {
                     Gdx.app.log("RegistrationState", "Registration failed")
                     showError("Registration failed")
                 }

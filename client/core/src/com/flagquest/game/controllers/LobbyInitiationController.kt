@@ -6,8 +6,8 @@ import com.flagquest.game.utils.DataManager
 
 class LobbyInitiationController(private val model: LobbyApiModel) {
     var redirectionListener: LobbyRedirectionListener? = null
-    fun onCreateGameClicked(size: Int): Boolean {
-        val lobby: String? = model.postLobby(size)
+    fun onCreateGameClicked(size: Int, level: String): Boolean {
+        val lobby: String? = model.postLobby(size, level)
         return if(lobby != null) {
             val lobbyId: String = model.getIdFromResponse(lobby)
             DataManager.setData("lobbyId", lobbyId)

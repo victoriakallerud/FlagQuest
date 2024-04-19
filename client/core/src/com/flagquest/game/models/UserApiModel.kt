@@ -21,8 +21,6 @@ import org.json.JSONObject
  */
 class UserApiModel {
     private val level: String = "Europe" // TODO Decide if we want to have Europe or All as our level
-    //private val userId: String = DataManager.getData("userId") as String
-    private val userId: String = "0e7cb4e7-c8db-41e7-b536-bf94c66c9e50"
 
 /** Function verifies the users credentials using the firebase auth module and retrieves a matching user from the database
      * @param authHandler: AuthHandler object
@@ -237,7 +235,7 @@ class UserApiModel {
      */
     fun getFriendNames(): MutableList<String> {
         val friendNames = mutableListOf<String>()
-        val user = getUserById(userId)
+        val user = getUserById(DataManager.getData("userId")!! as String)
         val friendUuidList = extractFriendUuidList(user!!)
         for (friendUuid in friendUuidList) {
             val friend = JSONObject(getUserById(friendUuid))
@@ -307,7 +305,7 @@ class UserApiModel {
      */
     fun getPendingFriendRequests(): MutableList<Pair<String, String>> {
         val pendingFriendRequests = mutableListOf<Pair<String, String>>()
-        val jsonUser = JSONObject(getUserById(userId))
+        val jsonUser = JSONObject(getUserById(DataManager.getData("userId")!! as String))
         val friendRequestIds = jsonUser.getJSONArray("pendingFriendRequests")
         for (i in 0 until friendRequestIds.length()) {
             val friendId = friendRequestIds.getString(i)
@@ -325,6 +323,7 @@ class UserApiModel {
         println("3")
         val body = "".toRequestBody(mediaType)
         println("4")
+        val userId = DataManager.getData("userId") as String
         val request = Request.Builder()
             .url("http://flagquest.leotm.de:3000/user/$userId/friends/requests/$friendId")
             .put(body)
@@ -340,6 +339,7 @@ class UserApiModel {
         val client = OkHttpClient()
         val mediaType = "text/plain".toMediaType()
         val body = "".toRequestBody(mediaType)
+        val userId = DataManager.getData("userId") as String
         val request = Request.Builder()
             .url("http://flagquest.leotm.de:3000/user/$userId/friends/requests/$friendId")
             .method("DELETE", body)
