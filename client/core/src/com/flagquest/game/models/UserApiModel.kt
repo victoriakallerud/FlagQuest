@@ -31,16 +31,16 @@ class UserApiModel {
     @OptIn(DelicateCoroutinesApi::class)
     fun loginUser(authHandler: AuthHandler, email: String, password: String, callback: (Boolean)-> Unit) {
         if (email.isEmpty() || password.isEmpty()) {
-            Gdx.app.log("LoginState", "Email or password cannot be empty")
+            Gdx.app.log("UserApiModel", "Email or password cannot be empty")
             callback(false)
         }
-        Gdx.app.log("LoginState", "Attempting to login with email: $email")
+        Gdx.app.log("UserApiModel", "Attempting to login with email: $email")
 
         try{
         authHandler.signIn(email, password) { success, uid, message ->
             if (success) {
-                Gdx.app.log("LoginState", "Firebase auth successful")
-                Gdx.app.log("LoginState", "Firebase User ID: $uid")
+                Gdx.app.log("UserApiModel", "Firebase auth successful")
+                Gdx.app.log("UserApiModel", "Firebase User ID: $uid")
 
                 GlobalScope.launch(Dispatchers.IO) {
                     val user = withContext(Dispatchers.Default) {
@@ -48,23 +48,23 @@ class UserApiModel {
                     }
                     val loggedIn = if (user != null) {
                         val userId: String = getIdFromResponse(user)
-                        Gdx.app.log("LoginState", "User ID: $userId")
+                        Gdx.app.log("UserApiModel", "User ID: $userId")
                         DataManager.setData("userId", userId)
                         true
                     } else {
-                        Gdx.app.error("LoginState", "Error retrieving user")
+                        Gdx.app.error("UserApiModel", "Error retrieving user")
                         false
                     }
                     callback(loggedIn)
                 }
 
             } else {
-                Gdx.app.log("LoginState", "Firebase auth failed: $message")
+                Gdx.app.log("UserApiModel", "Firebase auth failed: $message")
                 callback(false)
             }
         }
         } catch (e: Exception) {
-            Gdx.app.error("LoginState", "Error: ${e.message}")
+            Gdx.app.error("UserApiModel", "Error: ${e.message}")
             callback(false)
         }
     }
