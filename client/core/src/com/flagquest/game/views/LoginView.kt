@@ -38,6 +38,9 @@ class LoginView(gsm: GameStateManager, private val stage: Stage, listener: MainM
 
     init {
         controller.redirectionListener = listener
+        controller.loginErrorListener = { error ->
+            showError(error)
+        }
 
         titleFont.data.setScale(1.5f)
 
@@ -56,10 +59,7 @@ class LoginView(gsm: GameStateManager, private val stage: Stage, listener: MainM
 
         loginBtn.addListener(object : ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
-                if(!controller.onLoginClicked(authHandler, emailField.text, passwordField.text)) {
-                    Gdx.app.log("LoginState", "Login failed")
-                    showError("Login failed")
-                }
+                controller.onLoginClicked(authHandler, emailField.text, passwordField.text)
             }
         })
         loginBtn.setSize((screenWidth*80/100).toFloat(), buttonHeight.toFloat())
