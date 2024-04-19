@@ -4,7 +4,7 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.scenes.scene2d.Stage
-import com.badlogic.gdx.scenes.scene2d.ui.Label
+import com.badlogic.gdx.scenes.scene2d.ui.SelectBox
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.ui.TextField
@@ -23,7 +23,7 @@ class RegistrationState(gsm: GameStateManager) : State(gsm) {
     private var pos: Float = ((screenHeight / 2) + 50).toFloat()
     override val stage = Stage(ScreenViewport())
 
-    private val nameField = TextField("", skin).apply{ messageText="  Name"}
+    private val emailField = TextField("", skin).apply{ messageText="  E-mail"}
     private val usernameField = TextField("", skin).apply{ messageText="  Username"}
     private val passwordField = TextField("", skin).apply{
         messageText="  Password"
@@ -31,7 +31,7 @@ class RegistrationState(gsm: GameStateManager) : State(gsm) {
         setPasswordCharacter('*')
     }
     private val regBtn = TextButton("REGISTER", skin)
-    private val inputFields = arrayOf(nameField, usernameField, passwordField)
+    private val inputFields = arrayOf(emailField, usernameField, passwordField)
     private var counter: Int = 0
 
     init {
@@ -41,6 +41,22 @@ class RegistrationState(gsm: GameStateManager) : State(gsm) {
         addHeading(stage,"REGISTRATION", 2.8f)
         addBackButton(stage,gsm, backNavType)
 
+        // Read all countries and initialise SelectBox
+        val countries = Gdx.files.internal("countries.txt").readString().split("\n").toTypedArray()
+        val countrySelectBox = SelectBox<String>(skin)
+        countrySelectBox.setItems(*countries)
+
+        // SelectBox styling
+        countrySelectBox.height = buttonHeight.toFloat()
+        countrySelectBox.width = (screenWidth*80/100).toFloat()
+        countrySelectBox.setPosition(screenWidth / 2 - countrySelectBox.width / 2, pos + 30 + countrySelectBox.height)
+
+        // Limit the number of countries displayed
+        countrySelectBox.maxListCount = 10
+
+        stage.addActor(countrySelectBox)
+
+        // Display the input fields
         for (input in inputFields) {
             input.width = (screenWidth*80/100).toFloat()
             input.height = buttonHeight.toFloat()
@@ -49,7 +65,7 @@ class RegistrationState(gsm: GameStateManager) : State(gsm) {
             counter++
         }
 
-        // Keep this in as additional logic for navigation required.
+        // Registration button styling - keep this in as additional logic for navigation required.
         regBtn.setSize((screenWidth*80/100).toFloat(), buttonHeight.toFloat())
         regBtn.setPosition(screenWidth / 2 - regBtn.width / 2, pos - (buttonHeight + 30) * 3)
         regBtn.addListener(ButtonClickListener(gsm, lazy { MainMenuState(gsm) }))
