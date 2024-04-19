@@ -405,16 +405,6 @@ class UserApiModel {
             "BABA" to 240,
             "Cecilia" to 110,
             "Donald" to 190,
-            "Emilie" to 40,
-            "amelmd" to 170,
-            "BABA" to 240,
-            "Cecilia" to 110,
-            "Donald" to 190,
-            "Emilie" to 40,
-            "amelmd" to 170,
-            "BABA" to 240,
-            "Cecilia" to 110,
-            "Donald" to 190,
             "Emilie" to 40
         ) as MutableList<Pair<String, Int>>
     }
