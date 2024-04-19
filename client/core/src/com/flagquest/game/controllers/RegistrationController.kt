@@ -9,9 +9,9 @@ import com.flagquest.game.utils.DataManager
 
 class RegistrationController(private val model: UserApiModel) {
     var redirectionListener: MainMenuRedirectionListener? = null
-    fun onRegisterClicked(authHandler: AuthHandler, email: String, password: String, userName: String): Boolean {
+    fun onRegisterClicked(authHandler: AuthHandler, email: String, password: String, userName: String, nationality: String): Boolean {
         var res = false
-        model.registerUser(authHandler, email, password, userName) { registered ->
+        model.registerUser(authHandler, email, password, userName, nationality) { registered ->
             if (registered) {
                 Gdx.app.log("RegistrationState", "Registration successful")
                 Gdx.app.postRunnable {

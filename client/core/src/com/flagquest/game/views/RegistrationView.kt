@@ -87,7 +87,10 @@ class RegistrationView (gsm: GameStateManager, private val stage: Stage, listene
         regBtn.setPosition(screenWidth / 2 - regBtn.width / 2, posFirstTextField)
         regBtn.addListener(object : ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
-                if (!controller.onRegisterClicked(authHandler, emailField.text, passwordField.text, usernameField.text)) {
+
+                val nationality = countrySelectBox.selected.substring(2)
+                println(nationality)
+                if (!controller.onRegisterClicked(authHandler, emailField.text, passwordField.text, usernameField.text, nationality)) {
                     Gdx.app.log("RegistrationState", "Registration failed")
                     showError("Registration failed")
                 }
