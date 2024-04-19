@@ -3,22 +3,36 @@ package com.flagquest.game.controllers
 import com.badlogic.gdx.Gdx
 import com.flagquest.game.models.LobbyApiModel
 import com.flagquest.game.models.UserApiModel
-import com.flagquest.game.navigation.GameRedirectionListener
 import com.flagquest.game.navigation.OnlineGameRedirectionListener
 import com.flagquest.game.utils.DataManager
 import com.flagquest.game.utils.SocketHandler
-import io.socket.client.Socket
 import org.json.JSONArray
 import org.json.JSONObject
 
 class GameLobbyController(private val userModel: UserApiModel, private val lobbyModel: LobbyApiModel) {
     var redirectionListener: OnlineGameRedirectionListener? = null
 
+    fun attachQuizListener() {
+        SocketHandler.getSocket().on("quiz") { args ->
+            val message = args[0] as JSONObject
+            Gdx.app.log("GameApiModel", "quiz: $message")
+            val questions: JSONArray = message.get("questions") as JSONArray
+            DataManager.setData("questions", questions)
+            DataManager.setData("currentQuestionIndex", 0)
+            Gdx.app.log("GameApiModel", "questions are now set to: $questions")
+            // Run with postRunnable:
+            Gdx.app.postRunnable {
+                redirectionListener?.redirectToOnlineGameState()
+            }
+            // redirectionListener?.redirectToOnlineGameState()
+        }
+    }
+
     fun onGameStartButtonClicked(lobbyId: String) {
         SocketHandler.emit("startGame", JSONObject().put("lobbyId", lobbyId).put("userId", DataManager.getData("userId")))
         // Wait for 2 seconds
-        Thread.sleep(2000)
-        redirectionListener?.redirectToOnlineGameState()
+//        Thread.sleep(2000)
+//        redirectionListener?.redirectToOnlineGameState()
     }
 
     fun onLoadLobby(lobbyId: String): String? {

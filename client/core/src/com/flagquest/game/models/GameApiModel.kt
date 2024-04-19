@@ -1,12 +1,15 @@
 package com.flagquest.game.models
 
 import com.badlogic.gdx.Gdx
+import com.flagquest.game.navigation.OnlineGameRedirectionListener
+import com.flagquest.game.states.GameStateManager
+import com.flagquest.game.states.OnlineGameState
 import com.flagquest.game.utils.DataManager
 import com.flagquest.game.utils.SocketHandler
 import org.json.JSONArray
 import org.json.JSONObject
 
-class GameApiModel {
+class GameApiModel() {
     data class Question (val description: String, val answerOptions: List<AnswerOption>)
     data class AnswerOption (val description: String, val isCorrect: Boolean)
     data class Quiz (val questions: List<Question>)
@@ -27,14 +30,7 @@ class GameApiModel {
             val message = args[0] as JSONObject
             Gdx.app.log("GameApiModel", "updateLobby: $message")
         }
-        SocketHandler.getSocket().on("quiz") { args ->
-            val message = args[0] as JSONObject
-            Gdx.app.log("GameApiModel", "quiz: $message")
-            val questions: JSONArray = message.get("questions") as JSONArray
-            DataManager.setData("questions", questions)
-            DataManager.setData("currentQuestionIndex", 0)
-            Gdx.app.log("GameApiModel", "questions are now set to: $questions")
-        }
+
         SocketHandler.getSocket().on("answerCount") { args ->
             val message = args[0] as Int
             DataManager.setData("answerCount", message)

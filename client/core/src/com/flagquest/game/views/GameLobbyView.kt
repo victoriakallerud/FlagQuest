@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.badlogic.gdx.utils.viewport.ScreenViewport
 import com.flagquest.game.controllers.GameLobbyController
+import com.flagquest.game.models.GameApiModel
 import com.flagquest.game.models.LobbyApiModel
 import com.flagquest.game.models.UserApiModel
 import com.flagquest.game.navigation.GameRedirectionListener
@@ -107,6 +108,7 @@ class GameLobbyView(gsm: GameStateManager, isAdmin: Boolean, lobbyId: String, pr
             startButton.setPosition(screenWidth / 2 - startButton.width / 2, 300f)
             startButton.addListener(object: ClickListener() {
                 override fun clicked(event: InputEvent?, x: Float, y: Float) {
+                    controller.attachQuizListener()
                     controller.onGameStartButtonClicked(lobbyId)
                 }
 
