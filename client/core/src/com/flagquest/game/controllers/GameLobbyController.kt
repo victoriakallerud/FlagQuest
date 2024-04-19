@@ -8,12 +8,10 @@ import org.json.JSONArray
 import org.json.JSONObject
 
 class GameLobbyController(private val userModel: UserApiModel, private val lobbyModel: LobbyApiModel) {
-    //var redirectionListener: LobbyRedirectionListener? = null
     private lateinit var mSocket: Socket
 
     fun onLoadLobby(lobbyId: String): String? {
-        val lobby = lobbyModel.getLobby(lobbyId)
-        return lobby
+        return lobbyModel.getLobby(lobbyId)
     }
 
     fun onLoadPlayer(playerId: String): String? {

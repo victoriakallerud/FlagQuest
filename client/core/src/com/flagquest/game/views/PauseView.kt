@@ -7,12 +7,11 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.flagquest.game.states.GameStateManager
 import com.flagquest.game.utils.UIManager
 
-class PauseView(gsm: GameStateManager, private val stage: Stage) {
+class PauseView(gsm: GameStateManager, stage: Stage) {
     private val skin: Skin = UIManager.skin
     private val titleFont: BitmapFont = UIManager.titleFont
     private val screenHeight = UIManager.screenHeight
     private var pos: Float = ((screenHeight / 2) - 150).toFloat()
-
     private val resumeBtn = TextButton("RESUME", skin) to "back"
     private val menuBtn = TextButton("MAIN MENU", skin) to "menu"
     private val buttons = arrayOf(resumeBtn, menuBtn)
