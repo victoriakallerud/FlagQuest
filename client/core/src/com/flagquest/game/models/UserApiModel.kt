@@ -4,7 +4,6 @@ import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.RequestBody.Companion.toRequestBody
-import okhttp3.Response
 import org.json.JSONArray
 import org.json.JSONObject
 
@@ -83,7 +82,6 @@ class UserApiModel {
      */
     fun putAddFriend(friendId: String): String? {
         val client = OkHttpClient()
-        println("http://flagquest.leotm.de:3000/user/0e7cb4e7-c8db-41e7-b536-bf94c66c9e50/friends/$friendId/fjfj")
         val mediaType = "text/plain".toMediaType()
         val body = "".toRequestBody(mediaType)
         val request = Request.Builder()
@@ -118,7 +116,6 @@ class UserApiModel {
      * Function retrieves highscores of top 10 friends
      * @return List with pairs of username and score
      */
-
     fun getFriendNames(): MutableList<String> {
         val friendNames = mutableListOf<String>()
         val user = getUserById(userId)
@@ -129,6 +126,11 @@ class UserApiModel {
         }
         return friendNames
     }
+
+    /**
+     * Function retrieves highscores of top 10 friends
+     * @return List with pairs of username and score
+     */
     fun getFriendHighscores(): MutableList<Pair<String, Int>> {
         val friendsScore = mutableListOf<Pair<String, Int>>()
         val user = getUserById(userId)
@@ -152,14 +154,23 @@ class UserApiModel {
         return friendsScore
     }
 
-
+    /**
+     * Function retrieves ID from user object
+     * @param responseBody String of user object
+     * @return ID of user
+     */
     fun getIdFromResponse(responseBody: String): String {
         val jsonObject = JSONObject(responseBody)
         return jsonObject.getString("id")
     }
 
 
-    fun extractFriendUuidList(jsonString: String): List<String> {
+    /**
+     * Function extracts friendUuidList from user object
+     * @param jsonString String of user object
+     * @return List of friendUuids
+     */
+    private fun extractFriendUuidList(jsonString: String): List<String> {
         val jsonObject = JSONObject(jsonString)
         val friendUuidJsonArray = jsonObject.getJSONArray("friendUuidList")
         val friendUuidList = mutableListOf<String>()
@@ -171,4 +182,51 @@ class UserApiModel {
         return friendUuidList
     }
 
+    /**
+     * Function sends GET request to retrieve pending friend requests
+     * @return List of pairs with usernames and userIds of pending friend requests
+     */
+    fun getPendingFriendRequests(): MutableList<Pair<String, String>> {
+        val pendingFriendRequests = mutableListOf<Pair<String, String>>()
+        val jsonUser = JSONObject(getUserById(userId))
+        val friendRequestIds = jsonUser.getJSONArray("pendingFriendRequests")
+        for (i in 0 until friendRequestIds.length()) {
+            val friendId = friendRequestIds.getString(i)
+            val pendingFriendRequest = JSONObject(getUserById(friendId))
+            pendingFriendRequests.add(pendingFriendRequest.getString("userName") to friendId)
+        }
+        return pendingFriendRequests
+    }
+
+    fun putAcceptRequest(friendId: String): String? {
+        println("1")
+        val client = OkHttpClient()
+        println("2")
+        val mediaType = "text/plain".toMediaType()
+        println("3")
+        val body = "".toRequestBody(mediaType)
+        println("4")
+        val request = Request.Builder()
+            .url("http://flagquest.leotm.de:3000/user/$userId/friends/requests/$friendId")
+            .put(body)
+            .addHeader("X-API-Key", "{{token}}")
+            .build()
+        println("5")
+        val response = client.newCall(request).execute()
+        println("6")
+        return response.body?.string()
+    }
+
+    fun delRejectRequest(friendId: String): String? {
+        val client = OkHttpClient()
+        val mediaType = "text/plain".toMediaType()
+        val body = "".toRequestBody(mediaType)
+        val request = Request.Builder()
+            .url("http://flagquest.leotm.de:3000/user/$userId/friends/requests/$friendId")
+            .method("DELETE", body)
+            .addHeader("X-API-Key", "{{token}}")
+            .build()
+        val response = client.newCall(request).execute()
+        return response.body?.string()
+    }
 }
