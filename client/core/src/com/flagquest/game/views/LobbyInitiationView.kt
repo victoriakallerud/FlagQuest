@@ -10,10 +10,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.ui.TextField
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.flagquest.game.controllers.LobbyInitiationController
-import com.flagquest.game.models.LobbyApiModel
 import com.flagquest.game.navigation.LobbyRedirectionListener
 import com.flagquest.game.states.GameStateManager
-import com.flagquest.game.utils.ButtonClickListener
 import com.flagquest.game.utils.UIManager
 
 class LobbyInitiationView(gsm: GameStateManager, private val stage: Stage, listener: LobbyRedirectionListener, private val controller: LobbyInitiationController) {
@@ -26,8 +24,6 @@ class LobbyInitiationView(gsm: GameStateManager, private val stage: Stage, liste
     private val inviteLinkBtn = TextButton("GET INVITE LINK", skin)
     private val createBtn = TextButton("CREATE LOBBY", skin)
     private var size: Int = 6
-    private val btns = arrayOf( inviteLinkBtn, createBtn )
-    private var counter: Int = 1
     val backNavType = "menu"
     private val europe: TextButton = TextButton("Europe", skin)
     private val asia: TextButton = TextButton("Asia", skin)
@@ -47,6 +43,9 @@ class LobbyInitiationView(gsm: GameStateManager, private val stage: Stage, liste
         UIManager.addHeading(stage, "CREATE GAME\nLOBBY", 2.8f)
         UIManager.addBackButton(stage, gsm, backNavType)
 
+        sizeInput.textFieldFilter = TextField.TextFieldFilter { textField, c ->
+            Character.isDigit(c)
+        }
         sizeInput.width = (screenWidth*80/100).toFloat()
         sizeInput.height = UIManager.elementHeight.toFloat()
         sizeInput.setPosition(screenWidth / 2 - sizeInput.width / 2, pos)
@@ -56,7 +55,7 @@ class LobbyInitiationView(gsm: GameStateManager, private val stage: Stage, liste
 
         inviteLinkBtn.width = (screenWidth*80/100).toFloat()
         inviteLinkBtn.height = UIManager.elementHeight.toFloat()
-        inviteLinkBtn.setPosition(screenWidth / 2 - inviteLinkBtn.width / 2, pos - (UIManager.elementHeight + 20))
+        inviteLinkBtn.setPosition(screenWidth / 2 - inviteLinkBtn.width / 2, pos - (UIManager.elementHeight + 30))
         stage.addActor(inviteLinkBtn)
 
         var table = Table()
@@ -80,7 +79,7 @@ class LobbyInitiationView(gsm: GameStateManager, private val stage: Stage, liste
 
         createBtn.width = (screenWidth*80/100).toFloat()
         createBtn.height = UIManager.elementHeight.toFloat()
-        createBtn.setPosition(screenWidth / 2 - createBtn.width / 2, pos - table.height - (UIManager.elementHeight + 20 * 2.2f) * 1.8f)
+        createBtn.setPosition(screenWidth / 2 - createBtn.width / 2, pos - table.height - (UIManager.elementHeight + 30 * 2.2f) * 1.8f)
         stage.addActor(createBtn)
 
 
@@ -126,7 +125,7 @@ class LobbyInitiationView(gsm: GameStateManager, private val stage: Stage, liste
         table.defaults().pad(5f)
         table.pack() // This is important to size the table according to its contents
         //table.setPosition((stage.width - table.prefWidth) / 2, 180f)
-        table.setPosition((stage.width - table.prefWidth) / 2, pos - (UIManager.elementHeight + 20 * 2.2f) * 3)
+        table.setPosition((stage.width - table.prefWidth) / 2, pos - (UIManager.elementHeight + 30 * 2.2f) * 3)
     }
 
     fun showError(error: String) {
