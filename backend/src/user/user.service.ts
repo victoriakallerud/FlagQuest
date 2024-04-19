@@ -19,20 +19,27 @@ export class UserService implements IUserService {
     }
 
     async createUser(userDto: RequestUserDTO): Promise<User> {
-        let userAlreadyExists: boolean = true;
+        let userAlreadyExistsByName: boolean = true;
+        let userAlreadyExistsByFirebaseId: boolean = true;
         try{
-            userAlreadyExists = await this.databaseService.userExistsByUserName(userDto.userName);
+            userAlreadyExistsByName = await this.databaseService.userExistsByUserName(userDto.userName);
+            userAlreadyExistsByFirebaseId = await this.databaseService.userExistsByFirebaseId(userDto.firebaseId);
         } catch (error) {
             this.logger.error('Error checking if user exists', error);
             throw new HttpException('Error checking if user exists', 500);
         }
-        if (userAlreadyExists){
+        if (userAlreadyExistsByName){
             this.logger.error(`User with username ${userDto.userName} already exists`);
             throw new HttpException(`User with username ${userDto.userName} already exists`, 409);
-        } else {
+        } else if (userAlreadyExistsByFirebaseId){
+            this.logger.error(`User with firebaseId ${userDto.firebaseId} already exists`);
+            throw new HttpException(`User with firebaseId ${userDto.firebaseId} already exists`, 409);
+        }
+        else {
             let uuid = uuidv4();
             let user: User = {
                 id: uuid,
+                firebaseId: userDto.firebaseId,
                 userName: userDto.userName,
                 creationTime: moment().tz('Europe/Berlin').format(),
                 friendUuidList: [],
@@ -69,6 +76,23 @@ export class UserService implements IUserService {
             }
         }
     }
+    async getUserByFirebaseId(firebaseId: string): Promise<User> {
+        // find user with firebaseId in database
+        try{
+            let user  = await this.databaseService.getUserByFirebaseId(firebaseId);
+            this.logger.log('User with firebaseId ' + firebaseId + ' found');
+            return user;
+        } catch (error) {
+            if(error.message === 'User does not exist'){
+                this.logger.error('User does not exist', error);
+                throw new HttpException('User does not exist', 404);
+            } else {
+                this.logger.error('Error getting user', error);
+                throw new HttpException('Error getting user', 500);
+            }
+        }
+    }
+
     async getUserIdByName(userName: string): Promise<string> {
         try{
             let userId  = await this.databaseService.getUserIdByUserName(userName);

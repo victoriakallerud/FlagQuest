@@ -7,6 +7,7 @@ import { RequestUserScoresDTO } from './dto/requestUserScores.dto';
 export interface IUserService {
     createUser(user: User): Promise<User>;
     getUserById(userId: string): Promise<User>;
+    getUserByFirebaseId(firebaseId: string): Promise<User>;
     getUserIdByName(userName: string): Promise<string>;
     getBestScores(number: number, level: LevelEnum, game: GameModeEnum): Promise<RequestUserScoresDTO[]>;
     updateUser(userId: string, user: User): Promise<User>;

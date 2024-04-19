@@ -1,6 +1,8 @@
 package com.flagquest.game.models
 
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.utils.async.ThreadUtils
+import com.flagquest.game.states.MainMenuState
 import com.flagquest.game.utils.DataManager
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
@@ -67,19 +69,59 @@ class UserApiModel {
         }
     }
 
-    fun postUser(name: String, username: String, nationality: String, password: String): String? { //TODO: remove password from the post??
+    @OptIn(DelicateCoroutinesApi::class)
+    fun registerUser(authHandler: AuthHandler, email: String, password: String, userName: String, callback: (Boolean)-> Unit) {
+        if (email.isEmpty() || password.isEmpty()) {
+            Gdx.app.log("RegistrationState", "Email or password cannot be empty")
+            callback(false)
+        }
+        Gdx.app.log("RegistrationState", "Attempting to register with email: $email")
+        try {
+            authHandler.signUp(email, password) { success, uid, message ->
+                if (success) {
+                    Gdx.app.log("RegistrationState", "Registration successful")
+                    Gdx.app.log("RegistrationState", "Firebase User ID: $uid")
+                    GlobalScope.launch(Dispatchers.IO) {
+                        val user = withContext(Dispatchers.Default) {
+                            postUser(userName, "German", uid!!)
+                        }
+                        val registered = if (user != null) {
+                            val userId: String = getIdFromResponse(user)
+                            Gdx.app.log("RegistrationState", "User ID: $userId")
+                            DataManager.setData("userId", userId)
+                            true
+                        } else {
+                            Gdx.app.error("RegistrationState", "Error registering user")
+                            false
+                        }
+                        callback(registered)
+                    }
+                } else {
+                    Gdx.app.log("RegistrationState", "Registration failed: $message")
+                    callback(false)
+                }
+            }
+        } catch (e: Exception) {
+            Gdx.app.error("RegistrationState", "Error: ${e.message}")
+            callback(false)
+        }
+    }
+
+
+    fun postUser(username: String, nationality: String, firebaseId: String): String? {
         val client = OkHttpClient()
         val mediaType = "application/json".toMediaType()
-        val body = "{\r\n    \"userName\": \"$username\",\r\n    \"nationality\": \"$nationality\"\r\n}".toRequestBody(mediaType)
+        val body = "{\r\n    \"userName\": \"$username\",\r\n    \"nationality\": \"$nationality\",\r\n    \"firebaseId\": \"$firebaseId\"\r\n}".toRequestBody(mediaType)
         val request = Request.Builder()
-            .url("http://flagquest.leotm.de:3000/user/USER_ID")
+            .url("http://flagquest.leotm.de:3000/user/")
             .post(body)
             .addHeader("Content-Type", "application/json")
             .addHeader("X-API-Key", "{{token}}")
             .build()
         val response = client.newCall(request).execute()
-        println(response.body?.string())
-        return response.body?.string()
+        val responseBodyString = response.body?.string() // Store the response body
+        println(responseBodyString)
+        return responseBodyString
     }
 
     fun getUserByName(username: String): String? {

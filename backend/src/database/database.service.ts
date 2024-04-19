@@ -3,11 +3,8 @@ import { Logger } from '@nestjs/common';
 import * as admin from 'firebase-admin';
 import { User } from '../interfaces/user.interface';
 import { Lobby } from 'src/interfaces/lobby.interface';
-import { LobbyService } from 'src/lobby/lobby.service';
-import { Question } from 'src/interfaces/question.interface';
 import { Country } from 'src/interfaces/country.interface';
 import { LobbyStateEnum } from 'src/enums/lobbyState.enum';
-import { Score } from 'src/interfaces/score.interface';
 import { LevelEnum } from 'src/enums/level.enum';
 import { GameModeEnum } from 'src/enums/gamemode.enum';
 import { RequestUserScoresDTO } from 'src/user/dto/requestUserScores.dto';
@@ -35,6 +32,23 @@ export class DatabaseService {
             }
         } catch (error) {
             this.logger.error('Error getting user', error);
+            throw error;
+        }
+    }
+
+    async getUserByFirebaseId(firebaseId: string): Promise<User> {
+        try {
+            let userDocs = await this.db.collection('user').where('firebaseId', '==', firebaseId).get();
+            if (userDocs.empty) {
+                this.logger.error(`User with firebase ID ${firebaseId} does not exist`);
+                throw new Error(`User does not exist`);
+            } else {
+                let user = userDocs.docs[0].data() as User;
+                user.id = userDocs.docs[0].id;
+                return user;
+            }
+        } catch (error) {
+            this.logger.error('Error getting user by firebase ID', error);
             throw error;
         }
     }
@@ -161,6 +175,16 @@ export class DatabaseService {
         try {
             let userDoc = await this.db.collection('user').doc(userId).get();
             return userDoc.exists;
+        } catch (error) {
+            this.logger.error('Error checking if user exists', error);
+            throw error;
+        }
+    }
+
+    async userExistsByFirebaseId(firebaseId: string): Promise<boolean> {
+        try {
+            let userDocs = await this.db.collection('user').where('firebaseId', '==', firebaseId).get();
+            return !userDocs.empty;
         } catch (error) {
             this.logger.error('Error checking if user exists', error);
             throw error;
