@@ -7,12 +7,15 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.ui.TextField
 import com.badlogic.gdx.utils.viewport.ScreenViewport
+import com.flagquest.game.controllers.JoinGameController
+import com.flagquest.game.models.LobbyApiModel
 import com.flagquest.game.navigation.GameRedirectionListener
 import com.flagquest.game.views.JoinGameView
 
 class JoinGameState(gsm: GameStateManager) : State(gsm), GameRedirectionListener {
     override val stage = Stage(ScreenViewport())
-    private val view = JoinGameView(gsm, stage, this)
+    private val controller: JoinGameController = JoinGameController(LobbyApiModel())
+    private val view = JoinGameView(gsm, stage, this, controller)
 
     init {
         Gdx.input.inputProcessor = stage

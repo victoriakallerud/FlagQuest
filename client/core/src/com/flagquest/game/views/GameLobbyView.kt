@@ -1,6 +1,5 @@
 package com.flagquest.game.views
 
-import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.Label
@@ -8,23 +7,13 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.ui.TextField
-import com.badlogic.gdx.utils.viewport.ScreenViewport
 import com.flagquest.game.controllers.GameLobbyController
-import com.flagquest.game.models.LobbyApiModel
-import com.flagquest.game.models.UserApiModel
-import com.flagquest.game.navigation.LobbyRedirectionListener
 import com.flagquest.game.states.GameStateManager
 import com.flagquest.game.states.OnlineGameState
 import com.flagquest.game.utils.ButtonClickListener
-import com.flagquest.game.utils.DataManager
 import com.flagquest.game.utils.UIManager
-import okhttp3.Request
-import org.json.JSONArray
-import org.json.JSONObject
 
-class GameLobbyView(gsm: GameStateManager, isAdmin: Boolean, lobbyId: String, private val stage: Stage/*, listener: LobbyRedirectionListener*/) {
-    private val controller: GameLobbyController = GameLobbyController(UserApiModel(), LobbyApiModel())
-
+class GameLobbyView(gsm: GameStateManager, isAdmin: Boolean, lobbyId: String, stage: Stage, controller: GameLobbyController) {
     private val skin: Skin = UIManager.skin
     private val textFieldStyle: TextField.TextFieldStyle = skin.get(TextField.TextFieldStyle::class.java)
     private val titleFont: BitmapFont = UIManager.titleFont
@@ -44,8 +33,8 @@ class GameLobbyView(gsm: GameStateManager, isAdmin: Boolean, lobbyId: String, pr
         textFieldStyle.font.data.setScale(5f)
 
         totalParticipants = controller.getMaxPlayers(lobby!!)
-        lobbyInviteCode = controller.getLobbyCode(lobby!!)
-        val playerIdsJson = controller.getPlayerIdsJson(lobby!!)
+        lobbyInviteCode = controller.getLobbyCode(lobby)
+        val playerIdsJson = controller.getPlayerIdsJson(lobby)
         val playerIds = mutableListOf<String>()
 
         for (i in 0 until playerIdsJson!!.length()) {

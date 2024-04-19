@@ -15,9 +15,7 @@ import com.flagquest.game.states.GameStateManager
 import com.flagquest.game.utils.ButtonClickListener
 import com.flagquest.game.utils.UIManager
 
-class LobbyInitiationView(gsm: GameStateManager, private val stage: Stage, listener: LobbyRedirectionListener) {
-    val controller: LobbyInitiationController = LobbyInitiationController(LobbyApiModel())
-
+class LobbyInitiationView(gsm: GameStateManager, private val stage: Stage, listener: LobbyRedirectionListener, private val controller: LobbyInitiationController) {
     private val skin: Skin = UIManager.skin
     private val textFieldStyle: TextField.TextFieldStyle = skin.get(TextField.TextFieldStyle::class.java)
     private val titleFont: BitmapFont = UIManager.titleFont

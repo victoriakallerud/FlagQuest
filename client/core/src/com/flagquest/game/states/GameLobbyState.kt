@@ -10,6 +10,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.ui.TextField
 import com.badlogic.gdx.utils.viewport.ScreenViewport
+import com.flagquest.game.controllers.GameLobbyController
+import com.flagquest.game.models.LobbyApiModel
+import com.flagquest.game.models.UserApiModel
 import com.flagquest.game.utils.ButtonClickListener
 import com.flagquest.game.utils.DataManager
 import okhttp3.OkHttpClient
@@ -26,7 +29,8 @@ import org.json.JSONArray
 
 class GameLobbyState(gsm: GameStateManager, isAdmin: Boolean, lobbyId: String) : State(gsm) {
     override val stage = Stage(ScreenViewport())
-    private val view = GameLobbyView(gsm, isAdmin, lobbyId, stage/*, this*/)
+    private val controller: GameLobbyController = GameLobbyController(UserApiModel(), LobbyApiModel())
+    private val view = GameLobbyView(gsm, isAdmin, lobbyId, stage, controller)
 
     init {
         Gdx.input.inputProcessor = stage
