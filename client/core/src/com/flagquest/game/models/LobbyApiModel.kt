@@ -158,7 +158,7 @@ class LobbyApiModel {
      * @param responseBody Server's response as string in JSON format
      * @return Lobby's ID
      */
-    fun getIdFromResponse(responseBody: String): String {
+    fun getIdFromResponse(responseBody: String): String? {
         val jsonObject = JSONObject(responseBody)
         println("JsonObject: $jsonObject")
         println("ID: ${jsonObject.getString("id")}")
