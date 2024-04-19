@@ -1,13 +1,16 @@
 package com.flagquest.game.states
 
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.g2d.BitmapFont
+import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.SelectBox
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.ui.TextField
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener
 import com.badlogic.gdx.utils.viewport.ScreenViewport
 import com.flagquest.game.utils.ButtonClickListener
 import com.flagquest.game.utils.UIManager.addBackButton
@@ -23,10 +26,10 @@ class RegistrationState(gsm: GameStateManager) : State(gsm) {
     private var pos: Float = ((screenHeight / 2) + 50).toFloat()
     override val stage = Stage(ScreenViewport())
 
-    private val emailField = TextField("", skin).apply{ messageText="  E-mail"}
-    private val usernameField = TextField("", skin).apply{ messageText="  Username"}
+    private val emailField = TextField("", skin).apply{ messageText="E-mail"}
+    private val usernameField = TextField("", skin).apply{ messageText="Username"}
     private val passwordField = TextField("", skin).apply{
-        messageText="  Password"
+        messageText="Password"
         isPasswordMode=true
         setPasswordCharacter('*')
     }
@@ -41,8 +44,15 @@ class RegistrationState(gsm: GameStateManager) : State(gsm) {
         addHeading(stage,"REGISTRATION", 2.8f)
         addBackButton(stage,gsm, backNavType)
 
-        // Read all countries and initialise SelectBox
-        val countries = Gdx.files.internal("countries.txt").readString().split("\n").toTypedArray()
+        // Read all countries
+        val filename = "countries-limited.txt" //TODO: change to "countries.txt" when backend functionality implemented
+        val countries = arrayOf("  Nationality") + // Show nationality as first option. TODO: Logic for not accepting that as answer.
+                Gdx.files.internal(filename).readString().
+                split("\n").
+                map { "  $it" }. // Add padding on left
+                toTypedArray()
+
+        // Initialise countrySelectBox
         val countrySelectBox = SelectBox<String>(skin)
         countrySelectBox.setItems(*countries)
 
@@ -55,6 +65,12 @@ class RegistrationState(gsm: GameStateManager) : State(gsm) {
         countrySelectBox.maxListCount = 10
 
         stage.addActor(countrySelectBox)
+
+        // Add padding to TextField
+        skin.get(TextField.TextFieldStyle::class.java).apply {
+            background.leftWidth = 50f // Set left padding
+        }
+
 
         // Display the input fields
         for (input in inputFields) {

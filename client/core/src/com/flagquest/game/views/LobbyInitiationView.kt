@@ -22,7 +22,7 @@ class LobbyInitiationView(gsm: GameStateManager, private val stage: Stage, liste
     private val titleFont: BitmapFont = UIManager.titleFont
     private var screenWidth = UIManager.screenWidth
     private var pos: Float = ((UIManager.screenHeight / 2) + 50).toFloat()
-    private val sizeInput = TextField("", skin).apply{ messageText="  How many players?"}
+    private val sizeInput = TextField("", skin).apply{ messageText="How many players?"}
     private val inviteLinkBtn = TextButton("GET INVITE LINK", skin)
     private val inviteBtn = TextButton("INVITE FRIENDS", skin)
     private val createBtn = TextButton("CREATE LOBBY", skin)
@@ -40,6 +40,11 @@ class LobbyInitiationView(gsm: GameStateManager, private val stage: Stage, liste
 
         UIManager.addHeading(stage, "CREATE GAME\nLOBBY", 2.8f)
         UIManager.addBackButton(stage, gsm, backNavType)
+
+        // Add padding to TextField
+        skin.get(TextField.TextFieldStyle::class.java).apply {
+            background.leftWidth = 50f // Set left padding
+        }
 
         sizeInput.width = (screenWidth*80/100).toFloat()
         sizeInput.height = UIManager.elementHeight.toFloat()

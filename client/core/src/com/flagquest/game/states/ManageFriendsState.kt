@@ -106,9 +106,12 @@ class ManageFriendsState(gsm: GameStateManager) : State(gsm) {
                 val popupWindow = Window("WHO DO YOU WANT TO ADD?", skin).apply {
                     isModal = true
                     isMovable = false
-
+                    // Add padding to TextField
+                    skin.get(TextField.TextFieldStyle::class.java).apply {
+                        background.leftWidth = 50f // Set left padding
+                    }
                     // Username input field
-                    val usernameField = TextField("", skin).apply{ messageText="  Username"}
+                    val usernameField = TextField("", skin).apply{ messageText="Username"}
                     add(usernameField).width(640f).height(150f).padBottom(30f)
                     row()
 

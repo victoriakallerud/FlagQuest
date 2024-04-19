@@ -1,6 +1,7 @@
 package com.flagquest.game.states
 
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.scenes.scene2d.Stage
@@ -22,9 +23,9 @@ class LoginState(gsm: GameStateManager) : State(gsm) {
     private var pos: Float = ((screenHeight / 2) + 50).toFloat()
     override val stage = Stage(ScreenViewport())
 
-    private val usernameField = TextField("", skin).apply{ messageText="  Username"}
+    private val usernameField = TextField("", skin).apply{ messageText="Username"}
     private val passwordField = TextField("", skin).apply{
-        messageText="  Password"
+        messageText="Password"
         isPasswordMode=true
         setPasswordCharacter('*')
     }
@@ -37,11 +38,18 @@ class LoginState(gsm: GameStateManager) : State(gsm) {
 
         addHeading(stage,"LOGIN", 2.8f)
 
+        // Add padding to TextField
+        skin.get(TextField.TextFieldStyle::class.java).apply {
+            background.leftWidth = 50f // Set left padding
+        }
+
+        // Username styling
         usernameField.width = (screenWidth*80/100).toFloat()
         usernameField.height = buttonHeight.toFloat()
         usernameField.setPosition(screenWidth / 2 - usernameField.width / 2, pos)
         stage.addActor(usernameField)
 
+        // Password styling
         passwordField.width = (screenWidth*80/100).toFloat()
         passwordField.height = buttonHeight.toFloat()
         passwordField.setPosition(screenWidth / 2 - passwordField.width / 2, pos - buttonHeight - 30)
