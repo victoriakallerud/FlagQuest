@@ -76,6 +76,12 @@
       "g": 0.23921568627450981,
       "b": 0.3764705882352941,
       "a": 1
+    },
+    "errorColor": {
+        "r": 0.8,
+        "g": 0.2,
+        "b": 0.2,
+        "a": 1
     }
   },
   "com.badlogic.gdx.scenes.scene2d.ui.Skin$TintedDrawable": {
@@ -344,6 +350,10 @@
     "title": {
       "font": "title",
       "fontColor": "textColor"
+    },
+    "error":{
+        "font": "title",
+        "fontColor": "errorColor"
     }
   },
   "com.badlogic.gdx.scenes.scene2d.ui.List$ListStyle": {

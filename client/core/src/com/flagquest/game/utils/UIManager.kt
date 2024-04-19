@@ -114,4 +114,22 @@ object UIManager {
         heading.setPosition((screenWidth - heading.prefWidth) / 2, posY)
         stage.addActor(heading)
     }
+
+    fun addError(stage: Stage, error: String){
+        val errorStyle = skin.get("error", Label.LabelStyle::class.java)
+        val errorLabel = Label(error, errorStyle)
+        errorLabel.setFontScale(1.5f)
+        errorLabel.setAlignment(Align.center)
+        errorLabel.pack()
+        errorLabel.setPosition((screenWidth - errorLabel.prefWidth) / 2, screenHeight - 600f)
+        stage.addActor(errorLabel)
+    }
+
+    fun removeErrors(stage: Stage) {
+        stage.actors.forEach {
+            if (it is Label && it.style == skin.get("error", Label.LabelStyle::class.java)) {
+                it.remove()
+            }
+        }
+    }
 }
