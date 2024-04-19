@@ -19,10 +19,11 @@ class LobbyInitiationView(gsm: GameStateManager, private val stage: Stage, liste
     private val textFieldStyle: TextField.TextFieldStyle = skin.get(TextField.TextFieldStyle::class.java)
     private val titleFont: BitmapFont = UIManager.titleFont
     private var screenWidth = UIManager.screenWidth
-    private var pos: Float = ((UIManager.screenHeight / 2) + 300).toFloat()
+    private var pos: Float = UIManager.screenHeight - 600f
     private val sizeInput = TextField("", skin).apply{ messageText="  How many players?"}
     private val inviteLinkBtn = TextButton("GET INVITE LINK", skin)
     private val createBtn = TextButton("CREATE LOBBY", skin)
+    private val buttons = arrayOf(inviteLinkBtn, createBtn)
     private var size: Int = 6
     val backNavType = "menu"
     private val europe: TextButton = TextButton("Europe", skin)
@@ -70,21 +71,17 @@ class LobbyInitiationView(gsm: GameStateManager, private val stage: Stage, liste
 
         sizeInput.width = (screenWidth*80/100).toFloat()
         sizeInput.height = UIManager.elementHeight.toFloat()
-        sizeInput.setPosition(screenWidth / 2 - sizeInput.width / 2, UIManager.screenHeight - 600f - table.height - UIManager.elementHeight - UIManager.elementSpacing)
+        sizeInput.setPosition(screenWidth / 2 - sizeInput.width / 2, pos - table.height - UIManager.elementHeight - UIManager.elementSpacing)
         stage.addActor(sizeInput)
 
-        inviteLinkBtn.width = (screenWidth*80/100).toFloat()
-        inviteLinkBtn.height = UIManager.elementHeight.toFloat()
-        inviteLinkBtn.setPosition(screenWidth / 2 - inviteLinkBtn.width / 2, UIManager.screenHeight - 600f - table.height - (UIManager.elementHeight + UIManager.elementSpacing) * 2)
-        stage.addActor(inviteLinkBtn)
-
-        createBtn.width = (screenWidth*80/100).toFloat()
-        createBtn.height = UIManager.elementHeight.toFloat()
-        createBtn.setPosition(screenWidth / 2 - createBtn.width / 2, UIManager.screenHeight - 600f - table.height - (UIManager.elementHeight + UIManager.elementSpacing) * 3)
-        stage.addActor(createBtn)
-
-
-
+        var counter = 2
+        for (button in buttons) {
+            button.width = (screenWidth*80/100).toFloat()
+            button.height = UIManager.elementHeight.toFloat()
+            button.setPosition(screenWidth / 2 - inviteLinkBtn.width / 2, pos - table.height - (UIManager.elementHeight + UIManager.elementSpacing) * counter)
+            stage.addActor(button)
+            counter++
+        }
 
         inviteLinkBtn.addListener(object : ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
