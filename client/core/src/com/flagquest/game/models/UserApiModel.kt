@@ -1,7 +1,6 @@
 package com.flagquest.game.models
 
 import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.utils.async.ThreadUtils
 import com.flagquest.game.utils.DataManager
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
@@ -30,16 +29,16 @@ class UserApiModel {
     @OptIn(DelicateCoroutinesApi::class)
     fun loginUser(authHandler: AuthHandler, email: String, password: String, callback: (Boolean)-> Unit) {
         if (email.isEmpty() || password.isEmpty()) {
-            Gdx.app.log("LoginState", "Email or password cannot be empty")
+            Gdx.app.log("UserApiModel", "Email or password cannot be empty")
             callback(false)
         }
-        Gdx.app.log("LoginState", "Attempting to login with email: $email")
+        Gdx.app.log("UserApiModel", "Attempting to login with email: $email")
 
         try{
         authHandler.signIn(email, password) { success, uid, message ->
             if (success) {
-                Gdx.app.log("LoginState", "Firebase auth successful")
-                Gdx.app.log("LoginState", "Firebase User ID: $uid")
+                Gdx.app.log("UserApiModel", "Firebase auth successful")
+                Gdx.app.log("UserApiModel", "Firebase User ID: $uid")
 
                 GlobalScope.launch(Dispatchers.IO) {
                     val user = withContext(Dispatchers.Default) {
@@ -47,28 +46,28 @@ class UserApiModel {
                     }
                     val loggedIn = if (user != null) {
                         val userId: String = getIdFromResponse(user)
-                        Gdx.app.log("LoginState", "User ID: $userId")
+                        Gdx.app.log("UserApiModel", "User ID: $userId")
                         DataManager.setData("userId", userId)
                         true
                     } else {
-                        Gdx.app.error("LoginState", "Error retrieving user")
+                        Gdx.app.error("UserApiModel", "Error retrieving user")
                         false
                     }
                     callback(loggedIn)
                 }
 
             } else {
-                Gdx.app.log("LoginState", "Firebase auth failed: $message")
+                Gdx.app.log("UserApiModel", "Firebase auth failed: $message")
                 callback(false)
             }
         }
         } catch (e: Exception) {
-            Gdx.app.error("LoginState", "Error: ${e.message}")
+            Gdx.app.error("UserApiModel", "Error: ${e.message}")
             callback(false)
         }
     }
 
-    fun postUser(name: String, username: String, nationality: String, password: String): String? {
+    fun postUser(name: String, username: String, nationality: String, password: String): String? { //TODO: remove password from the post??
         val client = OkHttpClient()
         val mediaType = "application/json".toMediaType()
         val body = "{\r\n    \"userName\": \"$username\",\r\n    \"nationality\": \"$nationality\"\r\n}".toRequestBody(mediaType)

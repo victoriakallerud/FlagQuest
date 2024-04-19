@@ -10,7 +10,7 @@ import com.flagquest.game.views.LoginMenuView
 
 class LoginMenuState(gsm: GameStateManager, private val authHandler: AuthHandler) : State(gsm) {
     override val stage = Stage(ScreenViewport())
-    private val view = LoginMenuView(gsm, stage, authHandler)
+    private val view = LoginMenuView(stage)
 
     init {
         Gdx.input.inputProcessor = stage
