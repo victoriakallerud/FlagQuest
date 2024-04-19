@@ -38,12 +38,7 @@ class GameApiModel() {
 
             Gdx.app.log("GameApiModel", "answerCount: $message")
         }
-        SocketHandler.getSocket().on("nextRound") { args ->
-            var message = args[0] as Int
-            message -= 1
-            DataManager.setData("currentQuestionIndex", message)
-            Gdx.app.log("GameApiModel", "nextRound: $message")
-        }
+
         SocketHandler.getSocket().on("endScore") { args ->
             val message = args[0] as JSONArray
             Gdx.app.log("GameApiModel", "endScore: $message")
