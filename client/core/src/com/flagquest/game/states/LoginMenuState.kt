@@ -7,10 +7,11 @@ import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.utils.viewport.ScreenViewport
+import com.flagquest.game.models.AuthHandler
 import com.flagquest.game.utils.UIManager.addHeading
 import com.flagquest.game.utils.UIManager.addNavButtonArray
 
-class LoginMenuState(gsm: GameStateManager) : State(gsm) {
+class LoginMenuState(gsm: GameStateManager, private val authHandler: AuthHandler) : State(gsm) {
     private val skin: Skin = Skin(Gdx.files.internal("skins/skin/flat-earth-ui.json"))
     val titleFont: BitmapFont = skin.getFont("title")
     var screenWidth = Gdx.graphics.width
@@ -20,13 +21,14 @@ class LoginMenuState(gsm: GameStateManager) : State(gsm) {
 
     val loginBtn = TextButton("LOGIN", skin)
     val registerBtn = TextButton("REGISTER", skin)
-    val buttons = arrayOf(Pair(loginBtn, lazy { LoginState(gsm) }),Pair(registerBtn, lazy { RegistrationState(gsm) }))
+    val buttons = arrayOf(Pair(loginBtn, lazy { LoginState(gsm, authHandler) }),Pair(registerBtn, lazy { RegistrationState(gsm, authHandler) }))
 
     init {
         titleFont.data.setScale(1.5f)
         addHeading(stage,"FLAGQUEST",3.5f)
         addNavButtonArray(stage,gsm,buttons,pos)
     }
+
 
     override fun handleInput() {
         screenWidth = screenWidth // Just placeholder code to make the code compile

@@ -4,6 +4,7 @@ import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.RequestBody.Companion.toRequestBody
+import okhttp3.Response
 import org.json.JSONArray
 import org.json.JSONObject
 
@@ -25,10 +26,14 @@ class UserApiModel {
             .addHeader("X-API-Key", "{{token}}")
             .build()
         val response = client.newCall(request).execute()
-        println(response.body?.string())
         return response.body?.string()
     }
 
+    /**
+     * Function sends GET request to retrieve UserId with provided username
+     * @param username of user
+     * @return Server's response as a string
+     */
     fun getUserByName(username: String): String? {
         val client = OkHttpClient()
         val request = Request.Builder()
@@ -36,9 +41,9 @@ class UserApiModel {
             .addHeader("X-API-Key", "{{token}}")
             .build()
         val response = client.newCall(request).execute()
-        println(response.body?.string())
         return response.body?.string()
     }
+
 
     /**
      * Function sends GET request to retrieve User with provided userId
@@ -72,6 +77,25 @@ class UserApiModel {
     }
 
     /**
+     * Function sends PUT request to send friend request to user with provided friendId
+     * @param friendId userId of friend
+     * @return Server's response as string
+     */
+    fun putAddFriend(friendId: String): String? {
+        val client = OkHttpClient()
+        println("http://flagquest.leotm.de:3000/user/0e7cb4e7-c8db-41e7-b536-bf94c66c9e50/friends/$friendId/fjfj")
+        val mediaType = "text/plain".toMediaType()
+        val body = "".toRequestBody(mediaType)
+        val request = Request.Builder()
+            .url("http://flagquest.leotm.de:3000/user/0e7cb4e7-c8db-41e7-b536-bf94c66c9e50/friends/$friendId")
+            .put(body)
+            .addHeader("X-API-Key", "{{token}}")
+            .build()
+        val response = client.newCall(request).execute()
+        return response.body?.string()
+    }
+
+    /**
      * Function takes in list of highscores and creates list with pairs of username and score
      * @return List with pairs of username and score
      */
@@ -94,6 +118,17 @@ class UserApiModel {
      * Function retrieves highscores of top 10 friends
      * @return List with pairs of username and score
      */
+
+    fun getFriendNames(): MutableList<String> {
+        val friendNames = mutableListOf<String>()
+        val user = getUserById(userId)
+        val friendUuidList = extractFriendUuidList(user!!)
+        for (friendUuid in friendUuidList) {
+            val friend = JSONObject(getUserById(friendUuid))
+            friendNames.add(friend.getString("userName"))
+        }
+        return friendNames
+    }
     fun getFriendHighscores(): MutableList<Pair<String, Int>> {
         val friendsScore = mutableListOf<Pair<String, Int>>()
         val user = getUserById(userId)
@@ -117,10 +152,12 @@ class UserApiModel {
         return friendsScore
     }
 
+
     fun getIdFromResponse(responseBody: String): String {
         val jsonObject = JSONObject(responseBody)
         return jsonObject.getString("id")
     }
+
 
     fun extractFriendUuidList(jsonString: String): List<String> {
         val jsonObject = JSONObject(jsonString)
@@ -133,4 +170,5 @@ class UserApiModel {
 
         return friendUuidList
     }
+
 }
