@@ -124,4 +124,12 @@ object UIManager {
         errorLabel.setPosition((screenWidth - errorLabel.prefWidth) / 2, screenHeight - 600f)
         stage.addActor(errorLabel)
     }
+
+    fun removeErrors(stage: Stage) {
+        stage.actors.forEach {
+            if (it is Label && it.style == skin.get("error", Label.LabelStyle::class.java)) {
+                it.remove()
+            }
+        }
+    }
 }

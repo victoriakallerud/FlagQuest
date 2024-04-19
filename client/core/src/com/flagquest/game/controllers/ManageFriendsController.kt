@@ -8,8 +8,12 @@ class ManageFriendsController(private val model: UserApiModel) {
     }
 
     fun onSendFriendRequest(friendName: String): String? {
-        val friendId = onGetFriendId(friendName)
-        return model.putAddFriend(friendId!!)
+        val friendId: String? = onGetFriendId(friendName)
+        return if(friendId != null) {
+            model.putAddFriend(friendId)
+        } else {
+            null
+        }
     }
 
     fun onGetAllFriendNames(): MutableList<String> {
