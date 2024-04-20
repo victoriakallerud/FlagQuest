@@ -10,4 +10,8 @@ object DataManager {
     fun getData(key: String): Any? {
         return data[key]
     }
+
+    fun clearData(key: String) {
+        data.remove(key)
+    }
 }
