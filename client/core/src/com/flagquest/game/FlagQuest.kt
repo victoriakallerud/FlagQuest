@@ -11,16 +11,17 @@ import com.flagquest.game.states.LoginMenuState
 import com.flagquest.game.states.MainMenuState
 import com.flagquest.game.states.ResultsState
 
-class FlagQuest(private val authHandler: AuthHandler) : ApplicationAdapter() {
+class FlagQuest() : ApplicationAdapter() {
     var gsm: GameStateManager = GameStateManager()
     var batch: SpriteBatch? = null
     var img: Texture? = null
     private val isLoggedIn:Boolean = false // TODO: Retrieve from internal storage
+    private val authHandler = AuthHandler.getInstance()
     override fun create() {
         batch = SpriteBatch()
         img = Texture("badlogic.jpg")
         Gdx.input.isCatchBackKey = true
-        if (isLoggedIn) gsm.push(MainMenuState(gsm)) else gsm.push(LoginMenuState(gsm, authHandler))
+        if (isLoggedIn) gsm.push(MainMenuState(gsm)) else gsm.push(LoginMenuState(gsm))
     }
 
     override fun render() {
