@@ -25,7 +25,7 @@ class LoginMenuState(gsm: GameStateManager) : State(gsm) {
                 gsm,
                 lazy { RegistrationState(gsm, authHandler) })
         )
-        view.buttons[2].addListener(ButtonClickListener(gsm, lazy { OfflineGameState(gsm) }))
+        view.offlineButton.addListener(ButtonClickListener(gsm, lazy { OfflineGameState(gsm, true) }))
     }
 
     override fun handleInput() {

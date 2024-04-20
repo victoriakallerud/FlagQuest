@@ -23,7 +23,7 @@ import com.flagquest.game.utils.UIManager
 import org.w3c.dom.Text
 
 
-class OfflineGameView(gsm: GameStateManager, private val stage: Stage, listener: TrainingQuestionRedirectionListener) {
+class OfflineGameView(gsm: GameStateManager, private val stage: Stage, listener: TrainingQuestionRedirectionListener, fromLogin: Boolean) {
     private val controller: OfflineGameController = OfflineGameController(LocalApiModel())
     private val skin: Skin = Skin(Gdx.files.internal("skins/skin/flat-earth-ui.json"))
     private val titleFont: BitmapFont = skin.getFont("title")
@@ -44,10 +44,12 @@ class OfflineGameView(gsm: GameStateManager, private val stage: Stage, listener:
         val headingY = screenHeight - 300f
         UIManager.addHeading(stage, "FLAGQUEST", 3.5f, posY = headingY)
 
-        //Pause button
-        val pauseBtnColor = Color(0.0235f, 0.24705f, 0.39607f, 1f)
-        val pauseButtonSize = (screenHeight/11).toFloat()
-        UIManager.addPauseButton(stage, gsm, pauseBtnColor, pauseButtonSize)
+        //Back button
+        if (fromLogin) {
+            UIManager.addBackButton(stage, gsm, "login")
+        } else {
+            UIManager.addBackButton(stage, gsm, "menu")
+        }
 
         //Flag
         var flagTex: Texture = Texture(Gdx.files.internal(controller.getFlagFilePathByCountryName(currentQuestion.description)))
