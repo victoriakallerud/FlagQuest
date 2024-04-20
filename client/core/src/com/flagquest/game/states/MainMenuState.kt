@@ -9,7 +9,7 @@ import com.flagquest.game.views.MainMenuView
 
 class MainMenuState(gsm: GameStateManager) : State(gsm) {
     override val stage = Stage(ScreenViewport())
-    private val view = MainMenuView(gsm, stage)
+    private val view = MainMenuView(stage)
 
     init {
         Gdx.input.inputProcessor = stage

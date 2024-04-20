@@ -13,18 +13,12 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.badlogic.gdx.utils.Timer
 import com.flagquest.game.controllers.OfflineGameController
 import com.flagquest.game.models.AnswerOption
-import com.flagquest.game.models.LocalApiModel
 import com.flagquest.game.models.Question
-import com.flagquest.game.navigation.LobbyRedirectionListener
 import com.flagquest.game.navigation.TrainingQuestionRedirectionListener
 import com.flagquest.game.states.GameStateManager
-import com.flagquest.game.states.OfflineGameState
 import com.flagquest.game.utils.UIManager
-import org.w3c.dom.Text
 
-
-class OfflineGameView(gsm: GameStateManager, private val stage: Stage, listener: TrainingQuestionRedirectionListener, fromLogin: Boolean) {
-    private val controller: OfflineGameController = OfflineGameController(LocalApiModel())
+class OfflineGameView(gsm: GameStateManager, stage: Stage, listener: TrainingQuestionRedirectionListener, private val controller: OfflineGameController) {
     private val skin: Skin = Skin(Gdx.files.internal("skins/skin/flat-earth-ui.json"))
     private val titleFont: BitmapFont = skin.getFont("title")
     private var screenWidth = Gdx.graphics.width
@@ -32,7 +26,7 @@ class OfflineGameView(gsm: GameStateManager, private val stage: Stage, listener:
     private val buttonHeight = screenHeight / 11
     private var pos: Float = ((screenHeight / 2) - 50).toFloat()
     private lateinit var currentQuestion: Question
-    val answerButtons: MutableList<TextButton> = mutableListOf()
+    private val answerButtons: MutableList<TextButton> = mutableListOf()
 
     init {
         controller.redirectionListener = listener
@@ -52,8 +46,8 @@ class OfflineGameView(gsm: GameStateManager, private val stage: Stage, listener:
         }
 
         //Flag
-        var flagTex: Texture = Texture(Gdx.files.internal(controller.getFlagFilePathByCountryName(currentQuestion.description)))
-        var flagImg = Image(flagTex)
+        val flagTex = Texture(Gdx.files.internal(controller.getFlagFilePathByCountryName(currentQuestion.description)))
+        val flagImg = Image(flagTex)
         flagImg.setPosition((screenWidth - flagImg.prefWidth)/2, screenHeight - 800f)
         stage.addActor(flagImg)
 

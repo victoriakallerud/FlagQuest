@@ -9,10 +9,8 @@ import com.flagquest.game.utils.UIManager
 
 class LoginMenuView(private val stage: Stage) {
     private val skin: Skin = UIManager.skin
-    val titleFont: BitmapFont = skin.getFont("title")
-    var screenWidth = Gdx.graphics.width
-    val screenHeight = Gdx.graphics.height
-    private var pos: Float = ((screenHeight / 2) + 50).toFloat()
+    private val titleFont: BitmapFont = UIManager.titleFont
+    private var pos: Float = ((UIManager.screenHeight / 2) + 50).toFloat()
     val buttons = arrayOf(
         TextButton("LOGIN", skin),
         TextButton("REGISTER", skin),

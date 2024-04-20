@@ -61,8 +61,7 @@ class GameLobbyController(private val userModel: UserApiModel, private val lobby
     }
 
     fun onLoadLobby(lobbyId: String): String? {
-        val lobby = lobbyModel.getLobby(lobbyId)
-        return lobby
+        return lobbyModel.getLobby(lobbyId)
     }
 
     fun onLoadPlayer(playerId: String): String? {
