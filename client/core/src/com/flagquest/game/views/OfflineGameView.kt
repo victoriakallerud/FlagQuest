@@ -13,19 +13,14 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.badlogic.gdx.utils.Timer
 import com.flagquest.game.controllers.OfflineGameController
 import com.flagquest.game.models.AnswerOption
-import com.flagquest.game.models.LocalApiModel
 import com.flagquest.game.models.Question
-import com.flagquest.game.navigation.LobbyRedirectionListener
 import com.flagquest.game.navigation.TrainingQuestionRedirectionListener
 import com.flagquest.game.states.GameStateManager
-import com.flagquest.game.states.OfflineGameState
 import com.flagquest.game.utils.UIManager
 import org.w3c.dom.Text
 import kotlin.math.min
 
-
-class OfflineGameView(gsm: GameStateManager, private val stage: Stage, listener: TrainingQuestionRedirectionListener) {
-    private val controller: OfflineGameController = OfflineGameController(LocalApiModel())
+class OfflineGameView(gsm: GameStateManager, stage: Stage, listener: TrainingQuestionRedirectionListener, private val controller: OfflineGameController, fromLogin: Boolean) {
     private val skin: Skin = Skin(Gdx.files.internal("skins/skin/flat-earth-ui.json"))
     private val titleFont: BitmapFont = skin.getFont("title")
     private var screenWidth = Gdx.graphics.width
@@ -33,7 +28,7 @@ class OfflineGameView(gsm: GameStateManager, private val stage: Stage, listener:
     private val buttonHeight = screenHeight / 11
     private var pos: Float = ((screenHeight / 2) - 50).toFloat()
     private lateinit var currentQuestion: Question
-    val answerButtons: MutableList<TextButton> = mutableListOf()
+    private val answerButtons: MutableList<TextButton> = mutableListOf()
 
     init {
         controller.redirectionListener = listener
@@ -45,10 +40,12 @@ class OfflineGameView(gsm: GameStateManager, private val stage: Stage, listener:
         val headingY = screenHeight - 300f
         UIManager.addHeading(stage, "FLAGQUEST", 3.5f, posY = headingY)
 
-        //Pause button
-        val pauseBtnColor = Color(0.0235f, 0.24705f, 0.39607f, 1f)
-        val pauseButtonSize = (screenHeight/11).toFloat()
-        UIManager.addPauseButton(stage, gsm, pauseBtnColor, pauseButtonSize)
+        //Back button
+        if (fromLogin) {
+            UIManager.addBackButton(stage, gsm, "login")
+        } else {
+            UIManager.addBackButton(stage, gsm, "menu")
+        }
 
         //Flag
         var flagTex: Texture = Texture(Gdx.files.internal(controller.getFlagFilePathByCountryName(currentQuestion.description)))

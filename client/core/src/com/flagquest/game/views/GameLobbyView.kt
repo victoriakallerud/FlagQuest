@@ -10,16 +10,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.ui.TextField
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.flagquest.game.controllers.GameLobbyController
-import com.flagquest.game.models.LobbyApiModel
-import com.flagquest.game.models.UserApiModel
 import com.flagquest.game.navigation.LobbyRedirectionListener
 import com.flagquest.game.navigation.OnlineGameRedirectionListener
 import com.flagquest.game.states.GameStateManager
 import com.flagquest.game.utils.UIManager
 
-class GameLobbyView(gsm: GameStateManager, isAdmin: Boolean, lobbyId: String, private val stage: Stage, onlineGameListener: OnlineGameRedirectionListener, lobbyListener: LobbyRedirectionListener) {
-    private val controller: GameLobbyController = GameLobbyController(UserApiModel(), LobbyApiModel())
-
+class GameLobbyView(gsm: GameStateManager, isAdmin: Boolean, lobbyId: String, stage: Stage, controller: GameLobbyController, onlineGameListener: OnlineGameRedirectionListener, lobbyListener: LobbyRedirectionListener) {
     private val skin: Skin = UIManager.skin
     private val textFieldStyle: TextField.TextFieldStyle = skin.get(TextField.TextFieldStyle::class.java)
     private val titleFont: BitmapFont = UIManager.titleFont
@@ -44,8 +40,8 @@ class GameLobbyView(gsm: GameStateManager, isAdmin: Boolean, lobbyId: String, pr
         textFieldStyle.font.data.setScale(5f)
 
         totalParticipants = controller.getMaxPlayers(lobby!!)
-        lobbyInviteCode = controller.getLobbyCode(lobby!!)
-        val playerIdsJson = controller.getPlayerIdsJson(lobby!!)
+        lobbyInviteCode = controller.getLobbyCode(lobby)
+        val playerIdsJson = controller.getPlayerIdsJson(lobby)
         val playerIds = mutableListOf<String>()
 
         for (i in 0 until playerIdsJson!!.length()) {
