@@ -1,6 +1,7 @@
 package com.flagquest.game.utils
 
 import com.flagquest.game.states.GameStateManager
+import com.flagquest.game.states.LoginMenuState
 import com.flagquest.game.states.MainMenuState
 import com.flagquest.game.states.PauseState
 
@@ -11,6 +12,10 @@ object NavManager {
             "menu" -> {
                 gsm.clear()
                 gsm.push(MainMenuState(gsm))
+            }
+            "login" -> {
+                gsm.clear()
+                gsm.push(LoginMenuState(gsm))
             }
             "pause" -> gsm.push(PauseState(gsm))
             "back" -> {

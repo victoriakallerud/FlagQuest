@@ -8,7 +8,7 @@ import com.flagquest.game.states.GameStateManager
 import com.flagquest.game.utils.UIManager
 import com.flagquest.game.utils.UIManager.addHeading
 
-class MainMenuView(private val gsm: GameStateManager, private val stage: Stage) {
+class MainMenuView(private val stage: Stage) {
     val skin: Skin = UIManager.skin
     val buttons: Array<TextButton> = arrayOf(
         TextButton("CREATE GAME", skin),

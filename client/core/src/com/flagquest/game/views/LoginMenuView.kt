@@ -9,15 +9,13 @@ import com.flagquest.game.utils.UIManager
 
 class LoginMenuView(private val stage: Stage) {
     private val skin: Skin = UIManager.skin
-    val titleFont: BitmapFont = skin.getFont("title")
-    var screenWidth = Gdx.graphics.width
-    val screenHeight = Gdx.graphics.height
-    private var pos: Float = ((screenHeight / 2) + 50).toFloat()
+    private val titleFont: BitmapFont = UIManager.titleFont
+    private var pos: Float = ((UIManager.screenHeight / 2) + 50).toFloat()
     val buttons = arrayOf(
         TextButton("LOGIN", skin),
         TextButton("REGISTER", skin),
-        TextButton("OFFLINE MODE", skin)
     )
+    val offlineButton = TextButton("OFFLINE MODE", skin)
 
     init {
         titleFont.data.setScale(1.5f)
@@ -33,6 +31,7 @@ class LoginMenuView(private val stage: Stage) {
             val buttonStyle = TextButton.TextButtonStyle(button.style)
             buttonStyle.font = buttonFont
             button.style = buttonStyle
+            println("Text button: ${button.text}")
 
             button.setSize(UIManager.elementWidth.toFloat(), UIManager.elementHeight.toFloat())
             button.setPosition((UIManager.screenWidth - UIManager.elementWidth) / 2f, pos)
@@ -40,5 +39,9 @@ class LoginMenuView(private val stage: Stage) {
             stage.addActor(button)
             pos -= (UIManager.elementHeight + UIManager.elementSpacing)
         }
+
+        offlineButton.setSize(UIManager.elementWidth.toFloat(), UIManager.elementHeight.toFloat())
+        offlineButton.setPosition((UIManager.screenWidth - UIManager.elementWidth) / 2f, pos - UIManager.elementHeight / 2f)
+        stage.addActor(offlineButton)
     }
 }

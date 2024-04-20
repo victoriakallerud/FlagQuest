@@ -9,18 +9,13 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.ui.TextField
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.flagquest.game.controllers.JoinGameController
-import com.flagquest.game.models.GameApiModel
-import com.flagquest.game.models.LobbyApiModel
-import com.flagquest.game.navigation.GameRedirectionListener
 import com.flagquest.game.navigation.LobbyRedirectionListener
 import com.flagquest.game.states.GameStateManager
 import com.flagquest.game.utils.UIManager
 import com.flagquest.game.utils.UIManager.addBackButton
 import com.flagquest.game.utils.UIManager.addHeading
 
-class JoinGameView(private val gsm: GameStateManager, private val stage: Stage, listener: LobbyRedirectionListener) {
-    val controller: JoinGameController = JoinGameController(LobbyApiModel(), GameApiModel())
-
+class JoinGameView(gsm: GameStateManager, stage: Stage, listener: LobbyRedirectionListener, private val controller: JoinGameController) {
     private val skin: Skin = UIManager.skin
     private val titleFont: BitmapFont = UIManager.titleFont
     private var screenWidth = UIManager.screenWidth
@@ -61,7 +56,7 @@ class JoinGameView(private val gsm: GameStateManager, private val stage: Stage, 
 
         codeBtn.addListener(object : ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
-                var code: String = ""
+                var code: String
                 if (codeInput.text != "") {
                     code = codeInput.text
                     val res = controller.onCodeButtonClicked(code)
