@@ -56,7 +56,7 @@ class OnlineGameController(private val gameModel: GameApiModel, private val loca
         SocketHandler.getSocket().off("nextRound")
     }
 
-    fun submitAnswer(isAnswerRight: Boolean, answerTime: Int) {
+    fun submitAnswer(isAnswerRight: Boolean, answerTime: Long) {
         val data = JSONObject()
         data.put("lobbyId", DataManager.getData("lobbyId"))
         data.put("playerId", DataManager.getData("userId"))
