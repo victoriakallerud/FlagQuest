@@ -20,11 +20,12 @@ import com.flagquest.game.utils.SocketHandler
 import com.flagquest.game.views.OfflineGameView
 
 // Use without arguments when first presenting the quiz. Load with chosen and correct answer to reveal.
-class OfflineGameState(gsm: GameStateManager, chosen: String? = null, correct: String? = null) : State(gsm),
+class OfflineGameState(gsm: GameStateManager, fromLogin: Boolean, chosen: String? = null, correct: String? = null) : State(gsm),
     TrainingQuestionRedirectionListener {
     override val stage = Stage(ScreenViewport())
     override var backNavType = "pause"
-    private val view = OfflineGameView(gsm, stage, this)
+    private val login: Boolean = fromLogin
+    private val view = OfflineGameView(gsm, stage, this, login)
 
 
     init {
@@ -37,7 +38,7 @@ class OfflineGameState(gsm: GameStateManager, chosen: String? = null, correct: S
     }
 
     fun refreshState() {
-        gsm.set(OfflineGameState(gsm))
+        gsm.set(OfflineGameState(gsm, login))
     }
 
     override fun handleInput() {
@@ -54,7 +55,7 @@ class OfflineGameState(gsm: GameStateManager, chosen: String? = null, correct: S
     }
 
     override fun redirectToNewTrainingQuestion() {
-        gsm.push(OfflineGameState(gsm))
+        gsm.push(OfflineGameState(gsm, login))
 
     }
 }

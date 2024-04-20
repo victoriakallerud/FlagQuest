@@ -63,6 +63,7 @@ export class WebsocketService {
         return lobbyToBeStarted;
     }
 
+
     async isClientInRoomOfLobby(client: Socket, lobbyId: string): Promise<boolean> {
         return client.rooms.has(lobbyId);
     }

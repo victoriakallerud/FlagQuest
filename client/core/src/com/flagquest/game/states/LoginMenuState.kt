@@ -8,9 +8,10 @@ import com.flagquest.game.models.AuthHandler
 import com.flagquest.game.utils.ButtonClickListener
 import com.flagquest.game.views.LoginMenuView
 
-class LoginMenuState(gsm: GameStateManager, private val authHandler: AuthHandler) : State(gsm) {
+class LoginMenuState(gsm: GameStateManager) : State(gsm) {
     override val stage = Stage(ScreenViewport())
     private val view = LoginMenuView(stage)
+    private val authHandler = AuthHandler.getInstance()
 
     init {
         Gdx.input.inputProcessor = stage
@@ -24,7 +25,7 @@ class LoginMenuState(gsm: GameStateManager, private val authHandler: AuthHandler
                 gsm,
                 lazy { RegistrationState(gsm, authHandler) })
         )
-        view.buttons[2].addListener(ButtonClickListener(gsm, lazy { OfflineGameState(gsm) }))
+        view.offlineButton.addListener(ButtonClickListener(gsm, lazy { OfflineGameState(gsm, true) }))
     }
 
     override fun handleInput() {

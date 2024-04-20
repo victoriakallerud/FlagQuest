@@ -27,7 +27,7 @@ class OnlineGameState(gsm: GameStateManager, chosen: String? = null, correct: St
     }
 
     fun refreshState() {
-        gsm.set(OfflineGameState(gsm))
+        gsm.set(OfflineGameState(gsm, false))
     }
 
     override fun handleInput() {
