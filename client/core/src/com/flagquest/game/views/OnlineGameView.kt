@@ -16,13 +16,14 @@ import com.flagquest.game.models.GameApiModel
 import com.flagquest.game.models.GameApiModel.Question
 import com.flagquest.game.models.LocalApiModel
 import com.flagquest.game.navigation.OnlineGameRedirectionListener
+import com.flagquest.game.navigation.PauseRedirectionListener
 import com.flagquest.game.navigation.ResultRedirectionListener
 import com.flagquest.game.states.GameStateManager
 import com.flagquest.game.utils.UIManager
 import kotlin.math.min
 
 
-class OnlineGameView(gsm: GameStateManager, private val stage: Stage, onlineGameListener: OnlineGameRedirectionListener, resultRedirectionListener: ResultRedirectionListener) {
+class OnlineGameView(gsm: GameStateManager, private val stage: Stage, onlineGameListener: OnlineGameRedirectionListener, resultRedirectionListener: ResultRedirectionListener, pauseRedirectionListener: PauseRedirectionListener) {
     private val onlineGameController: OnlineGameController = OnlineGameController(GameApiModel(), LocalApiModel())
     private val skin: Skin = Skin(Gdx.files.internal("skins/skin/flat-earth-ui.json"))
     private val titleFont: BitmapFont = skin.getFont("title")
@@ -38,8 +39,11 @@ class OnlineGameView(gsm: GameStateManager, private val stage: Stage, onlineGame
 
         onlineGameController.onlineGameRedirectionListener = onlineGameListener
         onlineGameController.resultRedirectionListener = resultRedirectionListener
+        onlineGameController.pauseRedirectionListener = pauseRedirectionListener
         onlineGameController.attachNextRoundListener()
         onlineGameController.attachEndScoreListener()
+        onlineGameController.attachPauseGameListener()
+        onlineGameController.attachResumeGameListener()
         // val quiz: Quiz = controller.handleCreateOfflineGame(10, "Europe")
         currentQuestion = onlineGameController.getSingleQuestion()
 

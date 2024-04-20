@@ -4,6 +4,7 @@ import com.flagquest.game.states.GameStateManager
 import com.flagquest.game.states.LoginMenuState
 import com.flagquest.game.states.MainMenuState
 import com.flagquest.game.states.PauseState
+import org.json.JSONObject
 
 object NavManager {
 
@@ -17,7 +18,10 @@ object NavManager {
                 gsm.clear()
                 gsm.push(LoginMenuState(gsm))
             }
-            "pause" -> gsm.push(PauseState(gsm))
+            "pause" -> {
+                gsm.push(PauseState(gsm))
+                SocketHandler.emit("pauseGame", JSONObject().put("lobbyId", DataManager.getData("lobbyId")).put("userId", DataManager.getData("userId")))
+            }
             "back" -> {
                 if (!gsm.isEmpty()) {
                     gsm.pop()
