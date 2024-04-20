@@ -111,7 +111,7 @@
     },
     "list-c": {
       "name": "list",
-      "color": "color"
+      "color": "white"
     },
     "radio-pressed-c": {
       "name": "radio-pressed",
@@ -127,11 +127,11 @@
     },
     "select-box-c": {
       "name": "select-box",
-      "color": "color"
+      "color": "white"
     },
     "select-box-pressed-c": {
       "name": "select-box-pressed",
-      "color": "color"
+      "color": "white"
     },
     "slider-horizontal-c": {
       "name": "slider-horizontal",
@@ -358,9 +358,9 @@
   },
   "com.badlogic.gdx.scenes.scene2d.ui.List$ListStyle": {
     "default": {
-      "font": "font",
-      "fontColorSelected": "white",
-      "fontColorUnselected": "white",
+      "font": "title",
+      "fontColorSelected": "black",
+      "fontColorUnselected": "black",
       "selection": "selection",
       "background": "list-c"
     }
@@ -391,8 +391,8 @@
   },
   "com.badlogic.gdx.scenes.scene2d.ui.SelectBox$SelectBoxStyle": {
     "default": {
-      "font": "font",
-      "fontColor": "white",
+      "font": "title",
+      "fontColor": "textColor",
       "background": "select-box-c",
       "scrollStyle": "default",
       "listStyle": "default",
@@ -400,6 +400,7 @@
       "backgroundOpen": "select-box-pressed-c"
     }
   },
+
   "com.badlogic.gdx.scenes.scene2d.ui.Slider$SliderStyle": {
     "default-horizontal": {
       "knobOver": "slider-knob-h",

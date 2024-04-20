@@ -1,6 +1,7 @@
 package com.flagquest.game.models
 
 import com.flagquest.game.utils.DataManager
+import com.flagquest.game.utils.SocketHandler
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -25,7 +26,16 @@ class LobbyApiModel {
             .addHeader("X-API-Key", "{{token}}")
             .build()
         val response = client.newCall(request).execute()
-        return response.body?.string()
+        val responseBodyString = response.body?.string() // Store the response body
+        println(responseBodyString)
+
+        // Return lobby JSON response if successful, otherwise return null
+        return if (response.isSuccessful) {
+            responseBodyString
+        } else {
+            println("Error: ${response.code} - ${response.message}")
+            null
+        }
     }
 
     /**
@@ -69,6 +79,31 @@ class LobbyApiModel {
 
     }
 
+    fun leaveLobby(): String? {
+        val client = OkHttpClient()
+        val mediaType = "text/plain".toMediaType()
+        val body = "".toRequestBody(mediaType)
+        val userId = DataManager.getData("userId") as String
+        val lobbyId = DataManager.getData("lobbyId") as String
+        val request = Request.Builder()
+            .url("http://flagquest.leotm.de:3000/lobby/$lobbyId/$userId")
+            .method("DELETE", body)
+            .addHeader("X-API-Key", "{{token}}")
+            .build()
+        val response = client.newCall(request).execute()
+        val responseBodyString = response.body?.string() // Store the response body
+        println(responseBodyString)
+        return if(response.isSuccessful){
+            DataManager.clearData("lobbyId")
+            SocketHandler.closeConnection()
+            SocketHandler.removeAllListeners()
+            responseBodyString
+        } else {
+            println("Error: ${response.code} - ${response.message}")
+            null
+        }
+    }
+
     /**
      * Function sends PUT request to join a lobby with an invite code
      * @param inviteCode six digit invite code
@@ -84,7 +119,16 @@ class LobbyApiModel {
             .addHeader("X-API-Key", "{{token}}")
             .build()
         val response = client.newCall(request).execute()
-        return response.body?.string()
+        val responseBodyString = response.body?.string() // Store the response body
+        println(responseBodyString)
+
+        // Return lobby JSON response if successful, otherwise return null
+        return if (response.isSuccessful) {
+            responseBodyString
+        } else {
+            println("Error: ${response.code} - ${response.message}")
+            null
+        }
     }
 
     /**
@@ -100,7 +144,16 @@ class LobbyApiModel {
             .addHeader("X-API-Key", "{{token}}")
             .build()
         val response = client.newCall(request).execute()
-        return response.body?.string()
+        val responseBodyString = response.body?.string() // Store the response body
+        println(responseBodyString)
+
+        // Return lobby JSON response if successful, otherwise return null
+        return if (response.isSuccessful) {
+            responseBodyString
+        } else {
+            println("Error: ${response.code} - ${response.message}")
+            null
+        }
     }
 
     /**
@@ -114,7 +167,16 @@ class LobbyApiModel {
             .addHeader("X-API-Key", "{{token}}")
             .build()
         val response = client.newCall(request).execute()
-        return response.body?.string()
+        val responseBodyString = response.body?.string() // Store the response body
+        println(responseBodyString)
+
+        // Return lobby JSON response if successful, otherwise return null
+        return if (response.isSuccessful) {
+            responseBodyString
+        } else {
+            println("Error: ${response.code} - ${response.message}")
+            null
+        }
     }
 
     /**
@@ -122,7 +184,7 @@ class LobbyApiModel {
      * @param responseBody Server's response as string in JSON format
      * @return Lobby's ID
      */
-    fun getIdFromResponse(responseBody: String): String {
+    fun getIdFromResponse(responseBody: String): String? {
         val jsonObject = JSONObject(responseBody)
         println("JsonObject: $jsonObject")
         println("ID: ${jsonObject.getString("id")}")

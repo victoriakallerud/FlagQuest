@@ -21,7 +21,6 @@ class HighscoreView(gsm: GameStateManager, private val stage: Stage, controller:
     private val skin: Skin = UIManager.skin
     private val textFieldStyle: TextField.TextFieldStyle = skin.get(TextField.TextFieldStyle::class.java)
     private val titleFont: BitmapFont = UIManager.titleFont
-    private val heading = Label("HIGHSCORE", skin)
     private var players = mutableListOf<Pair<String, Int>>()
     private var friends = mutableListOf<Pair<String, Int>>()
     private var globalScores: Boolean = true
@@ -36,9 +35,11 @@ class HighscoreView(gsm: GameStateManager, private val stage: Stage, controller:
     init {
         textFieldStyle.font.data.setScale(5f)
 
+        // Add navigation elements
         addHeading(stage, "HIGHSCORE", 2.8f)
         addBackButton(stage, gsm, backNavType)
 
+        // Initialise outer table element btnTable
         globalBtn.color = highlightColor
         btnTable.setFillParent(true)
         btnTable.center()
@@ -48,21 +49,24 @@ class HighscoreView(gsm: GameStateManager, private val stage: Stage, controller:
         btnTable.row()
         stage.addActor(btnTable)
 
+        // Retrieve high score data
         scoreTable.setFillParent(true)
         players = controller.addGlobalHighscores().toMutableList()
         friends = controller.addFriendsHighscores()
         controller.addFriendsHighscores()
 
+        // Add players to table
         for (player in players) {
             val labels = listOf(Label(player.first, skin), Label(player.second.toString(), skin))
             for (label in labels) {
-                label.setStyle(Label.LabelStyle(titleFont, heading.style.fontColor))
+                label.setStyle(Label.LabelStyle(titleFont, skin.getColor("textColor")))
                 label.setFontScale(1f)
                 scoreTable.add(label).align(Align.left).pad(10f).padLeft(35f)
             }
             scoreTable.row()
         }
 
+        // Padding and adding to stage
         scoreTable.top().padTop(850f)
         stage.addActor(scoreTable)
 
@@ -94,7 +98,7 @@ class HighscoreView(gsm: GameStateManager, private val stage: Stage, controller:
         for (user in displayList) {
             val labels = listOf(Label(user.first, skin), Label(user.second.toString(), skin))
             for (label in labels) {
-                label.setStyle(Label.LabelStyle(titleFont, heading.style.fontColor))
+                label.setStyle(Label.LabelStyle(titleFont, skin.getColor("textColor")))
                 label.setFontScale(1f)
                 scoreTable.add(label).align(Align.left).pad(10f).padLeft(35f)
             }

@@ -9,7 +9,9 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton
 import com.badlogic.gdx.scenes.scene2d.ui.Label
+import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
+import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable
@@ -115,6 +117,33 @@ object UIManager {
         stage.addActor(heading)
     }
 
+    fun addScrollPane(table: Table): ScrollPane {
+        val scrollPane = ScrollPane(table, skin).apply {
+            setScrollingDisabled(true, false)
+            setFadeScrollBars(false)
+
+            // Calculate the position to center the scroll pane
+            val scrollPaneWidth = (screenWidth / 100 * 80).toFloat() // Assuming 80% of the screen width
+            val scrollPaneHeight = (screenHeight / 100 * 48).toFloat() // Assuming a fixed height
+            val xPos = (screenWidth - scrollPaneWidth) / 2
+            val yPos = (screenHeight - scrollPaneHeight) / 2
+
+            // Set the position of the scroll pane
+            setPosition(xPos, yPos)
+            setSize(scrollPaneWidth, scrollPaneHeight)
+        }
+        return scrollPane
+    }
+    fun truncateString(input: String, maxLength: Int): String {
+        val maxLength = 15
+        return if (input.length <= maxLength) {
+            input // Return the original string if it's within the maxLength
+        } else {
+            // Otherwise, truncate the string and append an ellipsis
+            input.substring(0, maxLength - 3) + "..."
+        }
+    }
+
     fun addError(stage: Stage, error: String){
         val errorStyle = skin.get("error", Label.LabelStyle::class.java)
         val errorLabel = Label(error, errorStyle)
@@ -123,5 +152,13 @@ object UIManager {
         errorLabel.pack()
         errorLabel.setPosition((screenWidth - errorLabel.prefWidth) / 2, screenHeight - 600f)
         stage.addActor(errorLabel)
+    }
+
+    fun removeErrors(stage: Stage) {
+        stage.actors.forEach {
+            if (it is Label && it.style == skin.get("error", Label.LabelStyle::class.java)) {
+                it.remove()
+            }
+        }
     }
 }
