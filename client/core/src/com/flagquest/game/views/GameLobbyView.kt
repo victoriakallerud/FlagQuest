@@ -1,6 +1,5 @@
 package com.flagquest.game.views
 
-import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.Stage
@@ -10,24 +9,15 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.ui.TextField
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
-import com.badlogic.gdx.utils.viewport.ScreenViewport
 import com.flagquest.game.controllers.GameLobbyController
-import com.flagquest.game.models.GameApiModel
 import com.flagquest.game.models.LobbyApiModel
 import com.flagquest.game.models.UserApiModel
-import com.flagquest.game.navigation.GameRedirectionListener
 import com.flagquest.game.navigation.LobbyRedirectionListener
 import com.flagquest.game.navigation.OnlineGameRedirectionListener
 import com.flagquest.game.states.GameStateManager
-import com.flagquest.game.states.OnlineGameState
-import com.flagquest.game.utils.ButtonClickListener
-import com.flagquest.game.utils.DataManager
 import com.flagquest.game.utils.UIManager
-import okhttp3.Request
-import org.json.JSONArray
-import org.json.JSONObject
 
-class GameLobbyView(gsm: GameStateManager, isAdmin: Boolean, lobbyId: String, private val stage: Stage, listener: OnlineGameRedirectionListener) {
+class GameLobbyView(gsm: GameStateManager, isAdmin: Boolean, lobbyId: String, private val stage: Stage, onlineGameListener: OnlineGameRedirectionListener, lobbyListener: LobbyRedirectionListener) {
     private val controller: GameLobbyController = GameLobbyController(UserApiModel(), LobbyApiModel())
 
     private val skin: Skin = UIManager.skin
@@ -45,8 +35,10 @@ class GameLobbyView(gsm: GameStateManager, isAdmin: Boolean, lobbyId: String, pr
     private var lobbyInviteCode: Int = -1
 
     init {
-        controller.redirectionListener = listener
+        controller.onlineGameRedirectionListener = onlineGameListener
+        controller.lobbyRedirectionListener = lobbyListener
         controller.attachQuizListener()
+        controller.attachUpdateLobbyListener()
 
         val lobby = controller.onLoadLobby(lobbyId)
         textFieldStyle.font.data.setScale(5f)

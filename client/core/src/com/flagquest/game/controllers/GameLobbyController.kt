@@ -3,6 +3,7 @@ package com.flagquest.game.controllers
 import com.badlogic.gdx.Gdx
 import com.flagquest.game.models.LobbyApiModel
 import com.flagquest.game.models.UserApiModel
+import com.flagquest.game.navigation.LobbyRedirectionListener
 import com.flagquest.game.navigation.OnlineGameRedirectionListener
 import com.flagquest.game.utils.DataManager
 import com.flagquest.game.utils.SocketHandler
@@ -10,7 +11,8 @@ import org.json.JSONArray
 import org.json.JSONObject
 
 class GameLobbyController(private val userModel: UserApiModel, private val lobbyModel: LobbyApiModel) {
-    var redirectionListener: OnlineGameRedirectionListener? = null
+    var onlineGameRedirectionListener: OnlineGameRedirectionListener? = null
+    var lobbyRedirectionListener: LobbyRedirectionListener? = null
 
     fun attachQuizListener() {
         SocketHandler.getSocket().on("quiz") { args ->
@@ -22,10 +24,33 @@ class GameLobbyController(private val userModel: UserApiModel, private val lobby
             Gdx.app.log("GameApiModel", "questions are now set to: $questions")
             // Run with postRunnable:
             Gdx.app.postRunnable {
-                redirectionListener?.redirectToOnlineGameState()
+                onlineGameRedirectionListener?.redirectToOnlineGameState()
             }
             // redirectionListener?.redirectToOnlineGameState()
         }
+    }
+
+    fun attachUpdateLobbyListener() {
+        SocketHandler.getSocket().on("updateLobby") { args ->
+            val message = args[0] as JSONObject
+            Gdx.app.log("GameApiModel", "updateLobby: $message")
+            val players = message.getJSONArray("players")
+            val lobbyId = message.getString("id")
+            Gdx.app.log("GameApiModel", "players are now set to: $players")
+            Gdx.app.postRunnable {
+                detachQuizListener()
+                detachUpdateLobbyListener()
+                lobbyRedirectionListener?.redirectToLobbyState(lobbyId)
+            }
+        }
+    }
+
+    private fun detachUpdateLobbyListener() {
+        SocketHandler.getSocket().off("updateLobby")
+    }
+
+    private fun detachQuizListener() {
+        SocketHandler.getSocket().off("quiz")
     }
 
     fun onGameStartButtonClicked(lobbyId: String) {
