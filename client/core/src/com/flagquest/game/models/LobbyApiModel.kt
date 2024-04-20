@@ -1,6 +1,7 @@
 package com.flagquest.game.models
 
 import com.flagquest.game.utils.DataManager
+import com.flagquest.game.utils.SocketHandler
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -76,6 +77,31 @@ class LobbyApiModel {
             null
         }
 
+    }
+
+    fun leaveLobby(): String? {
+        val client = OkHttpClient()
+        val mediaType = "text/plain".toMediaType()
+        val body = "".toRequestBody(mediaType)
+        val userId = DataManager.getData("userId") as String
+        val lobbyId = DataManager.getData("lobbyId") as String
+        val request = Request.Builder()
+            .url("http://flagquest.leotm.de:3000/lobby/$lobbyId/$userId")
+            .method("DELETE", body)
+            .addHeader("X-API-Key", "{{token}}")
+            .build()
+        val response = client.newCall(request).execute()
+        val responseBodyString = response.body?.string() // Store the response body
+        println(responseBodyString)
+        return if(response.isSuccessful){
+            DataManager.clearData("lobbyId")
+            SocketHandler.closeConnection()
+            SocketHandler.removeAllListeners()
+            responseBodyString
+        } else {
+            println("Error: ${response.code} - ${response.message}")
+            null
+        }
     }
 
     /**

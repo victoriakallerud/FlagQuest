@@ -1,23 +1,27 @@
 package com.flagquest.game.views
 
 import com.badlogic.gdx.graphics.g2d.BitmapFont
+import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.ui.TextField
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.badlogic.gdx.utils.Align
 import com.flagquest.game.controllers.ResultsController
+import com.flagquest.game.models.LobbyApiModel
 import com.flagquest.game.models.UserApiModel
 import com.flagquest.game.states.GameStateManager
+import com.flagquest.game.states.MainMenuState
 import com.flagquest.game.utils.UIManager
 import com.flagquest.game.utils.UIManager.addHeading
 import com.flagquest.game.utils.UIManager.addScrollPane
 import com.flagquest.game.utils.UIManager.screenHeight
 
 class ResultsView(gsm: GameStateManager, private val stage: Stage) {
-    val controller: ResultsController = ResultsController(UserApiModel())
+    val controller: ResultsController = ResultsController(UserApiModel(), LobbyApiModel())
 
     private val skin: Skin = UIManager.skin
     private val textFieldStyle: TextField.TextFieldStyle = skin.get(TextField.TextFieldStyle::class.java)
@@ -56,9 +60,18 @@ class ResultsView(gsm: GameStateManager, private val stage: Stage) {
         stage.addActor(scrollPane)
 
         // Add menu button
-        val menuBtn = TextButton("MAIN MENU", skin) to "menu"
-        val yMenu = (screenHeight / 11).toFloat()
-        UIManager.addInstructButton(stage, gsm, menuBtn, yMenu)
+
+        val backToMenuButton = TextButton("MAIN MENU", skin)
+        backToMenuButton.height = UIManager.elementHeight.toFloat()
+        backToMenuButton.setPosition(UIManager.screenWidth / 2 - backToMenuButton.width / 2, screenHeight / 11.toFloat())
+        backToMenuButton.addListener(object: ClickListener() {
+            override fun clicked(event: InputEvent?, x: Float, y: Float) {
+                controller.leaveLobby()
+                gsm.push(MainMenuState(gsm))
+            }
+
+        })
+        stage.addActor(backToMenuButton)
     }
 
 
