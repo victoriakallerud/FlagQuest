@@ -8,15 +8,17 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.ui.TextField
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.flagquest.game.controllers.JoinGameController
+import com.flagquest.game.models.GameApiModel
 import com.flagquest.game.models.LobbyApiModel
 import com.flagquest.game.navigation.GameRedirectionListener
+import com.flagquest.game.navigation.LobbyRedirectionListener
 import com.flagquest.game.states.GameStateManager
 import com.flagquest.game.utils.UIManager
 import com.flagquest.game.utils.UIManager.addBackButton
 import com.flagquest.game.utils.UIManager.addHeading
 
-class JoinGameView(private val gsm: GameStateManager, private val stage: Stage, listener: GameRedirectionListener) {
-    val controller: JoinGameController = JoinGameController(LobbyApiModel())
+class JoinGameView(private val gsm: GameStateManager, private val stage: Stage, listener: LobbyRedirectionListener) {
+    val controller: JoinGameController = JoinGameController(LobbyApiModel(), GameApiModel())
 
     private val skin: Skin = UIManager.skin
     private val titleFont: BitmapFont = UIManager.titleFont
@@ -61,14 +63,24 @@ class JoinGameView(private val gsm: GameStateManager, private val stage: Stage, 
                 var code: String = ""
                 if (codeInput.text != "") {
                     code = codeInput.text
-                    controller.onCodeButtonClicked(code)
+                    val res = controller.onCodeButtonClicked(code)
+                    if (!res) {
+                        Gdx.app.error("JoinGameView","Failed to join lobby with code")
+                        UIManager.removeErrors(stage)
+                        UIManager.addError(stage, "Failed to join lobby with code")
+                    }
                 }
             }
         })
 
         randomBtn.addListener(object : ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
-                controller.onRandomButtonClicked()
+                val res: Boolean = controller.onRandomButtonClicked()
+                if (!res) {
+                    Gdx.app.error("JoinGameView","Failed to join random lobby")
+                    UIManager.removeErrors(stage)
+                    UIManager.addError(stage, "Failed to join random lobby")
+                }
             }
         })
     }

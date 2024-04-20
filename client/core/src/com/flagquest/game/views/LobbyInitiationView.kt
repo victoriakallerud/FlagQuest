@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.ui.TextField
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.flagquest.game.controllers.LobbyInitiationController
+import com.flagquest.game.models.GameApiModel
 import com.flagquest.game.models.LobbyApiModel
 import com.flagquest.game.navigation.LobbyRedirectionListener
 import com.flagquest.game.states.GameStateManager
@@ -16,7 +17,7 @@ import com.flagquest.game.utils.ButtonClickListener
 import com.flagquest.game.utils.UIManager
 
 class LobbyInitiationView(gsm: GameStateManager, private val stage: Stage, listener: LobbyRedirectionListener) {
-    val controller: LobbyInitiationController = LobbyInitiationController(LobbyApiModel())
+    val controller: LobbyInitiationController = LobbyInitiationController(LobbyApiModel(), GameApiModel())
 
     private val skin: Skin = UIManager.skin
     private val textFieldStyle: TextField.TextFieldStyle = skin.get(TextField.TextFieldStyle::class.java)
