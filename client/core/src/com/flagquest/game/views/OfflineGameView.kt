@@ -53,7 +53,6 @@ class OfflineGameView(gsm: GameStateManager, private val stage: Stage, listener:
         //Flag
         var flagTex: Texture = Texture(Gdx.files.internal(controller.getFlagFilePathByCountryName(currentQuestion.description)))
         var flagImg = Image(flagTex)
-        //flagImg.setPosition((screenWidth - flagImg.prefWidth)/2, screenHeight - 800f)
 
         val maxWidth = 100f * 6
         val maxHeight = 70f * 6
@@ -64,7 +63,7 @@ class OfflineGameView(gsm: GameStateManager, private val stage: Stage, listener:
 
         flagImg.setScale(scale)
         flagImg.setPosition(
-            (Gdx.graphics.width - flagImg.width * scale) / 2,
+            (UIManager.screenWidth - flagImg.width * scale) / 2,
             screenHeight - 800f
         )
 

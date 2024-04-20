@@ -54,10 +54,9 @@ class OnlineGameView(gsm: GameStateManager, private val stage: Stage, onlineGame
         //Flag
         var flagTex: Texture = Texture(Gdx.files.internal(onlineGameController.getFlagFilePathByCountryName(currentQuestion.description)))
         var flagImg = Image(flagTex)
-        flagImg.setPosition((screenWidth - flagImg.prefWidth)/2, screenHeight - 800f)
 
-        val maxWidth = 100f
-        val maxHeight = 70f
+        val maxWidth = 100f * 6
+        val maxHeight = 70f * 6
 
         val scaleWidth = maxWidth / flagImg.width
         val scaleHeight = maxHeight / flagImg.height
@@ -65,8 +64,8 @@ class OnlineGameView(gsm: GameStateManager, private val stage: Stage, onlineGame
 
         flagImg.setScale(scale)
         flagImg.setPosition(
-            (Gdx.graphics.width - flagImg.width * scale) / 2,
-            (Gdx.graphics.height - flagImg.height * scale) / 2
+            (UIManager.screenWidth - flagImg.width * scale) / 2,
+            screenHeight - 800f
         )
 
         stage.addActor(flagImg)
