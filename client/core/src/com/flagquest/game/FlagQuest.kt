@@ -20,7 +20,7 @@ class FlagQuest(private val authHandler: AuthHandler) : ApplicationAdapter() {
         batch = SpriteBatch()
         img = Texture("badlogic.jpg")
         Gdx.input.isCatchBackKey = true
-        gsm.push(ResultsState(gsm)) //if (isLoggedIn) gsm.push(MainMenuState(gsm)) else gsm.push(LoginMenuState(gsm, authHandler))
+        if (isLoggedIn) gsm.push(MainMenuState(gsm)) else gsm.push(LoginMenuState(gsm, authHandler))
     }
 
     override fun render() {

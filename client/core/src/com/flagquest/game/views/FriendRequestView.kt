@@ -22,7 +22,7 @@ class FriendRequestView(gsm: GameStateManager, stage: Stage) {
     private val controller: FriendRequestController = FriendRequestController(UserApiModel())
     private val skin: Skin = UIManager.skin
     private val imgBtnHeight = UIManager.elementHeight
-    private val backNavType = "menu"
+    private val backNavType = "back" // Should refer back to friends state
     private val maxStringLength = 15 // Cut-off point for string size.
     private val table = Table().apply {
         defaults().pad(30f)

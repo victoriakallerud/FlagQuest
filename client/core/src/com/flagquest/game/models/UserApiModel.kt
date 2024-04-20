@@ -1,8 +1,6 @@
 package com.flagquest.game.models
 
 import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.utils.async.ThreadUtils
-import com.flagquest.game.states.MainMenuState
 import com.flagquest.game.utils.DataManager
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
@@ -70,9 +68,13 @@ class UserApiModel {
     }
 
     @OptIn(DelicateCoroutinesApi::class)
-    fun registerUser(authHandler: AuthHandler, email: String, password: String, userName: String, callback: (Boolean)-> Unit) {
+    fun registerUser(authHandler: AuthHandler, email: String, password: String, userName: String, nationality: String, callback: (Boolean)-> Unit) {
         if (email.isEmpty() || password.isEmpty()) {
             Gdx.app.log("RegistrationState", "Email or password cannot be empty")
+            callback(false)
+        }
+        if (nationality == "Nationality"){
+            Gdx.app.log("RegistrationState", "Select a nationality")
             callback(false)
         }
         Gdx.app.log("RegistrationState", "Attempting to register with email: $email")
@@ -83,8 +85,7 @@ class UserApiModel {
                     Gdx.app.log("RegistrationState", "Firebase User ID: $uid")
                     GlobalScope.launch(Dispatchers.IO) {
                         val user: String? = withContext(Dispatchers.Default) {
-                            // TODO: Remove hardcoded nationality and get it from the form
-                            postUser(userName, "German", uid!!)
+                            postUser(userName, nationality, uid!!)
                         }
                         val registered = if (user != null) {
                             val userId: String = getIdFromResponse(user)
