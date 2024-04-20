@@ -65,7 +65,7 @@ export class WebsocketGateway implements OnGatewayInit, OnGatewayConnection, OnG
   @SubscribeMessage('startGame')
   async handleStartGame(@ConnectedSocket() client: Socket, @MessageBody() joinLobbyDto: JoinLobbyDTO) {
     const res: Lobby = await this.websocketService.handleStartGame(client, joinLobbyDto.userId, joinLobbyDto.lobbyId);
-    this.pushUpdatedLobby(joinLobbyDto.lobbyId, res);
+    // this.pushUpdatedLobby(joinLobbyDto.lobbyId, res);
     const quiz: Quiz = await this.quizService.generateQuiz(res.options.level, res.options.numberOfQuestions);
     this.pushQuizToLobby(res.id, quiz);
     this.gameService.createGame(res);
@@ -145,7 +145,7 @@ export class WebsocketGateway implements OnGatewayInit, OnGatewayConnection, OnG
             this.logger.log(`Game is over in lobby ${submittedAnswer.lobbyId}`);
             this.pushEndScoreToLobby(submittedAnswer.lobbyId, this.gameService.getListOfAllPlayers(submittedAnswer.lobbyId));
             const resLobby: Lobby = await this.gameService.endGame(submittedAnswer.lobbyId);
-            this.pushUpdatedLobby(submittedAnswer.lobbyId, resLobby);
+            // this.pushUpdatedLobby(submittedAnswer.lobbyId, resLobby);
             return resLobby;
           }
           // check if all players have submitted answers and change round if so
