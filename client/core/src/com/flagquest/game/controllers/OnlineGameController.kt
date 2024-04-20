@@ -5,13 +5,16 @@ import com.flagquest.game.models.GameApiModel
 import com.flagquest.game.models.GameApiModel.Question
 import com.flagquest.game.models.LocalApiModel
 import com.flagquest.game.navigation.OnlineGameRedirectionListener
+import com.flagquest.game.navigation.ResultRedirectionListener
 import com.flagquest.game.utils.DataManager
 import com.flagquest.game.utils.SocketHandler
+import org.json.JSONArray
 import org.json.JSONObject
 
 
 class OnlineGameController(private val gameModel: GameApiModel, private val localModel: LocalApiModel) {
-    var redirectionListener: OnlineGameRedirectionListener? = null
+    var onlineGameRedirectionListener: OnlineGameRedirectionListener? = null
+    var resultRedirectionListener: ResultRedirectionListener? = null
 
     fun getSingleQuestion(): Question {
         return gameModel.getCurrentQuestion()
@@ -25,9 +28,28 @@ class OnlineGameController(private val gameModel: GameApiModel, private val loca
             Gdx.app.log("GameApiModel", "nextRound: $message")
             Gdx.app.postRunnable {
                 detachNextRoundListener()
-                redirectionListener?.redirectToOnlineGameState()
+                detachEndScoreListener()
+                onlineGameRedirectionListener?.redirectToOnlineGameState()
             }
         }
+    }
+
+    fun attachEndScoreListener() {
+        SocketHandler.getSocket().on("endScore") { args ->
+            val message = args[0] as JSONArray
+            DataManager.setData("endScore", message)
+            Gdx.app.log("GameApiModel", "endScore: $message")
+            Gdx.app.log("GameApiModel", "Redirecting to result state")
+            detachEndScoreListener()
+            detachNextRoundListener()
+            Gdx.app.postRunnable{
+                resultRedirectionListener?.redirectToResultState()
+            }
+        }
+    }
+
+    private fun detachEndScoreListener() {
+        SocketHandler.getSocket().off("endScore")
     }
 
     private fun detachNextRoundListener() {

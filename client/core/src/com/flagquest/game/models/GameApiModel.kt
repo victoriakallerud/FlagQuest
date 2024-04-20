@@ -1,9 +1,6 @@
 package com.flagquest.game.models
 
 import com.badlogic.gdx.Gdx
-import com.flagquest.game.navigation.OnlineGameRedirectionListener
-import com.flagquest.game.states.GameStateManager
-import com.flagquest.game.states.OnlineGameState
 import com.flagquest.game.utils.DataManager
 import com.flagquest.game.utils.SocketHandler
 import org.json.JSONArray
@@ -39,10 +36,6 @@ class GameApiModel() {
             Gdx.app.log("GameApiModel", "answerCount: $message")
         }
 
-        SocketHandler.getSocket().on("endScore") { args ->
-            val message = args[0] as JSONArray
-            Gdx.app.log("GameApiModel", "endScore: $message")
-        }
         SocketHandler.establishConnection()
         val data = JSONObject()
         data.put("lobbyId", DataManager.getData("lobbyId"))
