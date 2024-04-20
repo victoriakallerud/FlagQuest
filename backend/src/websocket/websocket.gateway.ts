@@ -95,12 +95,12 @@ export class WebsocketGateway implements OnGatewayInit, OnGatewayConnection, OnG
 
   pushPauseGameToLobby(lobbyId: string){
     this.logger.log(`Pushing pause game to all clients in room ${lobbyId}`);
-    this.server.to(lobbyId).emit('pauseGame');
+    this.server.to(lobbyId).emit('pause');
   }
 
   pushResumeGameToLobby(lobbyId: string){
     this.logger.log(`Pushing resume game to all clients in room ${lobbyId}`);
-    this.server.to(lobbyId).emit('resumeGame');
+    this.server.to(lobbyId).emit('resume');
   }
 
   pushEndScoreToLobby(lobbyId: string, listOfAllPlayers: PlayerDto[]){
@@ -110,13 +110,14 @@ export class WebsocketGateway implements OnGatewayInit, OnGatewayConnection, OnG
 
   // --------------------- Game Functions ---------------------
   @SubscribeMessage('pauseGame')
-  async handlePauseGame(@ConnectedSocket() client: Socket, @MessageBody() lobbyId: string) {
-    this.pushPauseGameToLobby(lobbyId);
+  async handlePauseGame(@ConnectedSocket() client: Socket, @MessageBody() joinLobbyDTO: JoinLobbyDTO) {
+    this.logger.log(joinLobbyDTO.lobbyId)
+    this.pushPauseGameToLobby(joinLobbyDTO.lobbyId);
   }
 
   @SubscribeMessage('resumeGame')
-  async handleResumeGame(@ConnectedSocket() client: Socket, @MessageBody() lobbyId: string) {
-    this.pushResumeGameToLobby(lobbyId);
+  async handleResumeGame(@ConnectedSocket() client: Socket, @MessageBody() joinLobbyDTO: JoinLobbyDTO) {
+    this.pushResumeGameToLobby(joinLobbyDTO.lobbyId);
   }
 
 
