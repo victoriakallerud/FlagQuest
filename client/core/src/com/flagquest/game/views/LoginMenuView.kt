@@ -12,10 +12,11 @@ class LoginMenuView(private val stage: Stage) {
     val titleFont: BitmapFont = skin.getFont("title")
     var screenWidth = Gdx.graphics.width
     val screenHeight = Gdx.graphics.height
-    var pos: Float = ((screenHeight / 2) + 50).toFloat()
+    private var pos: Float = ((screenHeight / 2) + 50).toFloat()
     val buttons = arrayOf(
         TextButton("LOGIN", skin),
-        TextButton("REGISTER", skin)
+        TextButton("REGISTER", skin),
+        TextButton("OFFLINE MODE", skin)
     )
 
     init {
