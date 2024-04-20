@@ -28,6 +28,7 @@ class OnlineGameController(private val gameModel: GameApiModel, private val loca
             Gdx.app.log("GameApiModel", "nextRound: $message")
             Gdx.app.postRunnable {
                 detachNextRoundListener()
+                detachEndScoreListener()
                 onlineGameRedirectionListener?.redirectToOnlineGameState()
             }
         }
@@ -42,6 +43,10 @@ class OnlineGameController(private val gameModel: GameApiModel, private val loca
                 resultRedirectionListener?.redirectToResultState()
             }
         }
+    }
+
+    private fun detachEndScoreListener() {
+        SocketHandler.getSocket().off("endScore")
     }
 
     private fun detachNextRoundListener() {

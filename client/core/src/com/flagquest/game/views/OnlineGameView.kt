@@ -34,6 +34,7 @@ class OnlineGameView(gsm: GameStateManager, private val stage: Stage, listener: 
     init {
         onlineGameController.onlineGameRedirectionListener = listener
         onlineGameController.attachNextRoundListener()
+        onlineGameController.attachEndScoreListener()
         // val quiz: Quiz = controller.handleCreateOfflineGame(10, "Europe")
         currentQuestion = onlineGameController.getSingleQuestion()
 
