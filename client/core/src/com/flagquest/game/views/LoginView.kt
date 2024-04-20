@@ -14,7 +14,7 @@ import com.flagquest.game.models.UserApiModel
 import com.flagquest.game.navigation.MainMenuRedirectionListener
 import com.flagquest.game.states.GameStateManager
 import com.flagquest.game.utils.UIManager
-val backNavType = "menu"
+val backNavType = "back"
 
 class LoginView(gsm: GameStateManager, private val stage: Stage, listener: MainMenuRedirectionListener, authHandler: AuthHandler) {
     val controller: LoginController = LoginController(UserApiModel())
