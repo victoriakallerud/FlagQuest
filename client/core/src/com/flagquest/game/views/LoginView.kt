@@ -25,8 +25,6 @@ class LoginView(gsm: GameStateManager, private val stage: Stage, listener: MainM
     private val buttonHeight = screenHeight / 11
     val backNavType = "back"
 
-    val backNavType = "back"
-
     private val emailField = TextField("", skin).apply{ messageText="E-mail"}
     private val passwordField = TextField("", skin).apply{
         messageText = "Password"

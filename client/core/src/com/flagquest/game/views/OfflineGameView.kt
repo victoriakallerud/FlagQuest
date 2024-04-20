@@ -48,9 +48,6 @@ class OfflineGameView(gsm: GameStateManager, stage: Stage, listener: TrainingQue
         }
 
         //Flag
-        val flagTex = Texture(Gdx.files.internal(controller.getFlagFilePathByCountryName(currentQuestion.description)))
-        val flagImg = Image(flagTex)
-        flagImg.setPosition((screenWidth - flagImg.prefWidth)/2, screenHeight - 800f)
         var flagTex: Texture = Texture(Gdx.files.internal(controller.getFlagFilePathByCountryName(currentQuestion.description)))
         var flagImg = Image(flagTex)
 

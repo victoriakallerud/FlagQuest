@@ -34,7 +34,6 @@ class RegistrationView (gsm: GameStateManager, private val stage: Stage, listene
         isPasswordMode = true
         setPasswordCharacter('*')
     }
-    val backNavType = "back"
     private val regBtn = TextButton("REGISTER", skin)
     private val inputFields = arrayOf(emailField, usernameField, passwordField)
 

@@ -23,9 +23,7 @@ class LobbyInitiationView(gsm: GameStateManager, private val stage: Stage, liste
     private var screenWidth = UIManager.screenWidth
     private var pos: Float = ((UIManager.screenHeight / 2) + 50).toFloat()
     private val sizeInput = TextField("", skin).apply{ messageText="How many players?"}
-    private val inviteLinkBtn = TextButton("GET INVITE LINK", skin)
     private val createBtn = TextButton("CREATE LOBBY", skin)
-    private val buttons = arrayOf(inviteLinkBtn, createBtn)
     private var size: Int = 6
     val backNavType = "menu"
     private val europe: TextButton = TextButton("Europe", skin)
@@ -78,23 +76,15 @@ class LobbyInitiationView(gsm: GameStateManager, private val stage: Stage, liste
 
         sizeInput.width = (screenWidth*80/100).toFloat()
         sizeInput.height = UIManager.elementHeight.toFloat()
-        sizeInput.setPosition(screenWidth / 2 - sizeInput.width / 2, pos - table.height - UIManager.elementHeight - UIManager.elementSpacing)
+        sizeInput.setPosition(screenWidth / 2 - sizeInput.width / 2, pos - UIManager.elementHeight - UIManager.elementSpacing)
         stage.addActor(sizeInput)
 
         var counter = 2
-        for (button in buttons) {
-            button.width = (screenWidth*80/100).toFloat()
-            button.height = UIManager.elementHeight.toFloat()
-            button.setPosition(screenWidth / 2 - inviteLinkBtn.width / 2, pos - table.height - (UIManager.elementHeight + UIManager.elementSpacing) * counter)
-            stage.addActor(button)
-            counter++
-        }
+        createBtn.width = (screenWidth*80/100).toFloat()
+        createBtn.height = UIManager.elementHeight.toFloat()
+        createBtn.setPosition(screenWidth / 2 - createBtn.width / 2, pos - (UIManager.elementHeight + UIManager.elementSpacing) * counter)
+        stage.addActor(createBtn)
 
-        inviteLinkBtn.addListener(object : ClickListener() {
-            override fun clicked(event: InputEvent?, x: Float, y: Float) {
-                // TODO: Implement function to copy an invite link to the user's phone and show "Invite link copied" at the bottom
-            }
-        })
         createBtn.addListener(object : ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
                 if (sizeInput.text != "") {
