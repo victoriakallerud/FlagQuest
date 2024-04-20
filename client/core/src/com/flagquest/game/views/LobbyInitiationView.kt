@@ -10,6 +10,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.ui.TextField
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.flagquest.game.controllers.LobbyInitiationController
+import com.flagquest.game.models.GameApiModel
+import com.flagquest.game.models.LobbyApiModel
 import com.flagquest.game.navigation.LobbyRedirectionListener
 import com.flagquest.game.states.GameStateManager
 import com.flagquest.game.utils.UIManager
@@ -19,8 +21,8 @@ class LobbyInitiationView(gsm: GameStateManager, private val stage: Stage, liste
     private val textFieldStyle: TextField.TextFieldStyle = skin.get(TextField.TextFieldStyle::class.java)
     private val titleFont: BitmapFont = UIManager.titleFont
     private var screenWidth = UIManager.screenWidth
-    private var pos: Float = UIManager.screenHeight - 600f
-    private val sizeInput = TextField("", skin).apply{ messageText="  How many players?"}
+    private var pos: Float = ((UIManager.screenHeight / 2) + 50).toFloat()
+    private val sizeInput = TextField("", skin).apply{ messageText="How many players?"}
     private val inviteLinkBtn = TextButton("GET INVITE LINK", skin)
     private val createBtn = TextButton("CREATE LOBBY", skin)
     private val buttons = arrayOf(inviteLinkBtn, createBtn)
@@ -67,6 +69,11 @@ class LobbyInitiationView(gsm: GameStateManager, private val stage: Stage, liste
 
         sizeInput.textFieldFilter = TextField.TextFieldFilter { textField, c ->
             Character.isDigit(c)
+        }
+        
+        // Add padding to TextField
+        skin.get(TextField.TextFieldStyle::class.java).apply {
+            background.leftWidth = 50f // Set left padding
         }
 
         sizeInput.width = (screenWidth*80/100).toFloat()

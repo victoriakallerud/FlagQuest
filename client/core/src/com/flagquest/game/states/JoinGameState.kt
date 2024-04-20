@@ -8,17 +8,23 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.ui.TextField
 import com.badlogic.gdx.utils.viewport.ScreenViewport
 import com.flagquest.game.controllers.JoinGameController
+import com.flagquest.game.models.GameApiModel
 import com.flagquest.game.models.LobbyApiModel
 import com.flagquest.game.navigation.GameRedirectionListener
+import com.flagquest.game.navigation.LobbyRedirectionListener
 import com.flagquest.game.views.JoinGameView
 
-class JoinGameState(gsm: GameStateManager) : State(gsm), GameRedirectionListener {
+class JoinGameState(gsm: GameStateManager) : State(gsm), LobbyRedirectionListener {
     override val stage = Stage(ScreenViewport())
-    private val controller: JoinGameController = JoinGameController(LobbyApiModel())
+    private val controller: JoinGameController = JoinGameController(LobbyApiModel(), GameApiModel())
     private val view = JoinGameView(gsm, stage, this, controller)
 
     init {
         Gdx.input.inputProcessor = stage
+    }
+
+    override fun redirectToLobbyState(lobbyId: String) {
+        gsm.push(GameLobbyState(gsm, isAdmin = false, lobbyId))
     }
 
     override fun handleInput() {
@@ -34,9 +40,4 @@ class JoinGameState(gsm: GameStateManager) : State(gsm), GameRedirectionListener
         stage.draw()
     }
 
-    override fun redirectToGameState(lobbyId: String) {
-        println("GameLobby should be pushed 1")
-        gsm.push(GameLobbyState(gsm, isAdmin = false, lobbyId))
-        println("GameLobby should be pushed 2")
-    }
 }
