@@ -14,6 +14,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.viewport.ScreenViewport
+import com.flagquest.game.controllers.HighscoreController
+import com.flagquest.game.models.UserApiModel
 import com.flagquest.game.utils.UIManager
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -24,7 +26,8 @@ import com.flagquest.game.views.LobbyInitiationView
 
 class HighscoreState(gsm: GameStateManager) : State(gsm) {
     override val stage = Stage(ScreenViewport())
-    private val view = HighscoreView(gsm, stage)
+    private val controller = HighscoreController(UserApiModel())
+    private val view = HighscoreView(gsm, stage, controller)
 
     init {
         Gdx.input.inputProcessor = stage
