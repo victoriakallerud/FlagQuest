@@ -14,8 +14,8 @@ class OfflineGameState(gsm: GameStateManager, fromLogin: Boolean, chosen: String
     TrainingQuestionRedirectionListener {
     override val stage = Stage(ScreenViewport())
     private val controller: OfflineGameController = OfflineGameController(LocalApiModel())
-    private val view = OfflineGameView(gsm, stage, this, controller)
     private val login: Boolean = fromLogin
+    private val view = OfflineGameView(gsm, stage, this, controller, login)
 
 
     init {

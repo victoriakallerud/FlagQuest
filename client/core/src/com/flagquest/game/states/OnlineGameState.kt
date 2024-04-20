@@ -13,7 +13,6 @@ import com.flagquest.game.views.OnlineGameView
 class OnlineGameState(gsm: GameStateManager, chosen: String? = null, correct: String? = null) : State(gsm),
     OnlineGameRedirectionListener, ResultRedirectionListener {
     override val stage = Stage(ScreenViewport())
-    override var backNavType = "pause"
     private val view = OnlineGameView(gsm, stage, this, this)
 
 
