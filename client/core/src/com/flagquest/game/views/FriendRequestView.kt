@@ -7,7 +7,6 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton
 import com.badlogic.gdx.scenes.scene2d.ui.Label
-import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
@@ -16,15 +15,16 @@ import com.flagquest.game.controllers.FriendRequestController
 import com.flagquest.game.models.UserApiModel
 import com.flagquest.game.states.GameStateManager
 import com.flagquest.game.utils.UIManager
+import com.flagquest.game.utils.UIManager.addScrollPane
+import com.flagquest.game.utils.UIManager.truncateString
 
 class FriendRequestView(gsm: GameStateManager, stage: Stage) {
     private val controller: FriendRequestController = FriendRequestController(UserApiModel())
     private val skin: Skin = UIManager.skin
-    private var screenWidth = UIManager.screenWidth
-    private val screenHeight = UIManager.screenHeight
     private val imgBtnHeight = UIManager.elementHeight
     private val backNavType = "back" // Should refer back to friends state
-    private val list = Table().apply {
+    private val maxStringLength = 15 // Cut-off point for string size.
+    private val table = Table().apply {
         defaults().pad(30f)
     }
 
@@ -37,7 +37,7 @@ class FriendRequestView(gsm: GameStateManager, stage: Stage) {
 
         friends.forEach { name -> //Create a row for each name.
 
-            val nameLabel = Label(truncateString(name.first), skin, "title").apply {// Only show truncated names.
+            val nameLabel = Label(truncateString(name.first, maxStringLength), skin, "title").apply {// Only show truncated names.
                 setFontScale(1.1f) // Smaller font to display more of name
             }
 
@@ -54,31 +54,22 @@ class FriendRequestView(gsm: GameStateManager, stage: Stage) {
                 row()
             }
 
-            list.add(item).expandX().fillX()
-            list.row()
+            table.add(item).expandX().fillX()
+            table.row()
         }
 
-        val scrollPane = createScrollpane()
+        val scrollPane = addScrollPane(table)
 
         // Add scroll pane to stage
         stage.addActor(scrollPane)
     }
 
-    private fun truncateString(input: String): String {
-        val maxLength = 15
-        return if (input.length <= maxLength) {
-            input // Return the original string if it's within the maxLength
-        } else {
-            // Otherwise, truncate the string and append an ellipsis
-            input.substring(0, maxLength - 3) + "..."
-        }
-    }
 
     private fun updateList(stage: Stage) {
-        list.clearChildren()
+        table.clearChildren()
         val newFriends = controller.onGetFriendRequests()
         newFriends.forEach { name -> //Create a row for each name.
-            val nameLabel = Label(truncateString(name.first), skin, "title").apply {// Only show truncated names.
+            val nameLabel = Label(truncateString(name.first, maxStringLength), skin, "title").apply {// Only show truncated names.
                 setFontScale(1.1f) // Smaller font to display more of name
             }
             // AcceptButton
@@ -87,6 +78,7 @@ class FriendRequestView(gsm: GameStateManager, stage: Stage) {
             // RejectButton
             val rejectButton = createButtons(false, name)
 
+            // Add items to row
             val item = Table().apply {
                 add(nameLabel).expandX().fillX().padRight(10f)
                 add(acceptButton).padRight(10f) //Added padding
@@ -94,32 +86,14 @@ class FriendRequestView(gsm: GameStateManager, stage: Stage) {
                 row()
             }
 
-            list.add(item).expandX().fillX()
-            list.row()
+            table.add(item).expandX().fillX()
+            table.row()
         }
 
-        val newScrollPane = createScrollpane()
+        val newScrollPane = addScrollPane(table)
 
         // Add scroll pane to stage
         stage.addActor(newScrollPane)
-    }
-
-    private fun createScrollpane(): ScrollPane {
-        val scrollPane = ScrollPane(list, skin).apply {
-            setScrollingDisabled(true, false)
-            setFadeScrollBars(false)
-
-            // Calculate the position to center the scroll pane
-            val scrollPaneWidth = (screenWidth / 100 * 80).toFloat() // Assuming 80% of the screen width
-            val scrollPaneHeight = (screenHeight / 100 * 48).toFloat() // Assuming a fixed height
-            val xPos = (screenWidth - scrollPaneWidth) / 2
-            val yPos = (screenHeight - scrollPaneHeight) / 2
-
-            // Set the position of the scroll pane
-            setPosition(xPos, yPos)
-            setSize(scrollPaneWidth, scrollPaneHeight)
-        }
-        return scrollPane
     }
 
     private fun createButtons(isAccept: Boolean, name: Pair<String, String>): ImageButton {

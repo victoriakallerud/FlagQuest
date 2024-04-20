@@ -1,8 +1,6 @@
 package com.flagquest.game.models
 
 import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.utils.async.ThreadUtils
-import com.flagquest.game.states.MainMenuState
 import com.flagquest.game.utils.DataManager
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
@@ -354,22 +352,16 @@ class UserApiModel {
     }
 
     fun putAcceptRequest(friendId: String): String? {
-        println("1")
         val client = OkHttpClient()
-        println("2")
         val mediaType = "text/plain".toMediaType()
-        println("3")
         val body = "".toRequestBody(mediaType)
-        println("4")
         val userId = DataManager.getData("userId") as String
         val request = Request.Builder()
             .url("http://flagquest.leotm.de:3000/user/$userId/friends/requests/$friendId")
             .put(body)
             .addHeader("X-API-Key", "{{token}}")
             .build()
-        println("5")
         val response = client.newCall(request).execute()
-        println("6")
         val responseBodyString = response.body?.string() // Store the response body
         println(responseBodyString)
         return if(response.isSuccessful) {
@@ -399,5 +391,16 @@ class UserApiModel {
             println("Error: ${response.code} - ${response.message}")
             null
         }
+    }
+
+    fun getResults(): MutableList<Pair<String, Int>> {
+        // TODO: Should return a list of scores from players in the game
+        return listOf(
+            "amelmd" to 170,
+            "BABA" to 240,
+            "Cecilia" to 110,
+            "Donald" to 190,
+            "Emilie" to 40
+        ) as MutableList<Pair<String, Int>>
     }
 }
