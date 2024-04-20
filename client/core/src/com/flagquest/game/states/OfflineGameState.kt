@@ -23,7 +23,6 @@ import com.flagquest.game.views.OfflineGameView
 class OfflineGameState(gsm: GameStateManager, chosen: String? = null, correct: String? = null) : State(gsm),
     TrainingQuestionRedirectionListener {
     override val stage = Stage(ScreenViewport())
-    override var backNavType = "pause"
     private val view = OfflineGameView(gsm, stage, this)
 
 

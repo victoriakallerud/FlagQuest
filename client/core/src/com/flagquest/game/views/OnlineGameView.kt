@@ -19,6 +19,7 @@ import com.flagquest.game.navigation.OnlineGameRedirectionListener
 import com.flagquest.game.navigation.ResultRedirectionListener
 import com.flagquest.game.states.GameStateManager
 import com.flagquest.game.utils.UIManager
+import kotlin.math.min
 
 
 class OnlineGameView(gsm: GameStateManager, private val stage: Stage, onlineGameListener: OnlineGameRedirectionListener, resultRedirectionListener: ResultRedirectionListener) {
@@ -54,6 +55,20 @@ class OnlineGameView(gsm: GameStateManager, private val stage: Stage, onlineGame
         var flagTex: Texture = Texture(Gdx.files.internal(onlineGameController.getFlagFilePathByCountryName(currentQuestion.description)))
         var flagImg = Image(flagTex)
         flagImg.setPosition((screenWidth - flagImg.prefWidth)/2, screenHeight - 800f)
+
+        val maxWidth = 100f
+        val maxHeight = 70f
+
+        val scaleWidth = maxWidth / flagImg.width
+        val scaleHeight = maxHeight / flagImg.height
+        val scale = min(scaleWidth, scaleHeight)
+
+        flagImg.setScale(scale)
+        flagImg.setPosition(
+            (Gdx.graphics.width - flagImg.width * scale) / 2,
+            (Gdx.graphics.height - flagImg.height * scale) / 2
+        )
+
         stage.addActor(flagImg)
 
         for (answerOption: AnswerOption in currentQuestion.answerOptions) {

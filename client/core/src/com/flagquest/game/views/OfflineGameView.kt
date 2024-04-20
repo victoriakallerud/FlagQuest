@@ -21,6 +21,7 @@ import com.flagquest.game.states.GameStateManager
 import com.flagquest.game.states.OfflineGameState
 import com.flagquest.game.utils.UIManager
 import org.w3c.dom.Text
+import kotlin.math.min
 
 
 class OfflineGameView(gsm: GameStateManager, private val stage: Stage, listener: TrainingQuestionRedirectionListener) {
@@ -52,7 +53,21 @@ class OfflineGameView(gsm: GameStateManager, private val stage: Stage, listener:
         //Flag
         var flagTex: Texture = Texture(Gdx.files.internal(controller.getFlagFilePathByCountryName(currentQuestion.description)))
         var flagImg = Image(flagTex)
-        flagImg.setPosition((screenWidth - flagImg.prefWidth)/2, screenHeight - 800f)
+        //flagImg.setPosition((screenWidth - flagImg.prefWidth)/2, screenHeight - 800f)
+
+        val maxWidth = 100f * 6
+        val maxHeight = 70f * 6
+
+        val scaleWidth = maxWidth / flagImg.width
+        val scaleHeight = maxHeight / flagImg.height
+        val scale = min(scaleWidth, scaleHeight)
+
+        flagImg.setScale(scale)
+        flagImg.setPosition(
+            (Gdx.graphics.width - flagImg.width * scale) / 2,
+            screenHeight - 800f
+        )
+
         stage.addActor(flagImg)
 
         for (answerOption: AnswerOption in currentQuestion.answerOptions) {
