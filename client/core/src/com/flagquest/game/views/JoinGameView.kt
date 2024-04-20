@@ -1,6 +1,5 @@
 package com.flagquest.game.views
 
-import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.Stage
@@ -27,7 +26,7 @@ class JoinGameView(private val gsm: GameStateManager, private val stage: Stage, 
     private val screenHeight = UIManager.screenHeight
     private val elementHeight = UIManager.elementHeight
     private var pos: Float = ((screenHeight / 2) + 50).toFloat()
-    private val codeInput = TextField("", skin).apply{ messageText="  GAME CODE"}
+    private val codeInput = TextField("", skin).apply{ messageText="GAME CODE"}
     private val codeBtn = TextButton("JOIN WITH CODE", skin)
     private val randomBtn = TextButton("JOIN RANDOM GAME", skin)
     private val btns = arrayOf( codeBtn, randomBtn )
@@ -39,6 +38,11 @@ class JoinGameView(private val gsm: GameStateManager, private val stage: Stage, 
 
         addHeading(stage, "JOIN GAME\n LOBBY", 2.8f)
         addBackButton(stage, gsm, backNavType)
+
+        // Add padding to textfield
+        skin.get(TextField.TextFieldStyle::class.java).apply {
+            background.leftWidth = 50f // Set left padding
+        }
 
         codeInput.width = (screenWidth * 80 / 100).toFloat()
         codeInput.height = elementHeight.toFloat()

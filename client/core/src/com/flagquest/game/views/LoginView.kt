@@ -14,7 +14,6 @@ import com.flagquest.game.models.UserApiModel
 import com.flagquest.game.navigation.MainMenuRedirectionListener
 import com.flagquest.game.states.GameStateManager
 import com.flagquest.game.utils.UIManager
-val backNavType = "menu"
 
 class LoginView(gsm: GameStateManager, private val stage: Stage, listener: MainMenuRedirectionListener, authHandler: AuthHandler) {
     val controller: LoginController = LoginController(UserApiModel())
@@ -25,9 +24,11 @@ class LoginView(gsm: GameStateManager, private val stage: Stage, listener: MainM
     private val screenHeight = Gdx.graphics.height
     private val buttonHeight = screenHeight / 11
 
-    private val emailField = TextField("", skin).apply{ messageText="  E-mail"}
+    val backNavType = "back"
+
+    private val emailField = TextField("", skin).apply{ messageText="E-mail"}
     private val passwordField = TextField("", skin).apply{
-        messageText = "  Password"
+        messageText = "Password"
         isPasswordMode = true
         setPasswordCharacter('*')
     }
@@ -48,6 +49,11 @@ class LoginView(gsm: GameStateManager, private val stage: Stage, listener: MainM
 
         var posY = screenHeight / 2 + 50f
 
+        // Add padding to TextField
+        skin.get(TextField.TextFieldStyle::class.java).apply {
+            background.leftWidth = 50f // Set left padding
+        }
+
         for (input in inputFields) {
             input.width = (screenWidth*80/100).toFloat()
             input.height = buttonHeight.toFloat()
@@ -55,7 +61,6 @@ class LoginView(gsm: GameStateManager, private val stage: Stage, listener: MainM
             stage.addActor(input)
             posY -= (buttonHeight + 30)
         }
-
 
         loginBtn.addListener(object : ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
