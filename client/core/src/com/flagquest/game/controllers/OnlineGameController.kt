@@ -39,7 +39,10 @@ class OnlineGameController(private val gameModel: GameApiModel, private val loca
             val message = args[0] as JSONArray
             DataManager.setData("endScore", message)
             Gdx.app.log("GameApiModel", "endScore: $message")
-            Gdx.app.postRunnable {
+            Gdx.app.log("GameApiModel", "Redirecting to result state")
+            detachEndScoreListener()
+            detachNextRoundListener()
+            Gdx.app.postRunnable{
                 resultRedirectionListener?.redirectToResultState()
             }
         }

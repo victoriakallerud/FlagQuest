@@ -14,7 +14,7 @@ class OnlineGameState(gsm: GameStateManager, chosen: String? = null, correct: St
     OnlineGameRedirectionListener, ResultRedirectionListener {
     override val stage = Stage(ScreenViewport())
     override var backNavType = "pause"
-    private val view = OnlineGameView(gsm, stage, this)
+    private val view = OnlineGameView(gsm, stage, this, this)
 
 
     init {
@@ -48,6 +48,7 @@ class OnlineGameState(gsm: GameStateManager, chosen: String? = null, correct: St
     }
 
     override fun redirectToResultState() {
+        Gdx.app.log("OnlineGameState", "Redirecting to result state")
         gsm.push(ResultsState(gsm))
     }
 }
