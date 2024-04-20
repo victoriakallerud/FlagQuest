@@ -10,11 +10,12 @@ import com.flagquest.game.navigation.TrainingQuestionRedirectionListener
 import com.flagquest.game.views.OfflineGameView
 
 // Use without arguments when first presenting the quiz. Load with chosen and correct answer to reveal.
-class OfflineGameState(gsm: GameStateManager, chosen: String? = null, correct: String? = null) : State(gsm),
+class OfflineGameState(gsm: GameStateManager, fromLogin: Boolean, chosen: String? = null, correct: String? = null) : State(gsm),
     TrainingQuestionRedirectionListener {
     override val stage = Stage(ScreenViewport())
     private val controller: OfflineGameController = OfflineGameController(LocalApiModel())
     private val view = OfflineGameView(gsm, stage, this, controller)
+    private val login: Boolean = fromLogin
 
 
     init {
@@ -27,7 +28,7 @@ class OfflineGameState(gsm: GameStateManager, chosen: String? = null, correct: S
     }
 
     fun refreshState() {
-        gsm.set(OfflineGameState(gsm))
+        gsm.set(OfflineGameState(gsm, login))
     }
 
     override fun handleInput() {
@@ -44,7 +45,7 @@ class OfflineGameState(gsm: GameStateManager, chosen: String? = null, correct: S
     }
 
     override fun redirectToNewTrainingQuestion() {
-        gsm.push(OfflineGameState(gsm))
+        gsm.push(OfflineGameState(gsm, login))
 
     }
 }

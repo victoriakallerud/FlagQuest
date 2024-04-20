@@ -395,12 +395,17 @@ class UserApiModel {
 
     fun getResults(): MutableList<Pair<String, Int>> {
         // TODO: Should return a list of scores from players in the game
-        return listOf(
-            "amelmd" to 170,
-            "BABA" to 240,
-            "Cecilia" to 110,
-            "Donald" to 190,
-            "Emilie" to 40
-        ) as MutableList<Pair<String, Int>>
+        val scores: JSONArray = DataManager.getData("endScore") as JSONArray
+        DataManager.clearData("endScore")
+        if (scores == null) {
+            return mutableListOf()
+        }
+        val scoresList: MutableList<Pair<String, Int>> = mutableListOf()
+        for (i in 0 until scores.length()) {
+            val score = scores.getJSONObject(i)
+            val username = score.getString("name")
+            scoresList.add(username to score.getInt("score"))
+        }
+        return scoresList
     }
 }

@@ -20,8 +20,8 @@ object SocketHandler {
     }
 
     @Synchronized
-    fun removeListener(event: String, listener: (Any) -> Unit) {
-        mSocket.off(event, listener)
+    fun removeAllListeners() {
+        mSocket.off()
     }
 
     @Synchronized
