@@ -3,7 +3,6 @@ package com.flagquest.game.controllers
 import com.badlogic.gdx.Gdx
 import com.flagquest.game.models.GameApiModel
 import com.flagquest.game.models.LobbyApiModel
-import com.flagquest.game.navigation.GameRedirectionListener
 import com.flagquest.game.navigation.LobbyRedirectionListener
 import com.flagquest.game.utils.DataManager
 

@@ -10,7 +10,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
-import com.badlogic.gdx.utils.Timer
 import com.flagquest.game.controllers.OnlineGameController
 import com.flagquest.game.models.GameApiModel.AnswerOption
 import com.flagquest.game.models.GameApiModel
@@ -19,7 +18,6 @@ import com.flagquest.game.models.LocalApiModel
 import com.flagquest.game.navigation.OnlineGameRedirectionListener
 import com.flagquest.game.states.GameStateManager
 import com.flagquest.game.utils.UIManager
-import org.json.JSONObject
 
 
 class OnlineGameView(gsm: GameStateManager, private val stage: Stage, listener: OnlineGameRedirectionListener) {
@@ -34,7 +32,7 @@ class OnlineGameView(gsm: GameStateManager, private val stage: Stage, listener: 
     val answerButtons: MutableList<TextButton> = mutableListOf()
 
     init {
-        onlineGameController.redirectionListener = listener
+        onlineGameController.onlineGameRedirectionListener = listener
         onlineGameController.attachNextRoundListener()
         // val quiz: Quiz = controller.handleCreateOfflineGame(10, "Europe")
         currentQuestion = onlineGameController.getSingleQuestion()

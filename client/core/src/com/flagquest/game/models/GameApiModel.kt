@@ -1,9 +1,6 @@
 package com.flagquest.game.models
 
 import com.badlogic.gdx.Gdx
-import com.flagquest.game.navigation.OnlineGameRedirectionListener
-import com.flagquest.game.states.GameStateManager
-import com.flagquest.game.states.OnlineGameState
 import com.flagquest.game.utils.DataManager
 import com.flagquest.game.utils.SocketHandler
 import org.json.JSONArray
