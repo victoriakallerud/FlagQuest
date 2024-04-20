@@ -33,6 +33,8 @@ class OnlineGameView(gsm: GameStateManager, private val stage: Stage, onlineGame
     val answerButtons: MutableList<TextButton> = mutableListOf()
 
     init {
+        val startTime = System.currentTimeMillis()
+
         onlineGameController.onlineGameRedirectionListener = onlineGameListener
         onlineGameController.resultRedirectionListener = resultRedirectionListener
         onlineGameController.attachNextRoundListener()
@@ -66,11 +68,15 @@ class OnlineGameView(gsm: GameStateManager, private val stage: Stage, onlineGame
                 override fun clicked(event: InputEvent?, x: Float, y: Float) {
                     if(answerOption.isCorrect){
                         button.color = Color.GREEN
-                        onlineGameController.submitAnswer(true, 1000)
+                        onlineGameController.submitAnswer(true,
+                            System.currentTimeMillis() - startTime
+                        )
                         println("Correct!")
                     } else {
                         button.color = Color.RED
-                        onlineGameController.submitAnswer(false, 1000)
+                        onlineGameController.submitAnswer(false,
+                            System.currentTimeMillis() - startTime
+                        )
                         println("Incorrect!")
                     }
                     disableButtons()
