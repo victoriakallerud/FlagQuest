@@ -1,19 +1,21 @@
 package com.flagquest.game.views
 
 import com.badlogic.gdx.graphics.g2d.BitmapFont
+import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.ui.TextField
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.flagquest.game.controllers.GameLobbyController
+import com.flagquest.game.navigation.LobbyRedirectionListener
+import com.flagquest.game.navigation.OnlineGameRedirectionListener
 import com.flagquest.game.states.GameStateManager
-import com.flagquest.game.states.OnlineGameState
-import com.flagquest.game.utils.ButtonClickListener
 import com.flagquest.game.utils.UIManager
 
-class GameLobbyView(gsm: GameStateManager, isAdmin: Boolean, lobbyId: String, stage: Stage, controller: GameLobbyController) {
+class GameLobbyView(gsm: GameStateManager, isAdmin: Boolean, lobbyId: String, stage: Stage, controller: GameLobbyController, onlineGameListener: OnlineGameRedirectionListener, lobbyListener: LobbyRedirectionListener) {
     private val skin: Skin = UIManager.skin
     private val textFieldStyle: TextField.TextFieldStyle = skin.get(TextField.TextFieldStyle::class.java)
     private val titleFont: BitmapFont = UIManager.titleFont
@@ -29,6 +31,11 @@ class GameLobbyView(gsm: GameStateManager, isAdmin: Boolean, lobbyId: String, st
     private var lobbyInviteCode: Int = -1
 
     init {
+        controller.onlineGameRedirectionListener = onlineGameListener
+        controller.lobbyRedirectionListener = lobbyListener
+        controller.attachQuizListener()
+        controller.attachUpdateLobbyListener()
+
         val lobby = controller.onLoadLobby(lobbyId)
         textFieldStyle.font.data.setScale(5f)
 
@@ -48,13 +55,6 @@ class GameLobbyView(gsm: GameStateManager, isAdmin: Boolean, lobbyId: String, st
 
         currParticipants = playerIds.size
         val joinedText = "$currParticipants/$totalParticipants has joined"
-
-        // val lobbyId = DataManager.getData("lobbyId") as String
-        // val userId = DataManager.getData("userId") as String
-        val userId = "0e7cb4e7-c8db-41e7-b536-bf94c66c9e50"
-
-        val socket = controller.connectToSocket()
-        controller.joinLobby(socket, lobbyId, userId)
 
 
         UIManager.addHeading(stage, "GAME LOBBY", 2.8f)
@@ -95,7 +95,12 @@ class GameLobbyView(gsm: GameStateManager, isAdmin: Boolean, lobbyId: String, st
             val startButton = TextButton("START NOW", skin)
             startButton.height = buttonHeight.toFloat()
             startButton.setPosition(screenWidth / 2 - startButton.width / 2, 300f)
-            startButton.addListener(ButtonClickListener(gsm, lazy { OnlineGameState(gsm) })) //TODO: Link to Online Game once implemented.
+            startButton.addListener(object: ClickListener() {
+                override fun clicked(event: InputEvent?, x: Float, y: Float) {
+                    controller.onGameStartButtonClicked(lobbyId)
+                }
+
+            }) //TODO: Link to Online Game once implemented. // TODO: Add send "startGame" on WebSocket
             table.add(startButton).width(screenWidth * 0.8f).padTop(100f)
         }
 

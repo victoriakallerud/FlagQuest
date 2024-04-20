@@ -9,6 +9,7 @@ import com.flagquest.game.models.AuthHandler
 import com.flagquest.game.states.GameStateManager
 import com.flagquest.game.states.LoginMenuState
 import com.flagquest.game.states.MainMenuState
+import com.flagquest.game.states.ResultsState
 
 class FlagQuest(private val authHandler: AuthHandler) : ApplicationAdapter() {
     var gsm: GameStateManager = GameStateManager()

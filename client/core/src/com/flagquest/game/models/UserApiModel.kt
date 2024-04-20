@@ -1,7 +1,6 @@
 package com.flagquest.game.models
 
 import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.utils.async.ThreadUtils
 import com.flagquest.game.utils.DataManager
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
@@ -30,16 +29,16 @@ class UserApiModel {
     @OptIn(DelicateCoroutinesApi::class)
     fun loginUser(authHandler: AuthHandler, email: String, password: String, callback: (Boolean)-> Unit) {
         if (email.isEmpty() || password.isEmpty()) {
-            Gdx.app.log("LoginState", "Email or password cannot be empty")
+            Gdx.app.log("UserApiModel", "Email or password cannot be empty")
             callback(false)
         }
-        Gdx.app.log("LoginState", "Attempting to login with email: $email")
+        Gdx.app.log("UserApiModel", "Attempting to login with email: $email")
 
         try{
         authHandler.signIn(email, password) { success, uid, message ->
             if (success) {
-                Gdx.app.log("LoginState", "Firebase auth successful")
-                Gdx.app.log("LoginState", "Firebase User ID: $uid")
+                Gdx.app.log("UserApiModel", "Firebase auth successful")
+                Gdx.app.log("UserApiModel", "Firebase User ID: $uid")
 
                 GlobalScope.launch(Dispatchers.IO) {
                     val user = withContext(Dispatchers.Default) {
@@ -47,42 +46,97 @@ class UserApiModel {
                     }
                     val loggedIn = if (user != null) {
                         val userId: String = getIdFromResponse(user)
-                        Gdx.app.log("LoginState", "User ID: $userId")
+                        Gdx.app.log("UserApiModel", "User ID: $userId")
                         DataManager.setData("userId", userId)
                         true
                     } else {
-                        Gdx.app.error("LoginState", "Error retrieving user")
+                        Gdx.app.error("UserApiModel", "Error retrieving user")
                         false
                     }
                     callback(loggedIn)
                 }
 
             } else {
-                Gdx.app.log("LoginState", "Firebase auth failed: $message")
+                Gdx.app.log("UserApiModel", "Firebase auth failed: $message")
                 callback(false)
             }
         }
         } catch (e: Exception) {
-            Gdx.app.error("LoginState", "Error: ${e.message}")
+            Gdx.app.error("UserApiModel", "Error: ${e.message}")
             callback(false)
         }
     }
 
-    fun postUser(name: String, username: String, nationality: String, password: String): String? {
+    @OptIn(DelicateCoroutinesApi::class)
+    fun registerUser(authHandler: AuthHandler, email: String, password: String, userName: String, nationality: String, callback: (Boolean)-> Unit) {
+        if (email.isEmpty() || password.isEmpty()) {
+            Gdx.app.log("RegistrationState", "Email or password cannot be empty")
+            callback(false)
+        }
+        if (nationality == "Nationality"){
+            Gdx.app.log("RegistrationState", "Select a nationality")
+            callback(false)
+        }
+        Gdx.app.log("RegistrationState", "Attempting to register with email: $email")
+        try {
+            authHandler.signUp(email, password) { success, uid, message ->
+                if (success) {
+                    Gdx.app.log("RegistrationState", "Registration successful")
+                    Gdx.app.log("RegistrationState", "Firebase User ID: $uid")
+                    GlobalScope.launch(Dispatchers.IO) {
+                        val user: String? = withContext(Dispatchers.Default) {
+                            postUser(userName, nationality, uid!!)
+                        }
+                        val registered = if (user != null) {
+                            val userId: String = getIdFromResponse(user)
+                            Gdx.app.log("RegistrationState", "User ID: $userId")
+                            DataManager.setData("userId", userId)
+                            true
+                        } else {
+                            Gdx.app.error("RegistrationState", "Error registering user")
+                            false
+                        }
+                        callback(registered)
+                    }
+                } else {
+                    Gdx.app.log("RegistrationState", "Registration failed: $message")
+                    callback(false)
+                }
+            }
+        } catch (e: Exception) {
+            Gdx.app.error("RegistrationState", "Error: ${e.message}")
+            callback(false)
+        }
+    }
+
+
+    fun postUser(username: String, nationality: String, firebaseId: String): String? {
         val client = OkHttpClient()
         val mediaType = "application/json".toMediaType()
-        val body = "{\r\n    \"userName\": \"$username\",\r\n    \"nationality\": \"$nationality\"\r\n}".toRequestBody(mediaType)
+        val body = "{\r\n    \"userName\": \"$username\",\r\n    \"nationality\": \"$nationality\",\r\n    \"firebaseId\": \"$firebaseId\"\r\n}".toRequestBody(mediaType)
         val request = Request.Builder()
-            .url("http://flagquest.leotm.de:3000/user/USER_ID")
+            .url("http://flagquest.leotm.de:3000/user/")
             .post(body)
             .addHeader("Content-Type", "application/json")
             .addHeader("X-API-Key", "{{token}}")
             .build()
         val response = client.newCall(request).execute()
-        println(response.body?.string())
-        return response.body?.string()
+
+        val responseBodyString = response.body?.string() // Store the response body
+        println(responseBodyString)
+        return if(response.isSuccessful) {
+            responseBodyString
+        } else {
+            println("Error: ${response.code} - ${response.message}")
+            null
+        }
     }
 
+    /**
+     * Function sends GET request to retrieve UserId with provided username
+     * @param username of user
+     * @return Server's response as a string
+     */
     fun getUserByName(username: String): String? {
         val client = OkHttpClient()
         val request = Request.Builder()
@@ -90,8 +144,14 @@ class UserApiModel {
             .addHeader("X-API-Key", "{{token}}")
             .build()
         val response = client.newCall(request).execute()
-        println(response.body?.string())
-        return response.body?.string()
+        val responseBodyString = response.body?.string() // Store the response body
+        println(responseBodyString)
+        return if(response.isSuccessful) {
+            responseBodyString
+        } else {
+            println("Error: ${response.code} - ${response.message}")
+            null
+        }
     }
 
     fun getUserByFirebaseId(firebaseId: String): String? {
@@ -127,7 +187,14 @@ class UserApiModel {
             .addHeader("X-API-Key", "{{token}}")
             .build()
         val response = client.newCall(request).execute()
-        return response.body?.string()
+        val responseBodyString = response.body?.string() // Store the response body
+        println(responseBodyString)
+        return if(response.isSuccessful) {
+            responseBodyString
+        } else {
+            println("Error: ${response.code} - ${response.message}")
+            null
+        }
     }
 
 
@@ -143,7 +210,40 @@ class UserApiModel {
             .addHeader("X-API-Key", "{{token}}")
             .build()
         val response = client.newCall(request).execute()
-        return response.body?.string()
+        val responseBodyString = response.body?.string() // Store the response body
+        println(responseBodyString)
+        return if(response.isSuccessful) {
+            responseBodyString
+        } else {
+            println("Error: ${response.code} - ${response.message}")
+            null
+        }
+    }
+
+    /**
+     * Function sends PUT request to send friend request to user with provided friendId
+     * @param friendId userId of friend
+     * @return Server's response as string
+     */
+    fun putAddFriend(friendId: String): String? {
+        val client = OkHttpClient()
+        val mediaType = "text/plain".toMediaType()
+        val body = "".toRequestBody(mediaType)
+        val userId = DataManager.getData("userId") as String
+        val request = Request.Builder()
+            .url("http://flagquest.leotm.de:3000/user/$userId/friends/$friendId")
+            .put(body)
+            .addHeader("X-API-Key", "{{token}}")
+            .build()
+        val response = client.newCall(request).execute()
+        val responseBodyString = response.body?.string() // Store the response body
+        println(responseBodyString)
+        return if(response.isSuccessful) {
+            responseBodyString
+        } else {
+            println("Error: ${response.code} - ${response.message}")
+            null
+        }
     }
 
     /**
@@ -163,6 +263,21 @@ class UserApiModel {
         }
 
         return highscores
+    }
+
+    /**
+     * Function retrieves highscores of top 10 friends
+     * @return List with pairs of username and score
+     */
+    fun getFriendNames(): MutableList<String> {
+        val friendNames = mutableListOf<String>()
+        val user = getUserById(DataManager.getData("userId")!! as String)
+        val friendUuidList = extractFriendUuidList(user!!)
+        for (friendUuid in friendUuidList) {
+            val friend = JSONObject(getUserById(friendUuid))
+            friendNames.add(friend.getString("userName"))
+        }
+        return friendNames
     }
 
     /**
@@ -192,14 +307,23 @@ class UserApiModel {
         return friendsScore
     }
 
-
+    /**
+     * Function retrieves ID from user object
+     * @param responseBody String of user object
+     * @return ID of user
+     */
     fun getIdFromResponse(responseBody: String): String {
         val jsonObject = JSONObject(responseBody)
         return jsonObject.getString("id")
     }
 
 
-    fun extractFriendUuidList(jsonString: String): List<String> {
+    /**
+     * Function extracts friendUuidList from user object
+     * @param jsonString String of user object
+     * @return List of friendUuids
+     */
+    private fun extractFriendUuidList(jsonString: String): List<String> {
         val jsonObject = JSONObject(jsonString)
         val friendUuidJsonArray = jsonObject.getJSONArray("friendUuidList")
         val friendUuidList = mutableListOf<String>()
@@ -209,5 +333,74 @@ class UserApiModel {
         }
 
         return friendUuidList
+    }
+
+    /**
+     * Function sends GET request to retrieve pending friend requests
+     * @return List of pairs with usernames and userIds of pending friend requests
+     */
+    fun getPendingFriendRequests(): MutableList<Pair<String, String>> {
+        val pendingFriendRequests = mutableListOf<Pair<String, String>>()
+        val jsonUser = JSONObject(getUserById(DataManager.getData("userId")!! as String))
+        val friendRequestIds = jsonUser.getJSONArray("pendingFriendRequests")
+        for (i in 0 until friendRequestIds.length()) {
+            val friendId = friendRequestIds.getString(i)
+            val pendingFriendRequest = JSONObject(getUserById(friendId))
+            pendingFriendRequests.add(pendingFriendRequest.getString("userName") to friendId)
+        }
+        return pendingFriendRequests
+    }
+
+    fun putAcceptRequest(friendId: String): String? {
+        val client = OkHttpClient()
+        val mediaType = "text/plain".toMediaType()
+        val body = "".toRequestBody(mediaType)
+        val userId = DataManager.getData("userId") as String
+        val request = Request.Builder()
+            .url("http://flagquest.leotm.de:3000/user/$userId/friends/requests/$friendId")
+            .put(body)
+            .addHeader("X-API-Key", "{{token}}")
+            .build()
+        val response = client.newCall(request).execute()
+        val responseBodyString = response.body?.string() // Store the response body
+        println(responseBodyString)
+        return if(response.isSuccessful) {
+            responseBodyString
+        } else {
+            println("Error: ${response.code} - ${response.message}")
+            null
+        }
+    }
+
+    fun delRejectRequest(friendId: String): String? {
+        val client = OkHttpClient()
+        val mediaType = "text/plain".toMediaType()
+        val body = "".toRequestBody(mediaType)
+        val userId = DataManager.getData("userId") as String
+        val request = Request.Builder()
+            .url("http://flagquest.leotm.de:3000/user/$userId/friends/requests/$friendId")
+            .method("DELETE", body)
+            .addHeader("X-API-Key", "{{token}}")
+            .build()
+        val response = client.newCall(request).execute()
+        val responseBodyString = response.body?.string() // Store the response body
+        println(responseBodyString)
+        return if(response.isSuccessful) {
+            responseBodyString
+        } else {
+            println("Error: ${response.code} - ${response.message}")
+            null
+        }
+    }
+
+    fun getResults(): MutableList<Pair<String, Int>> {
+        // TODO: Should return a list of scores from players in the game
+        return listOf(
+            "amelmd" to 170,
+            "BABA" to 240,
+            "Cecilia" to 110,
+            "Donald" to 190,
+            "Emilie" to 40
+        ) as MutableList<Pair<String, Int>>
     }
 }

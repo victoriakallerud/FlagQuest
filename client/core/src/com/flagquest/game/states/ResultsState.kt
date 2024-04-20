@@ -4,22 +4,16 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.utils.viewport.ScreenViewport
-import com.flagquest.game.models.AuthHandler
-import com.flagquest.game.navigation.MainMenuRedirectionListener
-import com.flagquest.game.views.LoginView
+import com.flagquest.game.views.ResultsView
 
-class LoginState(gsm: GameStateManager, private val authHandler: AuthHandler) : State(gsm), MainMenuRedirectionListener {
+class ResultsState(gsm: GameStateManager) : State(gsm) {
     override val stage = Stage(ScreenViewport())
-    private val view = LoginView(gsm, stage, this, authHandler)
+    private val view = ResultsView(gsm, stage)
+    override var backNavType = "menu"
 
     init {
         Gdx.input.inputProcessor = stage
     }
-
-    override fun redirectToMainMenuState() {
-        gsm.push(MainMenuState(gsm))
-    }
-
     override fun handleInput() {
         // TODO: Implement handleInput
     }
