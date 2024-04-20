@@ -16,7 +16,6 @@ class RegistrationState(gsm: GameStateManager, private val authHandler: AuthHand
     init {
         Gdx.input.inputProcessor = stage
     }
-
     override fun redirectToMainMenuState() {
         gsm.push(MainMenuState(gsm))
     }

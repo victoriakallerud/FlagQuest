@@ -8,8 +8,8 @@ import com.flagquest.game.navigation.MainMenuRedirectionListener
 class RegistrationController(private val model: UserApiModel) {
     var redirectionListener: MainMenuRedirectionListener? = null
     var regErrorListener: ((String) -> Unit)? = null
-    fun onRegisterClicked(authHandler: AuthHandler, email: String, password: String, userName: String) {
-        model.registerUser(authHandler, email, password, userName) { registered ->
+    fun onRegisterClicked(authHandler: AuthHandler, email: String, password: String, userName: String, nationality: String) {
+        model.registerUser(authHandler, email, password, userName, nationality) { registered ->
             if (registered) {
                 Gdx.app.log("RegistrationState", "Registration successful")
                 Gdx.app.postRunnable {
