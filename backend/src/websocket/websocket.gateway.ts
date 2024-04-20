@@ -92,14 +92,35 @@ export class WebsocketGateway implements OnGatewayInit, OnGatewayConnection, OnG
     this.logger.log(`Starting next round in lobby ${lobbyId}`);
     this.server.to(lobbyId).emit('nextRound', roundCount);
   }
-  
+
+  pushPauseGameToLobby(lobbyId: string){
+    this.logger.log(`Pushing pause game to all clients in room ${lobbyId}`);
+    this.server.to(lobbyId).emit('pause');
+  }
+
+  pushResumeGameToLobby(lobbyId: string){
+    this.logger.log(`Pushing resume game to all clients in room ${lobbyId}`);
+    this.server.to(lobbyId).emit('resume');
+  }
+
   pushEndScoreToLobby(lobbyId: string, listOfAllPlayers: PlayerDto[]){
     this.logger.log(`Pushing end score to all clients in room ${lobbyId}`);
     this.server.to(lobbyId).emit('endScore', listOfAllPlayers);
   }
 
   // --------------------- Game Functions ---------------------
-  
+  @SubscribeMessage('pauseGame')
+  async handlePauseGame(@ConnectedSocket() client: Socket, @MessageBody() joinLobbyDTO: JoinLobbyDTO) {
+    this.logger.log(joinLobbyDTO.lobbyId)
+    this.pushPauseGameToLobby(joinLobbyDTO.lobbyId);
+  }
+
+  @SubscribeMessage('resumeGame')
+  async handleResumeGame(@ConnectedSocket() client: Socket, @MessageBody() joinLobbyDTO: JoinLobbyDTO) {
+    this.pushResumeGameToLobby(joinLobbyDTO.lobbyId);
+  }
+
+
   @SubscribeMessage('submitAnswer')
   async handleSubmittedAnswer(@ConnectedSocket() client: Socket, @MessageBody() submittedAnswer: submittedAnswerDto) {
     // get player name and push notification to all players
