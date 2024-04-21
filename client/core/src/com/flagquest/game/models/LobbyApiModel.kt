@@ -1,12 +1,12 @@
 package com.flagquest.game.models
 
-import com.flagquest.game.states.GameLobbyState
+import com.flagquest.game.utils.DataManager
+import com.flagquest.game.utils.SocketHandler
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.RequestBody.Companion.toRequestBody
 import org.json.JSONArray
-import org.json.JSONException
 import org.json.JSONObject
 
 
@@ -14,14 +14,37 @@ import org.json.JSONObject
  * Class handles API requests associated with Lobby
  */
 class LobbyApiModel {
-    private val userId: String = "0e7cb4e7-c8db-41e7-b536-bf94c66c9e50" // TODO: Implement function to get user's id
+    private val userId: String = DataManager.getData("userId") as String
+
+    /**
+     * Function sends GET request to retrieve lobby with lobbyId
+     */
+    fun getLobby(lobbyId: String): String? {
+        val client = OkHttpClient()
+        val request = Request.Builder()
+            .url("http://flagquest.leotm.de:3000/lobby/${lobbyId}")
+            .addHeader("X-API-Key", "{{token}}")
+            .build()
+        val response = client.newCall(request).execute()
+        val responseBodyString = response.body?.string() // Store the response body
+        println(responseBodyString)
+
+        // Return lobby JSON response if successful, otherwise return null
+        return if (response.isSuccessful) {
+            responseBodyString
+        } else {
+            println("Error: ${response.code} - ${response.message}")
+            null
+        }
+    }
 
     /**
      * Function sends POST request to create a new lobby
      * @param size Maximum number of players allowed in the lobby
-     * @return Server's response as string
+     * @return Server's response as string in JSON format
+     * @see getIdFromResponse
      */
-    fun postLobby(size: Int): String? {
+    fun postLobby(size: Int, level: String): String? {
         val client = OkHttpClient()
         val mediaType = "application/json".toMediaType()
         val body = ("{" +
@@ -32,7 +55,7 @@ class LobbyApiModel {
                 "\r\n    \"numberOfQuestions\": 10," +
                 "\r\n    \"showAnswers\": true," +
                 "\r\n    \"gameMode\": \"GuessingFlags\"," +
-                "\r\n    \"level\": \"Europe\"," +
+                "\r\n    \"level\": \"$level\"," +
                 "\r\n    \"isPrivate\": false" +
                 "\r\n  }\r\n" +
                 "}").toRequestBody(mediaType)
@@ -43,8 +66,42 @@ class LobbyApiModel {
             .addHeader("X-API-Key", "{{token}}")
             .build()
         val response = client.newCall(request).execute()
-        println(response.body?.string())
-        return response.body?.string()
+        val responseBodyString = response.body?.string() // Store the response body
+        println(responseBodyString)
+
+        // Return lobby JSON response if successful, otherwise return null
+        return if (response.isSuccessful) {
+            responseBodyString
+        } else {
+            println("Error: ${response.code} - ${response.message}")
+            null
+        }
+
+    }
+
+    fun leaveLobby(): String? {
+        val client = OkHttpClient()
+        val mediaType = "text/plain".toMediaType()
+        val body = "".toRequestBody(mediaType)
+        val userId = DataManager.getData("userId") as String
+        val lobbyId = DataManager.getData("lobbyId") as String
+        val request = Request.Builder()
+            .url("http://flagquest.leotm.de:3000/lobby/$lobbyId/$userId")
+            .method("DELETE", body)
+            .addHeader("X-API-Key", "{{token}}")
+            .build()
+        val response = client.newCall(request).execute()
+        val responseBodyString = response.body?.string() // Store the response body
+        println(responseBodyString)
+        return if(response.isSuccessful){
+            DataManager.clearData("lobbyId")
+            SocketHandler.closeConnection()
+            SocketHandler.removeAllListeners()
+            responseBodyString
+        } else {
+            println("Error: ${response.code} - ${response.message}")
+            null
+        }
     }
 
     /**
@@ -62,7 +119,16 @@ class LobbyApiModel {
             .addHeader("X-API-Key", "{{token}}")
             .build()
         val response = client.newCall(request).execute()
-        return response.body?.string()
+        val responseBodyString = response.body?.string() // Store the response body
+        println(responseBodyString)
+
+        // Return lobby JSON response if successful, otherwise return null
+        return if (response.isSuccessful) {
+            responseBodyString
+        } else {
+            println("Error: ${response.code} - ${response.message}")
+            null
+        }
     }
 
     /**
@@ -78,7 +144,16 @@ class LobbyApiModel {
             .addHeader("X-API-Key", "{{token}}")
             .build()
         val response = client.newCall(request).execute()
-        return response.body?.string()
+        val responseBodyString = response.body?.string() // Store the response body
+        println(responseBodyString)
+
+        // Return lobby JSON response if successful, otherwise return null
+        return if (response.isSuccessful) {
+            responseBodyString
+        } else {
+            println("Error: ${response.code} - ${response.message}")
+            null
+        }
     }
 
     /**
@@ -92,7 +167,16 @@ class LobbyApiModel {
             .addHeader("X-API-Key", "{{token}}")
             .build()
         val response = client.newCall(request).execute()
-        return response.body?.string()
+        val responseBodyString = response.body?.string() // Store the response body
+        println(responseBodyString)
+
+        // Return lobby JSON response if successful, otherwise return null
+        return if (response.isSuccessful) {
+            responseBodyString
+        } else {
+            println("Error: ${response.code} - ${response.message}")
+            null
+        }
     }
 
     /**
@@ -100,7 +184,7 @@ class LobbyApiModel {
      * @param responseBody Server's response as string in JSON format
      * @return Lobby's ID
      */
-    fun getIdFromResponse(responseBody: String): String {
+    fun getIdFromResponse(responseBody: String): String? {
         val jsonObject = JSONObject(responseBody)
         println("JsonObject: $jsonObject")
         println("ID: ${jsonObject.getString("id")}")

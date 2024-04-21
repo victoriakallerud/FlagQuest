@@ -1,5 +1,5 @@
 package com.flagquest.game.navigation
 
-interface RegistrationRedirectionListener {
+interface MainMenuRedirectionListener {
     fun redirectToMainMenuState()
 }

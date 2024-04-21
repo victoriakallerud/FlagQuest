@@ -9,7 +9,7 @@ import com.flagquest.game.views.MainMenuView
 
 class MainMenuState(gsm: GameStateManager) : State(gsm) {
     override val stage = Stage(ScreenViewport())
-    private val view = MainMenuView(gsm, stage)
+    private val view = MainMenuView(stage)
 
     init {
         Gdx.input.inputProcessor = stage
@@ -20,14 +20,11 @@ class MainMenuState(gsm: GameStateManager) : State(gsm) {
     private fun setUpButtonListeners() {
         view.buttons[0].addListener(ButtonClickListener(gsm, lazy { LobbyInitiationState(gsm) }))
         view.buttons[1].addListener(ButtonClickListener(gsm, lazy { JoinGameState(gsm) }))
-        view.buttons[2].addListener(ButtonClickListener(gsm, lazy { OfflineGameState(gsm) }))
+        view.buttons[2].addListener(ButtonClickListener(gsm, lazy { OfflineGameState(gsm, false) }))
         view.buttons[3].addListener(ButtonClickListener(gsm, lazy { HighscoreState(gsm) }))
         view.buttons[4].addListener(ButtonClickListener(gsm, lazy { ManageFriendsState(gsm) }))
     }
 
-    override fun handleInput() {
-        TODO("Not yet implemented")
-    }
 
     override fun update(dt: Float) {
         view.update(dt)

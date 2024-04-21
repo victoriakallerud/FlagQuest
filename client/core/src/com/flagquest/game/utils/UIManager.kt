@@ -9,7 +9,9 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton
 import com.badlogic.gdx.scenes.scene2d.ui.Label
+import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
+import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable
@@ -29,7 +31,7 @@ object UIManager {
     val elementHeight = screenHeight / 11
     val elementWidth = screenWidth * 8 / 10
     val elementSpacing = 20
-    var elementPos: Float = ((screenHeight / 2) + 150).toFloat()
+    private var elementPos: Float = ((screenHeight / 2) + 150).toFloat()
     val buttonTextScale = 1.5f
 
     // Backbutton parameters
@@ -48,13 +50,6 @@ object UIManager {
             }
         })
         stage.addActor(backButton) // Add the back button to the stage
-    }
-    fun addNavButtonArray (stage: Stage, gsm: GameStateManager, buttons: Array<Pair<TextButton, Lazy<State>>>, yTop: Float) {
-        elementPos = yTop
-        for (button in buttons) {
-            addNavButton(stage,gsm,button, elementPos)
-            elementPos -= button.first.height + 30 // Adjust inter-button distance here
-        }
     }
     fun addInstructButtonArray (stage: Stage, gsm: GameStateManager, buttons: Array<Pair<TextButton, String>>, yTop: Float) {
         elementPos = yTop
@@ -78,7 +73,7 @@ object UIManager {
      * This function adds a button which contains a string for instructions.
      * Carried out as documented in ButtonClickListener.kt
      */
-    fun addInstructButton (stage: Stage, gsm: GameStateManager, button: Pair<TextButton, String>, yTop: Float){
+    private fun addInstructButton (stage: Stage, gsm: GameStateManager, button: Pair<TextButton, String>, yTop: Float){
         button.first.setSize((screenWidth*80/100).toFloat(), elementHeight.toFloat())
         button.first.setPosition(screenWidth / 2 - button.first.width / 2, yTop)
         button.first.addListener(ButtonClickListener(gsm,button.second))
@@ -113,5 +108,49 @@ object UIManager {
         heading.pack()
         heading.setPosition((screenWidth - heading.prefWidth) / 2, posY)
         stage.addActor(heading)
+    }
+
+    fun addScrollPane(table: Table): ScrollPane {
+        val scrollPane = ScrollPane(table, skin).apply {
+            setScrollingDisabled(true, false)
+            setFadeScrollBars(false)
+
+            // Calculate the position to center the scroll pane
+            val scrollPaneWidth = (screenWidth / 100 * 80).toFloat() // Assuming 80% of the screen width
+            val scrollPaneHeight = (screenHeight / 100 * 48).toFloat() // Assuming a fixed height
+            val xPos = (screenWidth - scrollPaneWidth) / 2
+            val yPos = (screenHeight - scrollPaneHeight) / 2
+
+            // Set the position of the scroll pane
+            setPosition(xPos, yPos)
+            setSize(scrollPaneWidth, scrollPaneHeight)
+        }
+        return scrollPane
+    }
+    fun truncateString(input: String, maxLength: Int): String {
+        return if (input.length <= maxLength) {
+            input // Return the original string if it's within the maxLength
+        } else {
+            // Otherwise, truncate the string and append an ellipsis
+            input.substring(0, maxLength - 3) + "..."
+        }
+    }
+
+    fun addError(stage: Stage, error: String){
+        val errorStyle = skin.get("error", Label.LabelStyle::class.java)
+        val errorLabel = Label(error, errorStyle)
+        errorLabel.setFontScale(1.5f)
+        errorLabel.setAlignment(Align.center)
+        errorLabel.pack()
+        errorLabel.setPosition((screenWidth - errorLabel.prefWidth) / 2, screenHeight - 600f)
+        stage.addActor(errorLabel)
+    }
+
+    fun removeErrors(stage: Stage) {
+        stage.actors.forEach {
+            if (it is Label && it.style == skin.get("error", Label.LabelStyle::class.java)) {
+                it.remove()
+            }
+        }
     }
 }
