@@ -4,12 +4,16 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.utils.viewport.ScreenViewport
+import com.flagquest.game.controllers.LobbyInitiationController
+import com.flagquest.game.models.GameApiModel
+import com.flagquest.game.models.LobbyApiModel
 import com.flagquest.game.navigation.LobbyRedirectionListener
 import com.flagquest.game.views.LobbyInitiationView
 
 class LobbyInitiationState(gsm: GameStateManager) : State(gsm), LobbyRedirectionListener {
     override val stage = Stage(ScreenViewport())
-    private val view = LobbyInitiationView(gsm, stage, this)
+    private val controller: LobbyInitiationController = LobbyInitiationController(LobbyApiModel(), GameApiModel())
+    private val view = LobbyInitiationView(gsm, stage, this, controller)
 
     init {
         Gdx.input.inputProcessor = stage
