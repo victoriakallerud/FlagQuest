@@ -57,7 +57,7 @@ class UserApiModel {
                 }
 
             } else {
-                Gdx.app.log("UserApiModel", "Firebase auth failed: $message")
+                Gdx.app.error("UserApiModel", "Firebase auth failed: $message")
                 callback(false)
             }
         }
@@ -70,41 +70,41 @@ class UserApiModel {
     @OptIn(DelicateCoroutinesApi::class)
     fun registerUser(authHandler: AuthHandler, email: String, password: String, userName: String, nationality: String, callback: (Boolean)-> Unit) {
         if (email.isEmpty() || password.isEmpty()) {
-            Gdx.app.log("RegistrationState", "Email or password cannot be empty")
+            Gdx.app.error("RegistrationState", "Email or password cannot be empty")
             callback(false)
         }
         if (nationality == "Nationality"){
-            Gdx.app.log("RegistrationState", "Select a nationality")
+            Gdx.app.log("UserApiModel", "Select a nationality")
             callback(false)
         }
-        Gdx.app.log("RegistrationState", "Attempting to register with email: $email")
+        Gdx.app.log("UserApiModel", "Attempting to register with email: $email")
         try {
             authHandler.signUp(email, password) { success, uid, message ->
                 if (success) {
-                    Gdx.app.log("RegistrationState", "Registration successful")
-                    Gdx.app.log("RegistrationState", "Firebase User ID: $uid")
+                    Gdx.app.log("UserApiModel", "Registration successful")
+                    Gdx.app.log("UserApiModel", "Firebase User ID: $uid")
                     GlobalScope.launch(Dispatchers.IO) {
                         val user: String? = withContext(Dispatchers.Default) {
                             postUser(userName, nationality, uid!!)
                         }
                         val registered = if (user != null) {
                             val userId: String = getIdFromResponse(user)
-                            Gdx.app.log("RegistrationState", "User ID: $userId")
+                            Gdx.app.log("UserApiModel", "User ID: $userId")
                             DataManager.setData("userId", userId)
                             true
                         } else {
-                            Gdx.app.error("RegistrationState", "Error registering user")
+                            Gdx.app.error("UserApiModel", "Error registering user")
                             false
                         }
                         callback(registered)
                     }
                 } else {
-                    Gdx.app.log("RegistrationState", "Registration failed: $message")
+                    Gdx.app.error("RegistrationState", "Firebase Registration failed: $message")
                     callback(false)
                 }
             }
         } catch (e: Exception) {
-            Gdx.app.error("RegistrationState", "Error: ${e.message}")
+            Gdx.app.error("UserApiModel", "Error: ${e.message}")
             callback(false)
         }
     }
