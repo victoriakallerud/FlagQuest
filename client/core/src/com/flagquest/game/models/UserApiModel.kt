@@ -110,7 +110,7 @@ class UserApiModel {
     }
 
 
-    fun postUser(username: String, nationality: String, firebaseId: String): String? {
+    private fun postUser(username: String, nationality: String, firebaseId: String): String? {
         val client = OkHttpClient()
         val mediaType = "application/json".toMediaType()
         val body = "{\r\n    \"userName\": \"$username\",\r\n    \"nationality\": \"$nationality\",\r\n    \"firebaseId\": \"$firebaseId\"\r\n}".toRequestBody(mediaType)
@@ -154,7 +154,7 @@ class UserApiModel {
         }
     }
 
-    fun getUserByFirebaseId(firebaseId: String): String? {
+    private fun getUserByFirebaseId(firebaseId: String): String? {
         Gdx.app.log("UserApiModel", "Attempting to retrieve user with firebaseId: $firebaseId")
         val client = OkHttpClient()
         val request = Request.Builder()
@@ -312,7 +312,7 @@ class UserApiModel {
      * @param responseBody String of user object
      * @return ID of user
      */
-    fun getIdFromResponse(responseBody: String): String {
+    private fun getIdFromResponse(responseBody: String): String {
         val jsonObject = JSONObject(responseBody)
         return jsonObject.getString("id")
     }
