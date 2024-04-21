@@ -205,7 +205,7 @@ class UserApiModel {
     fun getTopTenUsers(): String? {
         val client = OkHttpClient()
         val request = Request.Builder()
-            .url("http://flagquest.leotm.de:3000/user/highScores/$level/GuessingFlags")
+            .url("http://flagquest.leotm.de:3000/user/highScores/$level/GuessingFlags/10")
             .addHeader("Content-Type", "application/json")
             .addHeader("X-API-Key", "{{token}}")
             .build()
