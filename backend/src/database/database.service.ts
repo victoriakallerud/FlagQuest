@@ -406,6 +406,9 @@ export class DatabaseService {
 
     async getAnwserOptionsByRegion(region: string): Promise<string[]> {
         let answerOptions: string[] = [];
+        if(region === 'All') {
+            return this.getAnwserOptions();
+        }
         try{
             // Get only 4 random unique countries from the database
             let countries = await this.db.collection('countries').where('region', '==', region).get();
