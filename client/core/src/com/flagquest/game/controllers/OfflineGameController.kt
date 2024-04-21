@@ -7,8 +7,8 @@ import com.flagquest.game.navigation.TrainingQuestionRedirectionListener
 class OfflineGameController(private val model: LocalApiModel) {
     var redirectionListener: TrainingQuestionRedirectionListener? = null
 
-    fun getSingleQuestion(region: String): Question {
-        return model.generateQuestion(region)
+    fun getSingleQuestion(): Question {
+        return model.generateQuestion()
     }
 
     fun getFlagFilePathByCountryName(countryName: String): String {

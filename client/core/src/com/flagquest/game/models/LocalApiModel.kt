@@ -20,18 +20,23 @@ class LocalApiModel {
         return "flags/${countryCode?.lowercase()}.png"
     }
 
-    private fun getAnswerOptionsByRegion(region: String): List<String> {
+    private fun getAnswerOptionsByRegion(): List<String> {
         val countriesJson = Gdx.files.internal("countries.json").readString()
         val countries = parseCountriesFromJson(countriesJson)
-        val countriesInRegion: List<Country> = countries.filter { it.region == region }
-        return countriesInRegion.shuffled().take(4).map { it.name    }
+        val allCountries: List<Country> = countries
+        return allCountries.shuffled().take(4).map { it.name }
     }
 
-    fun generateQuestion(region: String): Question {
-        var answerOptions: List<String> = getAnswerOptionsByRegion(region)
+    fun generateQuestion(): Question {
+        var answerOptions: List<String> = getAnswerOptionsByRegion()
         val correctAnswer = answerOptions[0]
         answerOptions = answerOptions.shuffled()
-        return Question(correctAnswer, answerOptions.map { AnswerOption(it, it == correctAnswer) })
+        val desc = correctAnswer
+        return Question(desc, answerOptions.map { AnswerOption(it, it == correctAnswer) })
+    }
+
+    private fun generateNumberOfQuestions(numberOfQuestions: Int): List<Question> {
+        return List(numberOfQuestions) { generateQuestion() }
     }
 
     private fun parseCountriesFromJson(json: String): List<Country> {

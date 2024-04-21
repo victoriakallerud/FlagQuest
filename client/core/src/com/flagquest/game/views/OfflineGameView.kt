@@ -32,7 +32,7 @@ class OfflineGameView(gsm: GameStateManager, stage: Stage, listener: TrainingQue
     init {
         controller.redirectionListener = listener
         // val quiz: Quiz = controller.handleCreateOfflineGame(10, "Europe")
-        currentQuestion = controller.getSingleQuestion("Europe")
+        currentQuestion = controller.getSingleQuestion()
 
         titleFont.data.setScale(1.5f)
         //Heading
@@ -80,6 +80,11 @@ class OfflineGameView(gsm: GameStateManager, stage: Stage, listener: TrainingQue
                         button.color = Color.RED
                         println("Incorrect!")
                     }
+                    for (answerButton in answerButtons){
+                        if (answerButton.text.toString() == currentQuestion.answerOptions.find { it.isCorrect }?.description){
+                            answerButton.color = Color.GREEN
+                        }
+                    }
                     disableButtons()
                     // Wait for 2 seconds before moving to the next question
                     Timer.schedule(object: Timer.Task() {
@@ -88,7 +93,7 @@ class OfflineGameView(gsm: GameStateManager, stage: Stage, listener: TrainingQue
                         }
                     }, 2f)
                     // Move to the next question
-                    currentQuestion = controller.getSingleQuestion("Europe")
+                    currentQuestion = controller.getSingleQuestion()
                 }
             })
             stage.addActor(button)
