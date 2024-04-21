@@ -44,7 +44,7 @@ class LobbyApiModel {
      * @return Server's response as string in JSON format
      * @see getIdFromResponse
      */
-    fun postLobby(size: Int): String? {
+    fun postLobby(size: Int, level: String): String? {
         val client = OkHttpClient()
         val mediaType = "application/json".toMediaType()
         val body = ("{" +
@@ -55,7 +55,7 @@ class LobbyApiModel {
                 "\r\n    \"numberOfQuestions\": 10," +
                 "\r\n    \"showAnswers\": true," +
                 "\r\n    \"gameMode\": \"GuessingFlags\"," +
-                "\r\n    \"level\": \"Europe\"," +
+                "\r\n    \"level\": \"$level\"," +
                 "\r\n    \"isPrivate\": false" +
                 "\r\n  }\r\n" +
                 "}").toRequestBody(mediaType)

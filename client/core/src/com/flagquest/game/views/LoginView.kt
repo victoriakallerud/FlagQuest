@@ -23,7 +23,6 @@ class LoginView(gsm: GameStateManager, private val stage: Stage, listener: MainM
     private var screenWidth = Gdx.graphics.width
     private val screenHeight = Gdx.graphics.height
     private val buttonHeight = screenHeight / 11
-
     val backNavType = "back"
 
     private val emailField = TextField("", skin).apply{ messageText="E-mail"}

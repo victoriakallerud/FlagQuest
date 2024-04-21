@@ -14,7 +14,6 @@ import com.flagquest.game.states.GameStateManager
 import com.flagquest.game.utils.UIManager
 import com.flagquest.game.utils.UIManager.addBackButton
 import com.flagquest.game.utils.UIManager.addHeading
-
 class JoinGameView(gsm: GameStateManager, stage: Stage, listener: LobbyRedirectionListener, private val controller: JoinGameController) {
     private val skin: Skin = UIManager.skin
     private val titleFont: BitmapFont = UIManager.titleFont
