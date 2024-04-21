@@ -35,8 +35,8 @@ export class UserController {
     }
 
     @ApiOperation({ summary: 'Get the best top k scores based on level and mode' })
-    @Get('highScores/:level/:gameMode')
-    async getBestScoresByRegionAndLevel(@Body('number') number: number, @Param('level') level: LevelEnum, @Param('gameMode') gameMode: GameModeEnum) {
+    @Get('highScores/:level/:gameMode/:number')
+    async getBestScoresByRegionAndLevel(@Param('number') number: number, @Param('level') level: LevelEnum, @Param('gameMode') gameMode: GameModeEnum) {
       return await this.userService.getBestScores(number, level, gameMode);
     }
 

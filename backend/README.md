@@ -1,7 +1,7 @@
 
 ## Description
 
-The FlagQuest backend is using the Nest.js TypeScript framework.
+The FlagQuest backend is using the Nest.js TypeScript framework. It contains a List of REST Enpoints which can bee seen here http://flagquest.leotm.de:3000/docs and different websocket messages seen in the Websocket Gateway.
 
 ## Requirements
 
