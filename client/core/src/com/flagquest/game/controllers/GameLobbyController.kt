@@ -26,7 +26,6 @@ class GameLobbyController(private val userModel: UserApiModel, private val lobby
             Gdx.app.postRunnable {
                 onlineGameRedirectionListener?.redirectToOnlineGameState()
             }
-            // redirectionListener?.redirectToOnlineGameState()
         }
     }
 
@@ -55,9 +54,6 @@ class GameLobbyController(private val userModel: UserApiModel, private val lobby
 
     fun onGameStartButtonClicked(lobbyId: String) {
         SocketHandler.emit("startGame", JSONObject().put("lobbyId", lobbyId).put("userId", DataManager.getData("userId")))
-        // Wait for 2 seconds
-//        Thread.sleep(2000)
-//        redirectionListener?.redirectToOnlineGameState()
     }
 
     fun onLoadLobby(lobbyId: String): String? {

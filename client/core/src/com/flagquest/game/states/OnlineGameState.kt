@@ -7,34 +7,19 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport
 import com.flagquest.game.navigation.OnlineGameRedirectionListener
 import com.flagquest.game.navigation.PauseRedirectionListener
 import com.flagquest.game.navigation.ResultRedirectionListener
-import com.flagquest.game.navigation.TrainingQuestionRedirectionListener
 import com.flagquest.game.views.OnlineGameView
 
-// Use without arguments when first presenting the quiz. Load with chosen and correct answer to reveal.
-class OnlineGameState(gsm: GameStateManager, chosen: String? = null, correct: String? = null) : State(gsm),
+class OnlineGameState(gsm: GameStateManager) : State(gsm),
     OnlineGameRedirectionListener, ResultRedirectionListener, PauseRedirectionListener {
     override val stage = Stage(ScreenViewport())
-    private val view = OnlineGameView(gsm, stage, this, this, this)
-
+    override var backNavType = "nothing"
 
     init {
         Gdx.input.inputProcessor = stage
-        addListenersToViewButtons()
+        OnlineGameView(gsm, stage, this, this, this)
     }
 
-    private fun addListenersToViewButtons() {
-
-    }
-
-    fun refreshState() {
-        gsm.set(OfflineGameState(gsm, false))
-    }
-
-    override fun handleInput() {
-        // TODO: Implement handleInput
-    }
     override fun update(dt: Float) {
-        handleInput()
         stage.act(dt)
     }
     override fun render() {

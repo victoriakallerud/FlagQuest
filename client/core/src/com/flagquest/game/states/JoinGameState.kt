@@ -3,14 +3,10 @@ package com.flagquest.game.states
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.scenes.scene2d.Stage
-import com.badlogic.gdx.scenes.scene2d.ui.Skin
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton
-import com.badlogic.gdx.scenes.scene2d.ui.TextField
 import com.badlogic.gdx.utils.viewport.ScreenViewport
 import com.flagquest.game.controllers.JoinGameController
 import com.flagquest.game.models.GameApiModel
 import com.flagquest.game.models.LobbyApiModel
-import com.flagquest.game.navigation.GameRedirectionListener
 import com.flagquest.game.navigation.LobbyRedirectionListener
 import com.flagquest.game.views.JoinGameView
 
@@ -27,11 +23,7 @@ class JoinGameState(gsm: GameStateManager) : State(gsm), LobbyRedirectionListene
         gsm.push(GameLobbyState(gsm, isAdmin = false, lobbyId))
     }
 
-    override fun handleInput() {
-        // TODO: Implement handleInput
-    }
     override fun update(dt: Float) {
-        handleInput()
         stage.act(dt)
     }
     override fun render() {

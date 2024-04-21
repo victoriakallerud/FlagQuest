@@ -8,21 +8,16 @@ import com.flagquest.game.models.AuthHandler
 import com.flagquest.game.navigation.MainMenuRedirectionListener
 import com.flagquest.game.views.RegistrationView
 
-class RegistrationState(gsm: GameStateManager, private val authHandler: AuthHandler) : State(gsm),
+class RegistrationState(gsm: GameStateManager, authHandler: AuthHandler) : State(gsm),
     MainMenuRedirectionListener {
     override val stage = Stage(ScreenViewport())
-    private val view = RegistrationView(gsm, stage, this, authHandler)
 
     init {
+        RegistrationView(gsm, stage, this, authHandler)
         Gdx.input.inputProcessor = stage
     }
     override fun redirectToMainMenuState() {
         gsm.push(MainMenuState(gsm))
-    }
-
-    override fun handleInput() {
-        // TODO: Implement handleInput
-//        screenWidth = screenWidth // Just placeholder code to make the code compile
     }
 
     override fun update(dt: Float) {

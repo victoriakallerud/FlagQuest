@@ -9,13 +9,11 @@ import org.json.JSONObject
 class GameApiModel() {
     data class Question (val description: String, val answerOptions: List<AnswerOption>)
     data class AnswerOption (val description: String, val isCorrect: Boolean)
-    data class Quiz (val questions: List<Question>)
 
     private val answerSound = Gdx.audio.newSound(Gdx.files.internal("sounds/answer.mp3"))
 
     fun joinGameOnSocket() {
         SocketHandler.setSocket()
-        // SocketHandler.addAllListeners()
         SocketHandler.getSocket().on("connection") {
             Gdx.app.log("GameApiModel", "Connected to WebSocket")
         }

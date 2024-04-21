@@ -22,9 +22,6 @@ class LobbyInitiationState(gsm: GameStateManager) : State(gsm), LobbyRedirection
         gsm.push(GameLobbyState(gsm, isAdmin = true, lobbyId))
     }
 
-    override fun handleInput() {
-        // TODO: Implement handleInput
-    }
     override fun update(dt: Float) {
         view.update(dt)
     }

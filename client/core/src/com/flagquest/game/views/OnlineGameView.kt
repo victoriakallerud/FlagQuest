@@ -23,7 +23,7 @@ import com.flagquest.game.utils.UIManager
 import kotlin.math.min
 
 
-class OnlineGameView(gsm: GameStateManager, private val stage: Stage, onlineGameListener: OnlineGameRedirectionListener, resultRedirectionListener: ResultRedirectionListener, pauseRedirectionListener: PauseRedirectionListener) {
+class OnlineGameView(gsm: GameStateManager, stage: Stage, onlineGameListener: OnlineGameRedirectionListener, resultRedirectionListener: ResultRedirectionListener, pauseRedirectionListener: PauseRedirectionListener) {
     private val onlineGameController: OnlineGameController = OnlineGameController(GameApiModel(), LocalApiModel())
     private val skin: Skin = Skin(Gdx.files.internal("skins/skin/flat-earth-ui.json"))
     private val titleFont: BitmapFont = skin.getFont("title")
@@ -31,7 +31,7 @@ class OnlineGameView(gsm: GameStateManager, private val stage: Stage, onlineGame
     private val screenHeight = Gdx.graphics.height
     private val buttonHeight = screenHeight / 11
     private var pos: Float = ((screenHeight / 2) - 50).toFloat()
-    private lateinit var currentQuestion: Question
+    private var currentQuestion: Question
     val answerButtons: MutableList<TextButton> = mutableListOf()
 
     init {
@@ -57,8 +57,8 @@ class OnlineGameView(gsm: GameStateManager, private val stage: Stage, onlineGame
         UIManager.addPauseButton(stage, gsm, pauseBtnColor, pauseButtonSize)
 
         //Flag
-        var flagTex: Texture = Texture(Gdx.files.internal(onlineGameController.getFlagFilePathByCountryName(currentQuestion.description)))
-        var flagImg = Image(flagTex)
+        val flagTex = Texture(Gdx.files.internal(onlineGameController.getFlagFilePathByCountryName(currentQuestion.description)))
+        val flagImg = Image(flagTex)
 
         val maxWidth = 100f * 6
         val maxHeight = 70f * 6
@@ -107,18 +107,12 @@ class OnlineGameView(gsm: GameStateManager, private val stage: Stage, onlineGame
             })
             stage.addActor(button)
             pos -= button.height + 30
-            }
         }
+    }
     private fun disableButtons(){
         for (button in answerButtons){
             // Remove the listeners
             button.clearListeners()
-        }
-    }
-
-    private fun enableButtons(){
-        for (button in answerButtons){
-            button.isDisabled = false
         }
     }
 

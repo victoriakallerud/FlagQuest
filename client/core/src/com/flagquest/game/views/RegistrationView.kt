@@ -97,7 +97,7 @@ class RegistrationView (gsm: GameStateManager, private val stage: Stage, listene
         })
         stage.addActor(regBtn)
     }
-    fun showError(error: String) {
+    private fun showError(error: String) {
         UIManager.addError(stage, error)
     }
     fun render() {

@@ -17,7 +17,6 @@ import com.flagquest.game.models.Question
 import com.flagquest.game.navigation.TrainingQuestionRedirectionListener
 import com.flagquest.game.states.GameStateManager
 import com.flagquest.game.utils.UIManager
-import org.w3c.dom.Text
 import kotlin.math.min
 
 class OfflineGameView(gsm: GameStateManager, stage: Stage, listener: TrainingQuestionRedirectionListener, private val controller: OfflineGameController, fromLogin: Boolean) {
@@ -27,7 +26,7 @@ class OfflineGameView(gsm: GameStateManager, stage: Stage, listener: TrainingQue
     private val screenHeight = Gdx.graphics.height
     private val buttonHeight = screenHeight / 11
     private var pos: Float = ((screenHeight / 2) - 50).toFloat()
-    private lateinit var currentQuestion: Question
+    private var currentQuestion: Question
     private val answerButtons: MutableList<TextButton> = mutableListOf()
 
     init {
@@ -48,8 +47,8 @@ class OfflineGameView(gsm: GameStateManager, stage: Stage, listener: TrainingQue
         }
 
         //Flag
-        var flagTex: Texture = Texture(Gdx.files.internal(controller.getFlagFilePathByCountryName(currentQuestion.description)))
-        var flagImg = Image(flagTex)
+        val flagTex = Texture(Gdx.files.internal(controller.getFlagFilePathByCountryName(currentQuestion.description)))
+        val flagImg = Image(flagTex)
 
         val maxWidth = 100f * 6
         val maxHeight = 70f * 6
@@ -105,12 +104,6 @@ class OfflineGameView(gsm: GameStateManager, stage: Stage, listener: TrainingQue
         for (button in answerButtons){
             // Remove the listeners
             button.clearListeners()
-        }
-    }
-
-    private fun enableButtons(){
-        for (button in answerButtons){
-            button.isDisabled = false
         }
     }
 

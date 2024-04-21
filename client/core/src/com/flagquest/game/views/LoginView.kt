@@ -73,7 +73,7 @@ class LoginView(gsm: GameStateManager, private val stage: Stage, listener: MainM
         UIManager.addBackButton(stage, gsm, backNavType)
     }
 
-    fun showError(error: String) {
+    private fun showError(error: String) {
         UIManager.addError(stage, error)
     }
 

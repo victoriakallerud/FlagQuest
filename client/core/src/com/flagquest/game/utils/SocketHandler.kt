@@ -64,8 +64,7 @@ object SocketHandler {
     @Synchronized
     fun establishConnection() {
         mSocket.connect()
-        while(!mSocket.connected()) {
-        }
+        while(!mSocket.connected()) {}
     }
 
     @Synchronized

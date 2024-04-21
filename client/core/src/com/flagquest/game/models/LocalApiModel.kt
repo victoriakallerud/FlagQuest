@@ -2,13 +2,11 @@ package com.flagquest.game.models
 
 import com.badlogic.gdx.Gdx
 import org.json.JSONArray
-import java.io.File
 
 
 data class  Country (val name: String, val region: String)
 data class Question (val description: String, val answerOptions: List<AnswerOption>)
 data class AnswerOption (val description: String, val isCorrect: Boolean)
-data class Quiz (val questions: List<Question>)
 
 /**
 * Class accesses JSON file in application to play training/offline games
@@ -22,16 +20,9 @@ class LocalApiModel {
         return "flags/${countryCode?.lowercase()}.png"
     }
 
-    fun generateQuiz(numberOfQuestions: Int): Quiz {
-        val questions = generateNumberOfQuestions(numberOfQuestions)
-        return Quiz(questions)
-    }
-
     private fun getAnswerOptionsByRegion(): List<String> {
         val countriesJson = Gdx.files.internal("countries.json").readString()
         val countries = parseCountriesFromJson(countriesJson)
-//        val countriesInRegion: List<Country> = countries.filter { it.region == region }
-//        return countriesInRegion.shuffled().take(4).map { it.name    }
         val allCountries: List<Country> = countries
         return allCountries.shuffled().take(4).map { it.name }
     }

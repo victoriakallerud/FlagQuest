@@ -8,17 +8,13 @@ import com.flagquest.game.views.ResultsView
 
 class ResultsState(gsm: GameStateManager) : State(gsm) {
     override val stage = Stage(ScreenViewport())
-    private val view = ResultsView(gsm, stage)
     override var backNavType = "menu"
 
     init {
         Gdx.input.inputProcessor = stage
-    }
-    override fun handleInput() {
-        // TODO: Implement handleInput
+        ResultsView(gsm, stage)
     }
     override fun update(dt: Float) {
-        handleInput()
         stage.act(dt)
     }
     override fun render() {

@@ -1,10 +1,8 @@
 package com.flagquest.game.views
 
-import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
-import com.flagquest.game.states.GameStateManager
 import com.flagquest.game.utils.UIManager
 import com.flagquest.game.utils.UIManager.addHeading
 

@@ -31,7 +31,7 @@ object UIManager {
     val elementHeight = screenHeight / 11
     val elementWidth = screenWidth * 8 / 10
     val elementSpacing = 20
-    var elementPos: Float = ((screenHeight / 2) + 150).toFloat()
+    private var elementPos: Float = ((screenHeight / 2) + 150).toFloat()
     val buttonTextScale = 1.5f
 
     // Backbutton parameters
@@ -50,13 +50,6 @@ object UIManager {
             }
         })
         stage.addActor(backButton) // Add the back button to the stage
-    }
-    fun addNavButtonArray (stage: Stage, gsm: GameStateManager, buttons: Array<Pair<TextButton, Lazy<State>>>, yTop: Float) {
-        elementPos = yTop
-        for (button in buttons) {
-            addNavButton(stage,gsm,button, elementPos)
-            elementPos -= button.first.height + 30 // Adjust inter-button distance here
-        }
     }
     fun addInstructButtonArray (stage: Stage, gsm: GameStateManager, buttons: Array<Pair<TextButton, String>>, yTop: Float) {
         elementPos = yTop
@@ -80,7 +73,7 @@ object UIManager {
      * This function adds a button which contains a string for instructions.
      * Carried out as documented in ButtonClickListener.kt
      */
-    fun addInstructButton (stage: Stage, gsm: GameStateManager, button: Pair<TextButton, String>, yTop: Float){
+    private fun addInstructButton (stage: Stage, gsm: GameStateManager, button: Pair<TextButton, String>, yTop: Float){
         button.first.setSize((screenWidth*80/100).toFloat(), elementHeight.toFloat())
         button.first.setPosition(screenWidth / 2 - button.first.width / 2, yTop)
         button.first.addListener(ButtonClickListener(gsm,button.second))
@@ -135,7 +128,6 @@ object UIManager {
         return scrollPane
     }
     fun truncateString(input: String, maxLength: Int): String {
-        val maxLength = 15
         return if (input.length <= maxLength) {
             input // Return the original string if it's within the maxLength
         } else {

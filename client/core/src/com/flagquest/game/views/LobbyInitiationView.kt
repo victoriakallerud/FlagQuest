@@ -10,8 +10,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.ui.TextField
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.flagquest.game.controllers.LobbyInitiationController
-import com.flagquest.game.models.GameApiModel
-import com.flagquest.game.models.LobbyApiModel
 import com.flagquest.game.navigation.LobbyRedirectionListener
 import com.flagquest.game.states.GameStateManager
 import com.flagquest.game.utils.UIManager

@@ -2,7 +2,6 @@ package com.flagquest.game.controllers
 
 import com.flagquest.game.models.LocalApiModel
 import com.flagquest.game.models.Question
-import com.flagquest.game.models.Quiz
 import com.flagquest.game.navigation.TrainingQuestionRedirectionListener
 
 class OfflineGameController(private val model: LocalApiModel) {

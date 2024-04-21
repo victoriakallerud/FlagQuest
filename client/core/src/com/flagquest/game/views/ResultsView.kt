@@ -29,7 +29,6 @@ class ResultsView(gsm: GameStateManager, private val stage: Stage) {
 
     private var results = mutableListOf<Pair<String, Int>>()
     private val scoreTable = Table()
-    private val backNavType = "menu"
 
     init {
         // Font size adjustments
