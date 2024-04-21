@@ -17,7 +17,7 @@ class RegistrationController(private val model: UserApiModel) {
                 }
             } else {
                 Gdx.app.postRunnable {
-                    Gdx.app.log("RegistrationController", "Registration failed")
+                    Gdx.app.error("RegistrationController", "Registration failed")
                     regErrorListener?.invoke("Failed. Try again.")
                 }
             }

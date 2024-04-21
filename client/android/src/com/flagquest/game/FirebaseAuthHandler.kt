@@ -23,7 +23,13 @@ class FirebaseAuthHandler : AuthHandler {
 
     override fun signUp(email: String, password: String, callback: (Boolean, String?, String?) -> Unit) {
         auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener { task ->
-            callback(task.isSuccessful, task.result?.user?.uid, task.exception?.message)
+            if(task.isSuccessful) {
+                val uid = task.result?.user?.uid
+                callback(true, uid, null)
+            } else {
+                val errorMessage = task.exception?.message
+                callback(false, null, errorMessage)
+            }
         }
     }
 
