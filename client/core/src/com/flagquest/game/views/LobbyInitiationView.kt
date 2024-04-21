@@ -120,7 +120,8 @@ class LobbyInitiationView(gsm: GameStateManager, private val stage: Stage, liste
         table.defaults().pad(5f)
         table.pack() // This is important to size the table according to its contents
         //table.setPosition((stage.width - table.prefWidth) / 2, 180f)
-        table.setPosition((stage.width - table.prefWidth) / 2, UIManager.screenHeight - 600f - table.height)
+        println("Table height: ${table.height}")
+        table.setPosition((stage.width - table.prefWidth) / 2, UIManager.screenHeight - 1100f)
     }
 
     fun showError(error: String) {
