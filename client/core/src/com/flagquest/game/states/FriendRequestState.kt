@@ -14,12 +14,8 @@ class FriendRequestState(gsm: GameStateManager) : State(gsm) {
         Gdx.input.inputProcessor = stage
     }
 
-    override fun handleInput() {
-        // TODO: Implement handleInput
-    }
 
     override fun update(dt: Float) {
-        handleInput()
         stage.act(dt)
     }
 

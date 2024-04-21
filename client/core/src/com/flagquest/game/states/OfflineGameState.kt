@@ -9,33 +9,22 @@ import com.flagquest.game.models.LocalApiModel
 import com.flagquest.game.navigation.TrainingQuestionRedirectionListener
 import com.flagquest.game.views.OfflineGameView
 
-// Use without arguments when first presenting the quiz. Load with chosen and correct answer to reveal.
-class OfflineGameState(gsm: GameStateManager, fromLogin: Boolean, chosen: String? = null, correct: String? = null) : State(gsm),
+class OfflineGameState(gsm: GameStateManager, private val fromLogin: Boolean) : State(gsm),
     TrainingQuestionRedirectionListener {
     override val stage = Stage(ScreenViewport())
     private val controller: OfflineGameController = OfflineGameController(LocalApiModel())
-    private val login: Boolean = fromLogin
-    private val view = OfflineGameView(gsm, stage, this, controller, login)
-
+    override var backNavType = "nothing"
 
     init {
         Gdx.input.inputProcessor = stage
-        addListenersToViewButtons()
-    }
-
-    private fun addListenersToViewButtons() {
-
-    }
-
-    fun refreshState() {
-        gsm.set(OfflineGameState(gsm, login))
-    }
-
-    override fun handleInput() {
-        // TODO: Implement handleInput
+        backNavType = if (fromLogin) {
+            "login"
+        } else {
+            "menu"
+        }
+        OfflineGameView(gsm, stage, this, controller, fromLogin)
     }
     override fun update(dt: Float) {
-        handleInput()
         stage.act(dt)
     }
     override fun render() {
@@ -45,7 +34,7 @@ class OfflineGameState(gsm: GameStateManager, fromLogin: Boolean, chosen: String
     }
 
     override fun redirectToNewTrainingQuestion() {
-        gsm.push(OfflineGameState(gsm, login))
+        gsm.push(OfflineGameState(gsm, fromLogin))
 
     }
 }

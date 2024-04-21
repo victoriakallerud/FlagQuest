@@ -23,11 +23,7 @@ class JoinGameState(gsm: GameStateManager) : State(gsm), LobbyRedirectionListene
         gsm.push(GameLobbyState(gsm, isAdmin = false, lobbyId))
     }
 
-    override fun handleInput() {
-        // TODO: Implement handleInput
-    }
     override fun update(dt: Float) {
-        handleInput()
         stage.act(dt)
     }
     override fun render() {

@@ -8,13 +8,14 @@ import com.flagquest.game.views.PauseView
 
 class PauseState(gsm: GameStateManager) : State(gsm) {
     override val stage = Stage(ScreenViewport())
-    private val view = PauseView(gsm, stage)
+    override var backNavType = "menu"
 
-    override fun handleInput() {
-        // TODO: Implement handleInput
+    init {
+        Gdx.input.inputProcessor = stage
+        PauseView(gsm, stage)
     }
+
     override fun update(dt: Float) {
-        handleInput()
         stage.act(dt)
     }
     override fun render() {

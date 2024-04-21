@@ -25,9 +25,6 @@ class MainMenuState(gsm: GameStateManager) : State(gsm) {
         view.buttons[4].addListener(ButtonClickListener(gsm, lazy { ManageFriendsState(gsm) }))
     }
 
-    override fun handleInput() {
-        TODO("Not yet implemented")
-    }
 
     override fun update(dt: Float) {
         view.update(dt)
