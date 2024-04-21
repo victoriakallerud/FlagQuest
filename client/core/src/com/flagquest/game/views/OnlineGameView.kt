@@ -44,7 +44,6 @@ class OnlineGameView(gsm: GameStateManager, private val stage: Stage, onlineGame
         onlineGameController.attachEndScoreListener()
         onlineGameController.attachPauseGameListener()
         onlineGameController.attachResumeGameListener()
-        // val quiz: Quiz = controller.handleCreateOfflineGame(10, "Europe")
         currentQuestion = onlineGameController.getSingleQuestion()
 
         titleFont.data.setScale(1.5f)
