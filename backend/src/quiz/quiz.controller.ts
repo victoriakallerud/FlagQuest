@@ -20,14 +20,14 @@ export class QuizController {
     }
     
     @ApiOperation({summary: 'get a fixed number of random generated Question'})
-    @Get('questions')
-    async getNumberQuestion(@Body('numberOfQuestions') numberOfQuestions: number){
+    @Get('questions/:numberOfQuestions')
+    async getNumberQuestion(@Param('numberOfQuestions') numberOfQuestions: number){
       return this.quizService.generateNumberOfQuestion(numberOfQuestions);
     }
 
     @ApiOperation({summary: 'get a fixed number of random generated Question from a specific region in'})
-    @Get('questions/:region')
-    async getNumberEuropeQuestion(@Param('region') region: LevelEnum, @Body('numberOfQuestions') numberOfQuestions: number){
+    @Get('questions/:region/:numberOfQuestions')
+    async getNumberEuropeQuestion(@Param('region') region: LevelEnum, @Param('numberOfQuestions') numberOfQuestions: number){
       return this.quizService.generateNumberOfQuestion(numberOfQuestions, region);
     }
 
