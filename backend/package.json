@@ -1,8 +1,8 @@
 {
-  "name": "backend",
-  "version": "0.0.1",
+  "name": "flagquest-backend",
+  "version": "1.0.0",
   "description": "",
-  "author": "",
+  "author": "Leonard Laisé and Felix Kuhn",
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
