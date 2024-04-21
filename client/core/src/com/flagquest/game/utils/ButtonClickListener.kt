@@ -5,6 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.flagquest.game.states.GameStateManager
 import com.flagquest.game.states.MainMenuState
 import com.flagquest.game.states.State
+import org.json.JSONObject
 
 /**
  * Listener that either takes a lazy state or an instruction(String) as input.
@@ -28,6 +29,10 @@ class ButtonClickListener(private val gsm: GameStateManager, private val lazySta
         if (instruction == "menu"){ //Go to main menu
             gsm.clear()
             gsm.push(MainMenuState(gsm))
+        }
+        if (instruction == "backToGame"){
+            gsm.pop()
+            SocketHandler.emit("resumeGame", JSONObject().put("lobbyId", DataManager.getData("lobbyId")).put("userId", DataManager.getData("userId")))
         }
         else
             println("Provide Proper Instruction!")

@@ -5,15 +5,16 @@ import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.utils.viewport.ScreenViewport
 import com.flagquest.game.navigation.OnlineGameRedirectionListener
+import com.flagquest.game.navigation.PauseRedirectionListener
 import com.flagquest.game.navigation.ResultRedirectionListener
 import com.flagquest.game.navigation.TrainingQuestionRedirectionListener
 import com.flagquest.game.views.OnlineGameView
 
 // Use without arguments when first presenting the quiz. Load with chosen and correct answer to reveal.
 class OnlineGameState(gsm: GameStateManager, chosen: String? = null, correct: String? = null) : State(gsm),
-    OnlineGameRedirectionListener, ResultRedirectionListener {
+    OnlineGameRedirectionListener, ResultRedirectionListener, PauseRedirectionListener {
     override val stage = Stage(ScreenViewport())
-    private val view = OnlineGameView(gsm, stage, this, this)
+    private val view = OnlineGameView(gsm, stage, this, this, this)
 
 
     init {
@@ -50,4 +51,10 @@ class OnlineGameState(gsm: GameStateManager, chosen: String? = null, correct: St
         Gdx.app.log("OnlineGameState", "Redirecting to result state")
         gsm.push(ResultsState(gsm))
     }
+
+    override fun redirectToPauseGameState(){
+        gsm.push(PauseState(gsm))
+    }
+
+
 }

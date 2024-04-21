@@ -5,6 +5,7 @@ import com.flagquest.game.models.GameApiModel
 import com.flagquest.game.models.GameApiModel.Question
 import com.flagquest.game.models.LocalApiModel
 import com.flagquest.game.navigation.OnlineGameRedirectionListener
+import com.flagquest.game.navigation.PauseRedirectionListener
 import com.flagquest.game.navigation.ResultRedirectionListener
 import com.flagquest.game.utils.DataManager
 import com.flagquest.game.utils.SocketHandler
@@ -15,6 +16,7 @@ import org.json.JSONObject
 class OnlineGameController(private val gameModel: GameApiModel, private val localModel: LocalApiModel) {
     var onlineGameRedirectionListener: OnlineGameRedirectionListener? = null
     var resultRedirectionListener: ResultRedirectionListener? = null
+    var pauseRedirectionListener: PauseRedirectionListener? = null
 
     fun getSingleQuestion(): Question {
         return gameModel.getCurrentQuestion()
@@ -46,6 +48,30 @@ class OnlineGameController(private val gameModel: GameApiModel, private val loca
                 resultRedirectionListener?.redirectToResultState()
             }
         }
+    }
+    fun attachPauseGameListener(){
+        this.detachPauseGameListener()
+        SocketHandler.getSocket().on("pause") { args ->
+            Gdx.app.log("OnlineGameController", "pauseGame: $args")
+            Gdx.app.postRunnable {
+                pauseRedirectionListener?.redirectToPauseGameState()
+            }
+        }
+    }
+    fun attachResumeGameListener(){
+        this.detachResumeGameListener()
+        SocketHandler.getSocket().on("resume") { args ->
+            Gdx.app.log("OnlineGameController", "resumeGame: $args")
+            Gdx.app.postRunnable {
+                onlineGameRedirectionListener?.redirectToOnlineGameState()
+            }
+        }
+    }
+    private fun detachPauseGameListener() {
+        SocketHandler.getSocket().off("pause")
+    }
+    private fun detachResumeGameListener() {
+        SocketHandler.getSocket().off("resume")
     }
 
     private fun detachEndScoreListener() {
