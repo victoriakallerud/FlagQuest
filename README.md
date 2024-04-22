@@ -15,7 +15,7 @@
 - View the highscores of your friends
 - Offline endless training mode
 
-## Contents of thie Repository
+## Contents of this Repository
 
 ### Backend
 
